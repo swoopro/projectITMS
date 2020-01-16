@@ -2,43 +2,60 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="#package.#mapperinterfacename">
+<mapper namespace="product">
 
-	<select id="getSomething" parameterType="int" resultType="#package.#modelname">
-		SELECT
-		columnname1,
-		columnname2,
-		columnname3
-		FROM tablename1
-		WHERE columnname1 = #{value}
+	<select id="selectPd" parameterType="omPdDTO" resultMap="rsMapPd">
+		SELECT *
+		FROM product
+		WHERE com_id = #{com_id} and id = #{id}
 	</select>
 
-	<resultMap type="#modelname" id="YourResultSet">
-		<id property="param1" column="columnname1" />
-		<result property="param2" column="columnname2" />
-		<result property="param3" column="columnname3" />
+	<resultMap type="omPdDTO" id="rsMapPd">
+		<result property="id" column="id" />
+		<result property="com_id" column="com_id" />
+		<result property="code" column="code" />
+		<result property="name" column="name" />
+		<result property="spec" column="spec" />
+		<result property="price" column="price" />
+		<result property="date" column="date" />
 	</resultMap>
 
-	<select id="getAll" resultMap="YourResultSet">
-		SELECT * FROM tablename1
+	<select id="selectAllPd" resultMap="rsMapPd">
+		SELECT * FROM product a WHERE date=(select max(date) from product WHERE code = a.code and com_id=#{com_id})
+		<!-- SELECT id, com_id, code, name, spec, price, max(date) as date FROM product WHERE com_id = #{com_id} group by code; -->
+	</select>
+	
+	<select id="selectAllHistory" resultMap="rsMapPd">
+		SELECT * FROM product WHERE com_id = #{com_id} and code = #{code} order by date desc
 	</select>
 
-	<insert id="insertSomething" parameterType="#modelname">
-		INSERT INTO tablename1 (columnname1, columnname2, columnname3)
-		VALUES(#{value1},#{value2},#{value3})
+	<select id="selectAllHistoryUp" resultMap="rsMapPd">
+		SELECT * FROM product WHERE com_id = #{com_id} and code = #{code} order by date asc
+	</select>
+
+	<insert id="insertPd" parameterType="omPdDTO">
+		INSERT INTO product (id, com_id, code, name, spec, price, date)
+		VALUES(#{id}, #{com_id}, #{code}, #{name}, #{spec}, #{price}, now())
+	</insert>
+	
+	<insert id="insertPd2" parameterType="omPdDTO">
+		INSERT INTO product (com_id, code, name, spec, price, date)
+		VALUES(#{com_id}, #{code}, #{name}, #{spec}, #{price}, now())
 	</insert>
 
-	<update id="updateSomething" parameterType="#modelname">
-		UPDATE tablename1
+	<update id="updatePd" parameterType="omPdDTO">
+		UPDATE product
 		SET
-		columnname1=#{param1}
+		code=#{code}, name=#{name}, spec=#{spec}, price=#{price}
 		WHERE
-		columnname2 = #{param2}
+		id = #{id} and com_id = #{com_id}
 	</update>
 
-	<delete id="deleteSomething" parameterType="int">
-		DELETE FROM tablename1 WHERE
-		columnname1 = #{param1}
+	<delete id="deletePd" parameterType="omPdDTO">
+		DELETE 
+		FROM product
+		WHERE
+		id = #{id} and com_id = #{com_id}
 	</delete>
 
 </mapper>
