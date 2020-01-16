@@ -10,6 +10,10 @@
 		<typeAlias type="com.mega.ITMS.operationMng.customer.OperationMngCustomerDTO" alias="omCsDTO"></typeAlias>
 		<typeAlias type="com.mega.ITMS.operationMng.product.OperationMngProductDTO" alias="omPdDTO"></typeAlias>
 		<typeAlias type="com.mega.ITMS.operationMng.customer.OperationMngCustomerJoinDTO" alias="omCsJoinDTO"></typeAlias>
+		<typeAlias type="com.mega.ITMS.userMng.corporate.UserMngCorpDTO" alias="corpMng"></typeAlias>
+		<typeAlias type="com.mega.ITMS.userMng.division.UserMngDeptDTO" alias="deptMng"></typeAlias>
+		<typeAlias type="com.mega.ITMS.userMng.usermanage.UserMngEmployeeDTO" alias="employeeMng"></typeAlias>
+		<typeAlias type="com.mega.ITMS.userMng.account.UserMngAccountDTO" alias="accMng"></typeAlias>
 <!--  		<typeAlias type="com.mega.ITMS.operationMng.product.OperationMngProductJoinDTO" alias="omPdJoinDTO"></typeAlias> -->
 	</typeAliases>
 	<!-- 사용할MAPPER목록 설정 -->
@@ -19,5 +23,9 @@
  		<mapper resource="mapper/productMapper.xml" />
  		<!-- <mapper resource="mapper/customerMapper.xml" /> -->
 <!--		<mapper resource="mapper/productMapper.xml" /> -->
+		<mapper resource="mapper/corporateMapper.xml" />
+		<mapper resource="mapper/divisionMapper.xml" />
+		<mapper resource="mapper/usermanageMapper.xml" />
+		<mapper resource="mapper/accountMapper.xml" />
 	</mappers>
 </configuration>
