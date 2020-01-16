@@ -3,13 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-	<typeAliases>
-	<!-- mapper파일만들 때마다 alias지정 -->
-	<!-- mapper파일에서 쓸 타입을 패키지.클래스으로 써주어야 하는데, 너무 길어서 alias를 지정함. -->
-		<typeAlias type="com.mega.ITMS" alias=""></typeAlias>
-	</typeAliases>
-	<!-- 사용할MAPPER목록 설정 -->
-	<mappers>
-		<mapper resource="mapper/Mapper.xml" />
-	</mappers>
+   <typeAliases>
+   </typeAliases>
 </configuration>
