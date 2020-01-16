@@ -1,14 +1,21 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<!DOCTYPE html>
 <html>
 <head>
-	<title>Home</title>
+      <%@include file="/WEB-INF/views/include_nav.jsp"%>
+       
+    <link href="<c:url value="/resources/style.css" />" rel="stylesheet">
+    <title>ITMS</title>
 </head>
 <body>
-<h1>
-	Hello world!  
-</h1>
 
-<P>  The time on the server is ${serverTime}. </P>
+
+<div class="content_body">
+HOME
+</div>
+
+
 </body>
 </html>
