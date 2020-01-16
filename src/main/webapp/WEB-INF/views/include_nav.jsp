@@ -2,17 +2,24 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="path" value="${pageContext.request.contextPath }"/>
-<html>
-<head>
+<c:set var="path" value="${pageContext.request.contextPath}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css"
           href="${pageContext.request.contextPath}/resources/include/Semantic-Master/semantic.css">
-    <script src="${pageContext.request.contextPath}/resources/include/jquery-3.3.1.js"></script>
     <script src="${pageContext.request.contextPath}/resources/include/Semantic-Master/semantic.js"></script>
-    <meta charset="UTF-8">
-    <title>ITMS</title>
-</head>
-<body>
+    <script>
+    $(function() {
+	    $("#open_menu").click(function () {
+	        $('.ui.sidebar').sidebar('setting','transition','overlay').sidebar('toggle');
+	    });
+	    $('.ui.dropdown').dropdown({
+	        direction:'auto',
+	        duration:100,
+	        onChange:function(value, text, $choice){
+	        }
+	    });
+    });
+</script>
 <div><div id="nav_html">
     <div class="ui sidebar inverted vertical menu">
         <div class="item">
@@ -69,109 +76,35 @@
     <a class="active item" id="open_menu">
         <i class="align justify icon"></i>
     </a>
-<!-- ${pageContext.request.contextPath}/home -->
+
     <div class="right menu">
-        <a href="/ITMS"><div class="item">
+    	<a href="${pageContext.request.contextPath}/logout"><div class="item"><i class="power off icon"></i></div></a>
+        <a href="${pageContext.request.contextPath}"><div class="item">
             <i class="home icon"></i>
         </div></a>
-        <div class="item">
-            <div class="ui dropdown"><i class="user icon"></i>
-
-                <div class="menu">
-                    <div class="item">법인정보관리</div>
-                    <div class="item">직원비밀번호관리</div>
-                </div>
-            </div>
-        </div>
-        <div class="item">
-            <div class="ui dropdown"><i class="users icon"></i>
-                <div class="menu">
-                    <div class="item">부서등록
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <div class="item">필요한경우1</div>
-                            <div class="item">필요한경우2</div>
-                        </div>
-                    </div>
-                    <div class="item">직원등록</div>
-                    <div class="item">권한관리</div>
-                    <div class="item">법인계좌관리</div>
-                </div>
-            </div>
-        </div>
+        <c:choose>
+        	<c:when test="${id eq null}">
+		        <a href="${pageContext.request.contextPath}/user/corporate/corporateInfo"><div class="item">
+		            <i class="user icon"></i>
+		        </div></a>
+		        <div class="item">
+		            <div class="ui dropdown"><i class="users icon"></i>
+		                <div class="menu">
+		                    <a class="item" href="${pageContext.request.contextPath}/user/division/deptInfo?curPage=1&key=&value=">
+		                    	부서관리
+		                    </a>
+		                    <a class="item" href="${pageContext.request.contextPath}/user/usermanage/authority?curPage=1&key=&value=">권한관리</a>
+		                    <a class="item" href="${pageContext.request.contextPath}/user/account/accountInfo?curPage=1&key=&value=">법인계좌관리</a>
+		                </div>
+		            </div>
+		        </div>
+        	</c:when>
+        	<c:otherwise>
+		        <a href="${pageContext.request.contextPath}/user/usermanage/userInfo"><div class="item">
+		            <i class="user icon"></i>
+		        </div></a>
+        	</c:otherwise>
+        </c:choose>
     </div>
 </div>
 </div>
-<script>
-	$(function(){
-	    $("#open_menu").click(function () {
-	        $('.ui.sidebar').sidebar('setting','transition','overlay').sidebar('toggle');
-	    });
-	    $('.ui.dropdown').dropdown({
-	        direction:'auto',
-	        duration:100,
-	        onChange:function(value, text, $choice){
-	        }
-	    });
-	})
-</script>
-</body>
-=======
-<%@ page language="java" contentType="text/html;charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:set var="path" value="${pageContext.request.contextPath }"/>
-<html>
-<head>
-    <link rel="stylesheet" type="text/css"
-          href="${pageContext.request.contextPath}/resources/include/Semantic-Master/semantic.css">
-    <script src="${pageContext.request.contextPath}/resources/include/jquery-3.3.1.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/include/Semantic-Master/semantic.js"></script>
-    <meta charset="UTF-8">
-    <title>ITMS</title>
-</head>
-<body>
-<div id="nav_html">
-    <div class="ui sidebar inverted vertical menu">
-        <div class="item">
-            좌측대메뉴1
-        </div>
-        <div class="item">
-            좌측대메뉴2
-        </div>
-        <div class="item">
-            <div class="header">종합보고</div>
-            <div class="menu">
-                <a class="item">
-                    월별집계표
-                </a>
-                <a class="item">
-                    수출입관리대장
-                </a>
-                <a class="item">
-                    개별보고작성
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="ui stackable menu">
-    <a class="active item" id="open_menu">
-        <i class="align justify icon"></i>
-    </a>
-    <a class="item">
-        상단1
-    </a>
-    <a class="item">
-        상단2
-    </a>
-</div>
-
-<script>
-    $("#open_menu").click(function () {
-    $('.ui.sidebar').sidebar('setting','transition','overlay').sidebar('toggle');
-    });
-</script>
-</body>
-</html>
