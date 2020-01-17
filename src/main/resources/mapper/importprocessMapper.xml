@@ -9,17 +9,29 @@
 		WHERE id = #{id}
 	</select>
 	
+<<<<<<< HEAD
 		<select id="selectEmployee" parameterType="String" resultType="com.mega.ITMS.importMng.importprocess.Import_employeeDTO">
+=======
+		<select id="selectEmployee" parameterType="com.mega.ITMS.importMng.importprocess.Import_employeeDTO" resultType="com.mega.ITMS.importMng.importprocess.Import_employeeDTO">
+>>>>>>> 민경_laptop
 		SELECT * FROM employee
 		WHERE id = #{id}
 	</select>
 	
+<<<<<<< HEAD
 		<select id="selectCustomer" parameterType="int" resultType="com.mega.ITMS.importMng.importprocess.Import_customerDTO">
+=======
+		<select id="selectCustomer" parameterType="com.mega.ITMS.importMng.importprocess.Import_customerDTO" resultType="com.mega.ITMS.importMng.importprocess.Import_customerDTO">
+>>>>>>> 민경_laptop
 		SELECT * FROM customer
 		WHERE id = #{id}
 	</select>
 	
+<<<<<<< HEAD
 		<select id="selectBusiness" parameterType="int" resultType="com.mega.ITMS.importMng.importprocess.Import_businessDTO">
+=======
+		<select id="selectBusiness" parameterType="com.mega.ITMS.importMng.importprocess.Import_businessDTO" resultType="com.mega.ITMS.importMng.importprocess.Import_businessDTO">
+>>>>>>> 민경_laptop
 		SELECT * FROM business
 		WHERE id = #{id}
 	</select>
@@ -29,9 +41,15 @@
 		WHERE id = #{id}
 	</select>
 	
+<<<<<<< HEAD
 		<select id="selectOrderDetail" parameterType="int" resultType="com.mega.ITMS.importMng.importprocess.Import_orderDetailDTO">
 		SELECT * FROM order_detail
 		WHERE basic_id = #{basic_id}
+=======
+		<select id="selectOrderDetail" parameterType="com.mega.ITMS.importMng.importprocess.Import_orderDetailDTO" resultType="com.mega.ITMS.importMng.importprocess.Import_orderDetailDTO">
+		SELECT * FROM order_detail
+		WHERE id = #{id}
+>>>>>>> 민경_laptop
 	</select>
 	
 			<select id="selectBasicTradeDESC" resultType="int">
@@ -39,6 +57,7 @@
 		ORDER BY id DESC LIMIT 1
 	</select>
 	
+<<<<<<< HEAD
 			<select id="selectBasicTrade" parameterType="int" resultType="com.mega.ITMS.importMng.importprocess.Import_basicTradeDTO">
 		SELECT * FROM basic_trade
 		WHERE id = #{id}
@@ -59,6 +78,8 @@
 	
 	
 	
+=======
+>>>>>>> 민경_laptop
 	
 
 	<resultMap type="com.mega.ITMS.importMng.importprocess.Import_employeeDTO" id="employeeDTO">
@@ -134,6 +155,7 @@
 		WHERE type_tr = 2 AND com_id = #{com_id}
 	</select>
 	
+<<<<<<< HEAD
 		<select id="selectAllBasicTradePK" resultMap="basicTradeDTO" resultType="int">
 		SELECT * FROM basic_trade 
 		WHERE id = #{id}
@@ -142,6 +164,8 @@
 	
 	
 	
+=======
+>>>>>>> 민경_laptop
 	
 		
 		<resultMap type="com.mega.ITMS.importMng.importprocess.Import_customerDTO" id="customerDTO">
@@ -175,6 +199,7 @@
 		WHERE com_id = #{com_id}
 	</select>
 	
+<<<<<<< HEAD
 		<select id="selectAllProductPID" resultMap="productDTO">
 		SELECT * FROM product
 		WHERE id = #{p_id}
@@ -196,6 +221,8 @@
 	
 	
 	
+=======
+>>>>>>> 민경_laptop
 	<insert id="insertBasicTrade" parameterType="com.mega.ITMS.importMng.importprocess.Import_basicTradeDTO">
 		INSERT INTO basic_trade (com_id, user_id, b_id, c_id, type_tr, doc_no, issued_date, notes)
 		VALUES(#{com_id},#{user_id},#{b_id},#{c_id},#{type_tr},#{doc_no},now(), #{notes})
@@ -206,6 +233,7 @@
 		VALUES(default,#{basic_id},#{p_id},#{qty})
 	</insert>
 	
+<<<<<<< HEAD
 			<insert id="insertOrderShipping1" parameterType="com.mega.ITMS.importMng.importprocess.Import_orderShipping">
 		INSERT INTO order_shipping (id, basic_id, cb_id, dcb_id, date)
 		VALUES(default,#{basic_id},#{cb_id},#{dcb_id},now())
@@ -234,4 +262,11 @@
 		columnname1 = #{param1}
 	</delete>
  -->
+=======
+			<insert id="insertTradeFile" parameterType="com.mega.ITMS.importMng.importprocess.Import_tradeFileDTO">
+		INSERT INTO trade_file_container (id, basic_id, file_name, issued_date, type_file)
+		VALUES(default,#{basic_id},#{file_name},now(), #{type_file})
+	</insert>
+
+>>>>>>> 민경_laptop
 </mapper>
