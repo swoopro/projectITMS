@@ -6,10 +6,13 @@
 	<typeAliases>
 	<!-- mapper파일만들 때마다 alias지정 -->
 	<!-- mapper파일에서 쓸 타입을 패키지.클래스으로 써주어야 하는데, 너무 길어서 alias를 지정함. -->
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
+=======
+>>>>>>> 민경_laptop
 		<typeAlias type="com.mega.ITMS.operationMng.customer.OperationMngBusinessDTO" alias="omBnDTO"></typeAlias>
 		<typeAlias type="com.mega.ITMS.operationMng.customer.OperationMngCustomerDTO" alias="omCsDTO"></typeAlias>
 		<typeAlias type="com.mega.ITMS.operationMng.product.OperationMngProductDTO" alias="omPdDTO"></typeAlias>
@@ -37,6 +40,7 @@
 		<mapper resource="mapper/monthlyMapper.xml" />
 		<mapper resource="mapper/myReportMapper.xml" />
 		<mapper resource="mapper/tradeRecordMapper.xml" />
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 =======
@@ -49,5 +53,7 @@
 		<mapper resource="mapper/transferMapper.xml" />
 >>>>>>> Stashed changes
 >>>>>>> Stashed changes
+=======
+>>>>>>> 민경_laptop
 	</mappers>
 </configuration>

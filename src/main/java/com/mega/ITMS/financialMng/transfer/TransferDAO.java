@@ -1,12 +1,16 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
+=======
+>>>>>>> 민경_laptop
 package com.mega.ITMS.financialMng.transfer;
 
 public class TransferDAO {
 
 }
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 =======
@@ -57,3 +61,5 @@ public class TransferDAO {
 }
 >>>>>>> Stashed changes
 >>>>>>> Stashed changes
+=======
+>>>>>>> 민경_laptop

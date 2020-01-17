@@ -185,7 +185,7 @@ public class RequestController {
 	@ResponseBody
 	@RequestMapping("pay_check")
 	public List<RequestDTO> pay_check(RequestDTO requestDTO, HttpSession session){
-		session.setAttribute("id", "asd"); // ÇÕÄ¡°í»èÁ¦
+		session.setAttribute("id", "asd"); // ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		requestDTO.setResponse_id((String)session.getAttribute("id"));
 		dao.update(requestDTO);
 		List<RequestDTO> list = dao.selectAll();

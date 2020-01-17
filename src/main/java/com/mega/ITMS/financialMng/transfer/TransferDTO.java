@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
+=======
+>>>>>>> 민경_laptop
 package com.mega.ITMS.financialMng.transfer;
 
 import java.sql.Timestamp;
@@ -75,6 +78,7 @@ public class TransferDTO {
 	
 	
 }
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 =======
@@ -159,3 +163,5 @@ public class TransferDTO {
 }
 >>>>>>> Stashed changes
 >>>>>>> Stashed changes
+=======
+>>>>>>> 민경_laptop

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
+=======
+>>>>>>> 민경_laptop
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="request">
@@ -25,6 +28,7 @@
 
     <select id="selectAll" resultMap="rs">
 		SELECT * FROM finance_request
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 	</select>
 
@@ -94,4 +98,13 @@
 
 >>>>>>> Stashed changes
 >>>>>>> Stashed changes
+=======
+	</select>
+
+    <update id="pay_check" parameterType="requestDTO">
+		UPDATE finance_request SET receive_date = now()
+		WHERE id=#{id}
+	</update>
+
+>>>>>>> 민경_laptop
 </mapper>

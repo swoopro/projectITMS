@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
+=======
+>>>>>>> 민경_laptop
 package com.mega.ITMS.financialMng.transfer;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,7 @@ public class TransferController {
 		
 	}
 }
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 =======
@@ -76,3 +80,5 @@ public class TransferController {
 }
 >>>>>>> Stashed changes
 >>>>>>> Stashed changes
+=======
+>>>>>>> 민경_laptop
