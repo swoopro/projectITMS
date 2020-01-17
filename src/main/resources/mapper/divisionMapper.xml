@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="deptMng">
 
 	<select id="selectDept" parameterType="deptMng" resultMap="rs">
 		SELECT * FROM dept WHERE com_id = #{com_id}
 	</select>
-	
+
 	<select id="searchName" resultMap="rs">
 		SELECT * FROM dept where com_id=#{com_id} and name like concat('%',#{name},'%')
 	</select>
-	
+
 	<select id="searchId" resultMap="rs">
 		SELECT * FROM dept where com_id=#{com_id} and id like concat('%',#{id},'%')
 	</select>
-	
+
 	<resultMap type="deptMng" id="rs">
 		<result property="id" column="id" />
 		<result property="com_id" column="com_id" />

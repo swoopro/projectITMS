@@ -4,15 +4,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+      <%@include file="/WEB-INF/views/include_nav.jsp"%>
+       
     <link href="<c:url value="/resources/style.css" />" rel="stylesheet">
     <title>ITMS</title>
 </head>
 <body>
-<%@include file="/WEB-INF/views/include_nav.jsp"%>
 
 
 <div class="content_body">
-<h2>HOME</h2>
+HOME
 </div>
+
+
 </body>
 </html>
