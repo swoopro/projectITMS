@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-
-
 @Controller
 @RequestMapping("report/monthly/")
 public class MonthlyController {
