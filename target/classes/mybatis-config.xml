@@ -6,6 +6,7 @@
 	<typeAliases>
 	<!-- mapper파일만들 때마다 alias지정 -->
 	<!-- mapper파일에서 쓸 타입을 패키지.클래스으로 써주어야 하는데, 너무 길어서 alias를 지정함. -->
+<<<<<<< HEAD
 		<typeAlias type="com.mega.ITMS.financialMng.request.RequestDTO" alias="requestDTO"/>
 		<typeAlias type="com.mega.ITMS.financialMng.transfer.TransferDTO" alias="transferDTO"/>
 	</typeAliases>
@@ -15,5 +16,28 @@
 		<mapper resource="mapper/monthlyMapper.xml" />
 		<mapper resource="mapper/myReportMapper.xml" />
 		<mapper resource="mapper/tradeRecordMapper.xml" />
+=======
+		<typeAlias type="com.mega.ITMS.operationMng.customer.OperationMngBusinessDTO" alias="omBnDTO"></typeAlias>
+		<typeAlias type="com.mega.ITMS.operationMng.customer.OperationMngCustomerDTO" alias="omCsDTO"></typeAlias>
+		<typeAlias type="com.mega.ITMS.operationMng.product.OperationMngProductDTO" alias="omPdDTO"></typeAlias>
+		<typeAlias type="com.mega.ITMS.operationMng.customer.OperationMngCustomerJoinDTO" alias="omCsJoinDTO"></typeAlias>
+		<typeAlias type="com.mega.ITMS.userMng.corporate.UserMngCorpDTO" alias="corpMng"></typeAlias>
+		<typeAlias type="com.mega.ITMS.userMng.division.UserMngDeptDTO" alias="deptMng"></typeAlias>
+		<typeAlias type="com.mega.ITMS.userMng.usermanage.UserMngEmployeeDTO" alias="employeeMng"></typeAlias>
+		<typeAlias type="com.mega.ITMS.userMng.account.UserMngAccountDTO" alias="accMng"></typeAlias>
+<!--  		<typeAlias type="com.mega.ITMS.operationMng.product.OperationMngProductJoinDTO" alias="omPdJoinDTO"></typeAlias> -->
+	</typeAliases>
+	<!-- 사용할MAPPER목록 설정 -->
+	<mappers>
+		<mapper resource="mapper/customerMapper.xml" />
+		<!-- <mapper resource="mapper/customerMapper.xml" /> -->
+ 		<mapper resource="mapper/productMapper.xml" />
+ 		<!-- <mapper resource="mapper/customerMapper.xml" /> -->
+<!--		<mapper resource="mapper/productMapper.xml" /> -->
+		<mapper resource="mapper/corporateMapper.xml" />
+		<mapper resource="mapper/divisionMapper.xml" />
+		<mapper resource="mapper/usermanageMapper.xml" />
+		<mapper resource="mapper/accountMapper.xml" />
+>>>>>>> 정병수
 	</mappers>
 </configuration>

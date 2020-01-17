@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="product">
+
+	<select id="selectPd" parameterType="omPdDTO" resultMap="rsMapPd">
+		SELECT *
+		FROM product
+		WHERE com_id = #{com_id} and id = #{id}
+	</select>
+
+	<resultMap type="omPdDTO" id="rsMapPd">
+		<result property="id" column="id" />
+		<result property="com_id" column="com_id" />
+		<result property="code" column="code" />
+		<result property="name" column="name" />
+		<result property="spec" column="spec" />
+		<result property="price" column="price" />
+		<result property="date" column="date" />
+	</resultMap>
+
+	<select id="selectAllPd" resultMap="rsMapPd">
+		SELECT * FROM product a WHERE date=(select max(date) from product WHERE code = a.code and com_id=#{com_id})
+		<!-- SELECT id, com_id, code, name, spec, price, max(date) as date FROM product WHERE com_id = #{com_id} group by code; -->
+	</select>
+	
+	<select id="selectAllHistory" resultMap="rsMapPd">
+		SELECT * FROM product WHERE com_id = #{com_id} and code = #{code} order by date desc
+	</select>
+
+	<select id="selectAllHistoryUp" resultMap="rsMapPd">
+		SELECT * FROM product WHERE com_id = #{com_id} and code = #{code} order by date asc
+	</select>
+
+	<insert id="insertPd" parameterType="omPdDTO">
+		INSERT INTO product (id, com_id, code, name, spec, price, date)
+		VALUES(#{id}, #{com_id}, #{code}, #{name}, #{spec}, #{price}, now())
+	</insert>
+	
+	<insert id="insertPd2" parameterType="omPdDTO">
+		INSERT INTO product (com_id, code, name, spec, price, date)
+		VALUES(#{com_id}, #{code}, #{name}, #{spec}, #{price}, now())
+	</insert>
+
+	<update id="updatePd" parameterType="omPdDTO">
+		UPDATE product
+		SET
+		code=#{code}, name=#{name}, spec=#{spec}, price=#{price}
+		WHERE
+		id = #{id} and com_id = #{com_id}
+	</update>
+
+	<delete id="deletePd" parameterType="omPdDTO">
+		DELETE 
+		FROM product
+		WHERE
+		id = #{id} and com_id = #{com_id}
+	</delete>
+
+</mapper>

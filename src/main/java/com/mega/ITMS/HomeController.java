@@ -1,19 +1,17 @@
 package com.mega.ITMS;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import javax.servlet.http.HttpSession;
 
-import com.mega.ITMS.report.monthly.MonthlyDao;
-import com.mega.ITMS.report.monthly.SumMonthlyDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mega.ITMS.userMng.corporate.UserMngCorpDAOImpl;
+import com.mega.ITMS.userMng.corporate.UserMngCorpDTO;
+import com.mega.ITMS.userMng.usermanage.UserMngEmployeeDAOImpl;
+import com.mega.ITMS.userMng.usermanage.UserMngEmployeeDTO;
 
 /**
  * Handles requests for the application home page.
@@ -21,23 +19,59 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomeController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	@Autowired
+	UserMngCorpDAOImpl userMngCorpDAOImpl;
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
+	@Autowired
+	UserMngEmployeeDAOImpl userMngEmployeeDAOImpl;
+	
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
+	public String home(HttpSession session) {
+		if(session.getAttribute("com_id")==null) {
+			return "login";
+		}else {
+			return "home";
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping("loginCheck") // dto로 받으면 법인id는 int타입 직원id는 string타입이어서 오류 발생
+	public int loginCheck(String id, String com_id, String pw, HttpSession session) {
+		int result = 0;
+		UserMngEmployeeDTO userMngEmployeeDTO = new UserMngEmployeeDTO();
+		UserMngCorpDTO userMngCorpDTO = new UserMngCorpDTO();
+		if(id=="") {
+			userMngCorpDTO.setId(Integer.parseInt(com_id));
+			userMngCorpDTO.setPw(pw);
+			userMngCorpDTO = userMngCorpDAOImpl.loginCorporate(userMngCorpDTO);
+			try {
+				session.setAttribute("com_id", userMngCorpDTO.getId());
+				result = 1;
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}else {
+			userMngEmployeeDTO.setId(id);
+			userMngEmployeeDTO.setCom_id(Integer.parseInt(com_id));
+			userMngEmployeeDTO.setPw(pw);
+			userMngEmployeeDTO = userMngEmployeeDAOImpl.loginUser(userMngEmployeeDTO);
+			try {
+				session.setAttribute("com_id", userMngEmployeeDTO.getCom_id());		
+				session.setAttribute("id", userMngEmployeeDTO.getId());	
+				result = 1;
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+		return result;
+	}
+	
+	@RequestMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
 		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
-		return "home";
+		return "redirect:/";
 	}
 //	@Autowired
 //	MonthlyDao monthlyDao;
