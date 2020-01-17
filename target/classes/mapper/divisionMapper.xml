@@ -1,44 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="#package.#mapperinterfacename">
+<mapper namespace="deptMng">
 
-	<select id="getSomething" parameterType="int" resultType="#package.#modelname">
-		SELECT
-		columnname1,
-		columnname2,
-		columnname3
-		FROM tablename1
-		WHERE columnname1 = #{value}
+	<select id="selectDept" parameterType="deptMng" resultMap="rs">
+		SELECT * FROM dept WHERE com_id = #{com_id}
 	</select>
 
-	<resultMap type="#modelname" id="YourResultSet">
-		<id property="param1" column="columnname1" />
-		<result property="param2" column="columnname2" />
-		<result property="param3" column="columnname3" />
+	<select id="searchName" resultMap="rs">
+		SELECT * FROM dept where com_id=#{com_id} and name like concat('%',#{name},'%')
+	</select>
+
+	<select id="searchId" resultMap="rs">
+		SELECT * FROM dept where com_id=#{com_id} and id like concat('%',#{id},'%')
+	</select>
+
+	<resultMap type="deptMng" id="rs">
+		<result property="id" column="id" />
+		<result property="com_id" column="com_id" />
+		<result property="name" column="name" />
+		<result property="r_date" column="r_date" />
 	</resultMap>
 
-	<select id="getAll" resultMap="YourResultSet">
+	<select id="getAll" resultMap="rs">
 		SELECT * FROM tablename1
 	</select>
 
-	<insert id="insertSomething" parameterType="#modelname">
-		INSERT INTO tablename1 (columnname1, columnname2, columnname3)
-		VALUES(#{value1},#{value2},#{value3})
+	<insert id="insert" parameterType="deptMng">
+		INSERT INTO dept (id, com_id, name, r_date) VALUES(#{id},#{com_id},#{name},now())
 	</insert>
 
-	<update id="updateSomething" parameterType="#modelname">
-		UPDATE tablename1
-		SET
-		columnname1=#{param1}
-		WHERE
-		columnname2 = #{param2}
+	<update id="update" parameterType="deptMng">
+		UPDATE dept	SET	name=#{name} WHERE id = #{id} and com_id = #{com_id}
 	</update>
 
-	<delete id="deleteSomething" parameterType="int">
-		DELETE FROM tablename1 WHERE
-		columnname1 = #{param1}
+	<delete id="delete" parameterType="deptMng">
+		DELETE FROM dept WHERE id = #{id} and com_id = #{com_id}
 	</delete>
 
 </mapper>

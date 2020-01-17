@@ -2,33 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="#package.#mapperinterfacename">
+<mapper namespace="transfer">
 
-	<select id="getSomething" parameterType="int" resultType="#package.#modelname">
-		SELECT
-		columnname1,
-		columnname2,
-		columnname3
-		FROM tablename1
-		WHERE columnname1 = #{value}
+	<select id="selectpayend" parameterType="transferDTO" resultMap="rs">
+		SELECT * FROM finance_transfer_test
+		WHERE finance_id = #{finance_id}
 	</select>
 
-	<resultMap type="#modelname" id="YourResultSet">
-		<id property="param1" column="columnname1" />
-		<result property="param2" column="columnname2" />
-		<result property="param3" column="columnname3" />
+	<resultMap type="transferDTO" id="rs">
+		<result property="id" column="id" />
+		<result property="finance_id" column="finance_id" />
+		<result property="action_type" column="action_type" />
+		<result property="item" column="item" />
+		<result property="amount_usd" column="amount_usd" />
+		<result property="amount_krw" column="amount_krw" />
+		<result property="amount_hdc" column="amount_hdc" />
+		<result property="closed_date" column="closed_date" />
+		<result property="note" column="note" />
 	</resultMap>
 
-	<select id="getAll" resultMap="YourResultSet">
-		SELECT * FROM tablename1
+	<select id="selectAll" resultMap="rs">
+		SELECT * FROM finance_transfer_test
 	</select>
 
-	<insert id="insertSomething" parameterType="#modelname">
-		INSERT INTO tablename1 (columnname1, columnname2, columnname3)
-		VALUES(#{value1},#{value2},#{value3})
+	<insert id="payinsert" parameterType="transferDTO">
+		INSERT INTO finance_transfer_test (id, finance_id, closed_date)
+		VALUES(null, #{finance_id}, now())
 	</insert>
-
-	<update id="updateSomething" parameterType="#modelname">
+	
+	<insert id="insertAll" parameterType="transferDTO">
+		INSERT INTO finance_transfer_test
+		VALUES(null, #{finance_id}, #{action_type}, #{item}, null, #{amount_krw}, #{amount_hdc}, now(), #{note})
+	</insert>
+	
+	<update id="updateSomething" parameterType="transferDTO">
 		UPDATE tablename1
 		SET
 		columnname1=#{param1}
@@ -36,7 +43,7 @@
 		columnname2 = #{param2}
 	</update>
 
-	<delete id="deleteSomething" parameterType="int">
+	<delete id="deleteSomething" parameterType="transferDTO">
 		DELETE FROM tablename1 WHERE
 		columnname1 = #{param1}
 	</delete>
