@@ -28,10 +28,10 @@ public class ImportDAO {
 	public Import_employeeDTO importEmployeeSelectID(String id) {
 		try {
 			Import_employeeDTO dto = myBatis.selectOne("import.selectEmployee", id);
-			System.out.println(">>>»ç¿ëÀÚ¾ÆÀÌµð °Ë»ö ¼º°ø....");
+			System.out.println(">>>ì„±ê³µ selectEmployee ID....");
 			return dto;
 		} catch (Exception e) {
-			System.out.println(">>>»ç¿ëÀÚ¾ÆÀÌµð °Ë»ö ½ÇÆÐ....");
+			System.out.println(">>>ì‹¤íŒ¨ selectEmployee ID...");
 		}
 		return null;
 	}
@@ -56,10 +56,8 @@ public class ImportDAO {
 		
 		try {
 			Import_businessDTO dto = myBatis.selectOne("selectBusiness", b_id);
-			System.out.println(">>>ºñÁî´Ï½º DTO °¡Á®¿À±â ¼º°ø....");
 			return dto;
 		} catch (Exception e) {
-			System.out.println(">>>ºñÁî´Ï½º DTO °¡Á®¿À±â ½ÇÆÐ....");
 		}
 		
 		return null;
@@ -68,10 +66,8 @@ public class ImportDAO {
 	public Import_orderShipping importOrderShippingOne(int basic_id) {
 		try {
 			Import_orderShipping dto = myBatis.selectOne("selectOrderShipping", basic_id);
-			System.out.println(">>>¿À´õ½¬ÇÎ DTO °¡Á®¿À±â ¼º°ø....");
 			return dto;
 		} catch (Exception e) {
-			System.out.println(">>>¿À´õ½¬ÇÎ DTO °¡Á®¿À±â ½ÇÆÐ....");
 		}
 		
 		return null;
@@ -95,11 +91,9 @@ public class ImportDAO {
 		
 		try {
 			Import_customerDTO dto = myBatis.selectOne("selectCustomer", c_id);
-			System.out.println("°í°´´ã´ç¾ÆÀÌµð DTO °¡Á®¿À±â ¼º°ø...");
 			return dto;
 			
 		} catch (Exception e) {
-			System.out.println("°í°´´ã´ç¾ÆÀÌµð DTO °¡Á®¿À±â ½ÇÆÐ...");
 		}
 		return null;
 	}
@@ -113,10 +107,8 @@ public class ImportDAO {
 	public List<Import_tradeFileDTO> importTradeFileSelect(int com_id) {
 		try {
 			List<Import_tradeFileDTO> list = myBatis.selectList("selectAllTradeFile", com_id);
-			System.out.println(">>>tradeFIle select ¼º°ø....");
 			return list;
 		} catch (Exception e) {
-			System.out.println(">>>tradeFIle select ½ÇÆÐ....");
 		}
 		
 		return null;
@@ -125,10 +117,8 @@ public class ImportDAO {
 	public List<Import_productDTO> importProductSelectAllPID(int p_id) {
 		try {
 			List<Import_productDTO> list = myBatis.selectList("selectAllProductPID", p_id);
-			System.out.println(">>>Á¦Ç°»ó¼¼ select ¼º°ø....");
 			return list;
 		} catch (Exception e) {
-			System.out.println(">>>Á¦Ç°»ó¼¼ select ½ÇÆÐ....");
 		}
 		
 		return null;
@@ -138,10 +128,8 @@ public class ImportDAO {
 	public List<Import_basicTradeDTO> importBasicTradeSelect(int com_id) {
 		try {
 			List<Import_basicTradeDTO> list = myBatis.selectList("selectAllBasicTrade", com_id);
-			System.out.println(">>>basicTrade select ¼º°ø....");
 			return list;
 		} catch (Exception e) {
-			System.out.println(">>>basicTrade select ½ÇÆÐ....");
 		}
 		
 		return null;
@@ -151,10 +139,10 @@ public class ImportDAO {
 	public Import_basicTradeDTO importBasicTradeSelectPK(int id) {
 		try {
 			Import_basicTradeDTO dto = myBatis.selectOne("selectBasicTrade", id);
-			System.out.println(">>>basicTradePK select ¼º°ø....");
+			System.out.println(">>>basicTradePK select....");
 			return dto;
 		} catch (Exception e) {
-			System.out.println(">>>basicTradePK select ½ÇÆÐ....");
+			System.out.println(">>>basicTradePK select....");
 		}
 		
 		return null;
@@ -164,10 +152,8 @@ public class ImportDAO {
 	public Import_productDTO importProductSelectPID(int p_id) {
 		try {
 			Import_productDTO dto = myBatis.selectOne("selectProductPID", p_id);
-			System.out.println(">>>Á¦Ç°»ó¼¼ °³º° select ¼º°ø....");
 			return dto;
 		} catch (Exception e) {
-			System.out.println(">>>Á¦Ç°»ó¼¼ °³º° select ½ÇÆÐ....");
 		}
 		
 		return null;
@@ -178,11 +164,9 @@ public class ImportDAO {
 	public List<Import_orderDetailDTO> importOrderDetailAll(int basic_id) {
 		try {
 			List<Import_orderDetailDTO> list= myBatis.selectList("selectAllOrderDetail", basic_id);
-			System.out.println(">>>¿À´õµðÅ×ÀÏ °¡Á®¿À±â ¼º°ø...");
 			return list;
 			
 		} catch (Exception e) {
-			System.out.println(">>>¿À´õµðÅ×ÀÏ °¡Á®¿À±â ½ÇÆÐ...");
 		}
 		
 		return null;
@@ -193,37 +177,37 @@ public class ImportDAO {
 	public void importBasictradeInsert(Import_basicTradeDTO basicTradeDTO) {
 		try {
 			myBatis.insert("import.insertBasicTrade", basicTradeDTO);
-			System.out.println(">>>basicTrade insert ¼º°ø");
+			System.out.println(">>>basicTrade insert");
 		} catch (Exception e) {
-			System.out.println(">>>basicTrade insert ½ÇÆÐ....");
+			System.out.println(">>>basicTrade insert....");
 		}
 	}
 	
 	public void importProductInsert(Import_orderDetailDTO orderDetailDTO) {
-		System.out.println("»ó¼¼¿À´õ dto È®ÀÎ" + orderDetailDTO);
+		System.out.println("ï¿½ó¼¼¿ï¿½ï¿½ï¿½ dto È®ï¿½ï¿½" + orderDetailDTO);
 		try {
 			myBatis.insert("insertOrderDetail", orderDetailDTO);
-			System.out.println(">>>ProductInsert ¼º°ø.....");
+			System.out.println(">>>ProductInsert.....");
 		} catch (Exception e) {
-			System.out.println(">>>ProductInsert ½ÇÆÐ.....");
+			System.out.println(">>>ProductInsert.....");
 		}
 	}
 	
 	public void importTradeFileInsert(Import_tradeFileDTO tradeFileDTO) {
 		try {
 			myBatis.insert("insertTradeFile", tradeFileDTO);
-			System.out.println(">>>insertTradeFile insert ¼º°ø....");
+			System.out.println(">>>insertTradeFile insert....");
 		} catch (Exception e) {
-			System.out.println(">>>insertTradeFile insert ½ÇÆÐ...." + tradeFileDTO);
+			System.out.println(">>>insertTradeFile insert...." + tradeFileDTO);
 		}
 	}
 	
 	public void importOrderShippingInsert(Import_orderShipping dto) {
 		try {
 			myBatis.insert("insertOrderShipping1", dto);
-			System.out.println(">>>insertOrderShipping1 INSERT ¼º°ø");
+			System.out.println(">>>insertOrderShipping1 INSERT");
 		} catch (Exception e) {
-			System.out.println(">>>insertOrderShipping1 INSERT ½ÇÆÐ");
+			System.out.println(">>>insertOrderShipping1 INSERT");
 		}
 	}
 	

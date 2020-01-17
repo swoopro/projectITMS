@@ -19,11 +19,12 @@ public class ImportPageController {
 	@Autowired
 	ImportDAO dao;
 	
+	/* ë©”ì¸í™”ë©´ìœ¼ë¡œ ì´ë™ */
 	@RequestMapping("/importMain.do")
 	public ModelAndView importMain(ModelAndView mav) {
 		mav.setViewName("import/importprocess/importMain");
-		int temporaryCompanyID = 1; // ¼¼¼Ç ´ë½Å ÀÓ½ÃÀÇ È¸»ç¾ÆÀÌµğ ºÎ¿©
-		String temporaryUserID = "wltn"; // ¼¼¼Ç ´ë½Å ÀÓ½ÃÀÇ »ç¿ëÀÚ¾ÆÀÌµğ ºÎ¿©
+		int temporaryCompanyID = 1; 
+		String temporaryUserID = "wltn";
 
 		List<Import_tradeFileDTO> tlist = dao.importTradeFileSelect(temporaryCompanyID);
 		List<Import_basicTradeDTO> blist= dao.importBasicTradeSelect(temporaryCompanyID);
@@ -33,19 +34,19 @@ public class ImportPageController {
 		return mav;
 	}
 	
-	/* import ¹ßÁÖ µî·Ï */
+	/* import ì£¼ë¬¸ë°œì£¼ */
 	@RequestMapping("/importOrder.do")
 	public ModelAndView importOrder(ModelAndView mav) {
 		mav.setViewName("import/importprocess/importOrderAdd");
-		int temporaryCompanyID = 1; // ¼¼¼Ç ´ë½Å ÀÓ½ÃÀÇ È¸»ç¾ÆÀÌµğ ºÎ¿©
-		String temporaryUserID = "wltn"; // ¼¼¼Ç ´ë½Å ÀÓ½ÃÀÇ »ç¿ëÀÚ¾ÆÀÌµğ ºÎ¿©
+		int temporaryCompanyID = 1;
+		String temporaryUserID = "wltn";
 		
 		
-		List<Import_employeeDTO> eList = dao.importEmployeeSelectAll(temporaryCompanyID);
-		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID);
-		ArrayList<Import_businessDTO> bAList = dao.importBusinessSelectAll(temporaryCompanyID, "°Å·¡Ã³");
-		ArrayList<Import_businessDTO> bPList = dao.importBusinessSelectAll(temporaryCompanyID, "±âÅ¸¾÷Ã¼");
-		List<Import_productDTO> product = dao.importProductSelectAll(temporaryCompanyID);
+		List<Import_employeeDTO> eList = dao.importEmployeeSelectAll(temporaryCompanyID); //íšŒì‚¬ì˜ ì§ì› selectAll
+		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); //íšŒì‚¬ì˜ ì •ë³´
+		ArrayList<Import_businessDTO> bAList = dao.importBusinessSelectAll(temporaryCompanyID, "ê±°ë˜ì²˜"); //íšŒì‚¬ì˜ íŒë§¤(ê±°ë˜ì²˜) select
+		ArrayList<Import_businessDTO> bPList = dao.importBusinessSelectAll(temporaryCompanyID, "ê¸°íƒ€ì—…ì²´"); //íšŒì‚¬ì˜ í˜‘ë ¥(ê¸°íƒ€ì—…ì²´) select
+		List<Import_productDTO> product = dao.importProductSelectAll(temporaryCompanyID); //íšŒì‚¬ê°€ ë“±ë¡í•œ ì œí’ˆ selectAll
 		
 		mav.addObject("companyDTO", comDTO);
 		mav.addObject("employeeList", eList);
@@ -71,7 +72,6 @@ public class ImportPageController {
 	@RequestMapping("/importAddShipping.do")
 	public ModelAndView importAddShip(Import_orderShipping dto) {
 		ModelAndView mav = new ModelAndView();
-		System.out.println(">>>importAddShip ÄÁÆ®·Ñ·¯ ÁøÀÔ...");
 		int id = dao.importBasicTradeDESC();
 		dto.setBasic_id(id);
 		dao.importOrderShippingInsert(dto);
@@ -82,14 +82,13 @@ public class ImportPageController {
 	}
 	
 	
-	/* import ¸ŞÀÎ¿¡¼­ »ç¿ëµÇ´Â ¸Ş´ºµé : detail */
+	/* import ë©”ì¸ ê° ë©”ë‰´ : detail */
 	@RequestMapping("/importPOdetail.do")
 	public String importPOdetail(Model model, String basicID) {
 		int basic_id= Integer.parseInt(basicID);
-		System.out.println(">>>import ¸ŞÀÎ¿¡¼­ »ç¿ëµÇ´Â ¸Ş´ºµé : detail");
 		
-		int temporaryCompanyID = 1; // ¼¼¼Ç ´ë½Å ÀÓ½ÃÀÇ È¸»ç¾ÆÀÌµğ ºÎ¿©
-		String temporaryUserID = "wltn"; // ¼¼¼Ç ´ë½Å ÀÓ½ÃÀÇ »ç¿ëÀÚ¾ÆÀÌµğ ºÎ¿©
+		int temporaryCompanyID = 1; 
+		String temporaryUserID = "wltn";
 		ArrayList<Import_productDTO> proList = new ArrayList<Import_productDTO>();
 		
 		Import_basicTradeDTO basicDTO= dao.importBasicTradeSelectPK(basic_id);
@@ -100,7 +99,7 @@ public class ImportPageController {
 		Import_businessDTO bsPartnerDTO = dao.importBusinessSelectOne(shipDTO.getCb_id());
 		Import_customerDTO cusDTO = dao.importCustomerSelectOne(basicDTO.getC_id());
 		Import_customerDTO cusPartnerDTO = dao.importCustomerSelectOne(shipDTO.getDcb_id());
-		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); /* ÁÖ¼Ò,tel */
+		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); /*  */
 		
 		for (int i = 0; i < detailList.size(); i++) {
 			Import_productDTO dto = dao.importProductSelectPID(detailList.get(i).getP_id());
@@ -117,22 +116,17 @@ public class ImportPageController {
 		model.addAttribute("comDTO", comDTO);
 		model.addAttribute("detailList", detailList);
 		model.addAttribute("proList", proList);
-		/*
-		 * model.addAttribute("eList", eList); model.addAttribute("comDTO", comDTO);
-		 * model.addAttribute("", ); model.addAttribute("", );
-		 */
 		
 		return "import/importprocess/importPOdetail";
 	} 
 	
-	/* import ¸ŞÀÎ¿¡¼­ »ç¿ëµÇ´Â ¸Ş´ºµé : print */
+	/* import ë©”ì¸ ê° ë©”ë‰´ : print */
 	@RequestMapping("/importPOprint.do")
 	public String importPOprint(Model model, String basicID) {
 		int basic_id= Integer.parseInt(basicID);
-		System.out.println(">>>import ¸ŞÀÎ¿¡¼­ »ç¿ëµÇ´Â ¸Ş´ºµé : detail");
 		
-		int temporaryCompanyID = 1; // ¼¼¼Ç ´ë½Å ÀÓ½ÃÀÇ È¸»ç¾ÆÀÌµğ ºÎ¿©
-		String temporaryUserID = "wltn"; // ¼¼¼Ç ´ë½Å ÀÓ½ÃÀÇ »ç¿ëÀÚ¾ÆÀÌµğ ºÎ¿©
+		int temporaryCompanyID = 1; 
+		String temporaryUserID = "wltn"; 
 		ArrayList<Import_productDTO> proList = new ArrayList<Import_productDTO>();
 		
 		Import_basicTradeDTO basicDTO= dao.importBasicTradeSelectPK(basic_id);
@@ -143,7 +137,7 @@ public class ImportPageController {
 		Import_businessDTO bsPartnerDTO = dao.importBusinessSelectOne(shipDTO.getCb_id());
 		Import_customerDTO cusDTO = dao.importCustomerSelectOne(basicDTO.getC_id());
 		Import_customerDTO cusPartnerDTO = dao.importCustomerSelectOne(shipDTO.getDcb_id());
-		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); /* ÁÖ¼Ò,tel */
+		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); /* ï¿½Ö¼ï¿½,tel */
 		
 		for (int i = 0; i < detailList.size(); i++) {
 			Import_productDTO dto = dao.importProductSelectPID(detailList.get(i).getP_id());
@@ -164,30 +158,40 @@ public class ImportPageController {
 		return "import/importprocess/importPOprint";
 	} 
 	
-	/* import ¸ŞÀÎ¿¡¼­ »ç¿ëµÇ´Â ¸Ş´ºµé : edit */
+	/* import ë©”ì¸ ê° ë©”ë‰´ : edit */
 	@RequestMapping("/importPOedit.do")
 	public String importPOedit(Model model, String basicID) {
 		int basic_id= Integer.parseInt(basicID);
-		System.out.println(">>>import ¸ŞÀÎ¿¡¼­ »ç¿ëµÇ´Â ¸Ş´ºµé : detail");
+		System.out.println(">>>import ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ç´ï¿½ ï¿½Ş´ï¿½ï¿½ï¿½ : detail");
 		
-		int temporaryCompanyID = 1; // ¼¼¼Ç ´ë½Å ÀÓ½ÃÀÇ È¸»ç¾ÆÀÌµğ ºÎ¿©
+		int temporaryCompanyID = 1; //
 		ArrayList<Import_productDTO> proList = new ArrayList<Import_productDTO>();
 		
 		Import_basicTradeDTO basicDTO= dao.importBasicTradeSelectPK(basic_id);
 		List<Import_orderDetailDTO> detailList = dao.importOrderDetailAll(basic_id);
 		Import_orderShipping shipDTO = dao.importOrderShippingOne(basic_id);
-		Import_employeeDTO emDTO = dao.importEmployeeSelectID(basicDTO.getUser_id());
+		Import_employeeDTO emDTO = dao.importEmployeeSelectID(basicDTO.getUser_id()); //eList2 ì—ì„œ ê³ ê°ë‹´ë‹¹ì•„ì´ë”” c_idë¡œ í•˜ëŠ”ê²Œ íš¨ìœ¨ì ì¼ê±° ê°™ìŒ
 		Import_businessDTO bsDTO = dao.importBusinessSelectOne(basicDTO.getB_id());
-		Import_businessDTO bsPartnerDTO = dao.importBusinessSelectOne(shipDTO.getCb_id());
+		Import_businessDTO bsPartnerDTO = dao.importBusinessSelectOne(shipDTO.getCb_id()); //bPList2ì—ì„œ shipì˜ cb_idë¡œ í•˜ëŠ”ê²Œ íš¨ìœ¨ì ì¼ê±° ê°™ìŒ
 		Import_customerDTO cusDTO = dao.importCustomerSelectOne(basicDTO.getC_id());
 		Import_customerDTO cusPartnerDTO = dao.importCustomerSelectOne(shipDTO.getDcb_id());
-		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); /* ÁÖ¼Ò,tel */
+		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); /* ï¿½Ö¼ï¿½,tel */
+		
+		List<Import_employeeDTO> eList2 = dao.importEmployeeSelectAll(temporaryCompanyID); //íšŒì‚¬ì˜ ì§ì› selectAll
+		ArrayList<Import_businessDTO> bAList2 = dao.importBusinessSelectAll(temporaryCompanyID, "ê±°ë˜ì²˜"); //íšŒì‚¬ì˜ íŒë§¤(ê±°ë˜ì²˜) select
+		ArrayList<Import_businessDTO> bPList2 = dao.importBusinessSelectAll(temporaryCompanyID, "ê¸°íƒ€ì—…ì²´"); //íšŒì‚¬ì˜ í˜‘ë ¥(ê¸°íƒ€ì—…ì²´) select
+		List<Import_productDTO> product2 = dao.importProductSelectAll(temporaryCompanyID); //íšŒì‚¬ê°€ ë“±ë¡í•œ ì œí’ˆ selectAll
+
 		
 		for (int i = 0; i < detailList.size(); i++) {
 			Import_productDTO dto = dao.importProductSelectPID(detailList.get(i).getP_id());
 			proList.add(dto);
 		}
 		
+		model.addAttribute("eList2", eList2);
+		model.addAttribute("bAList2", bAList2);
+		model.addAttribute("bPList", bPList2);
+		model.addAttribute("product2", product2);
 		model.addAttribute("basicDTO", basicDTO);
 		model.addAttribute("shipDTO", shipDTO);
 		model.addAttribute("emDTO", emDTO);
@@ -199,7 +203,7 @@ public class ImportPageController {
 		model.addAttribute("detailList", detailList);
 		model.addAttribute("proList", proList);
 		
-		return "import/importprocess/importPOprint";
+		return "import/importprocess/importPOedit";
 	} 
 
 
@@ -216,12 +220,11 @@ public class ImportPageController {
 		dao.importTradeFileInsert(tfDTO);
 		System.out.println(">>>Import_basicTradeDTO" + dto);
 		
-		return "¾È³ç??";
+		return "retunValue";
 	}
 	
 	@RequestMapping("/importProductInsert.do")
 	public ModelAndView importProductInsert(Import_orderDetailDTO dto) {
-		System.out.println("ÄÁÆ®·Ñ·¯±îÁö ¿Ô¾î¿ä...");
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("import/importprocess/importMain");
 		dto.setBasic_id(this.basic_trade);

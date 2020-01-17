@@ -34,8 +34,7 @@ page[size="A4"] {
 }
 </style>
 <script type="text/javascript">
-	window.print()
-
+	window.print();
 </script>
     
 </head>

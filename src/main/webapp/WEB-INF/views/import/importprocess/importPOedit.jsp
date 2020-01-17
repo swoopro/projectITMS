@@ -11,7 +11,24 @@
 <title>ITMS</title>
 
 <script type="text/javascript">
-	
+	$(function() {
+		$('#dropEmployee').change(function() {//구매자 (자사)의 담당자 드롭박스 값 변경시
+			console.log("dropEmployee chane...");
+			var employeeName = $('#dropEmployee').val();
+
+			<c:forEach var="employeeList" items="${eList2}" varStatus="status">
+
+			if (employeeName == "${employeeList.name}") {
+				var employeeTel = "<c:out value="${employeeList.tel}" />";
+				var employeeID = "<c:out value="${employeeList.id}" />";
+				$("#employeeTel").text(employeeTel);
+
+			}//if end
+
+			</c:forEach>
+		});
+
+	}); //func end
 </script>
 
 </head>
@@ -80,10 +97,21 @@
 										<div class="default text"></div>
 										<div class="menu" id="customerSelect"></div>
 									</div>
- --> <select class="ui search dropdown" id="dropEmployee">
-										<option value="">${emDTO.name}</option>
-								</select>
-								</td>
+ -->
+								<td><select class="ui search dropdown" id="dropEmployee">
+										<c:forEach var="employeeList" items="${eList2}"
+											varStatus="status">
+
+											<option value="${employeeList.id}">
+												<c:out value="${employeeList.name}" />
+											</option>
+
+										</c:forEach>
+
+
+								</select></td>
+
+
 							</tr>
 							<tr>
 								<td>담당자 연락처</td>
@@ -137,16 +165,18 @@
 							<tr>
 								<td>담당자</td>
 								<td>
-									<!-- 									<div class="ui selection dropdown" id="dropCustomer">
-										<input type="hidden" name="customer"> <i
-											class="dropdown icon"></i>
-										<div class="default text"></div>
-										<div class="menu" id="customerSelect"></div>
-									</div>
- --> <select class="ui search dropdown" id="dropCustomer">
-										<option value="">${cusDTO.name}</option>
-								</select>
-								</td>
+									<%-- <select class="ui search dropdown" id="dropCustomer">
+										<c:forEach var="employeeList" items="${eList2}"
+											varStatus="status">
+
+											<option value="${employeeList.id}">
+												<c:out value="${employeeList.name}" />
+											</option>
+
+										</c:forEach>
+
+
+								</select> --%></td>
 							</tr>
 							<tr>
 								<td>담당자 연락처</td>
@@ -167,7 +197,7 @@
 
 										<c:forEach var="businessPList" items="${businessPList}"
 											varStatus="status">
-<%-- 											<option value="${businessPList.id}">${businessPList.name}</option>
+											<%-- 											<option value="${businessPList.id}">${businessPList.name}</option>
  --%>
 										</c:forEach>
 								</select></td>
@@ -215,6 +245,18 @@
 						</tr>
 					</thead>
 					<tbody>
+						<c:forEach items="${detailList}" var="detailList"
+							varStatus="status">
+							<tr>
+								<td>${proList[status.index].code}</td>
+								<td>${proList[status.index].name}</td>
+								<td>${proList[status.index].spec}</td>
+								<td>${proList[status.index].price}</td>
+								<td>${detailList.qty }</td>
+								<td><span id="result${status.index}">${proList[status.index].price * detailList.qty}</span></td>
+							</tr>
+						</c:forEach>
+
 						<tr>
 							<td><select class="ui search dropdown testDrop"
 								id="dropProduct0">

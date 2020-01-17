@@ -234,6 +234,7 @@
 				});
 				$('#btn-del-row').click(function() { //제품 열 삭제
 					$('#goodsTable > tbody:last > tr:last').remove();
+					count = count - 1;
 				}); //btn-del end
  				
 				$("#importInsertBtn").click(function () { //수입신규등록 버튼 누를 시

@@ -34,9 +34,6 @@ page[size="A4"] {
 }
 </style>
 <script type="text/javascript">
-$(function() {
-
-}); //func end
 
 </script>
     
@@ -50,8 +47,6 @@ $(function() {
 
 
 
-		<div id="nav_html"></div>
-		<!--상단,좌측메뉴-->
 
 		<h2 class="ui header">수입상세</h2>
 		<div class="ui form segment">
