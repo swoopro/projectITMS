@@ -1,11 +1,6 @@
 package com.mega.ITMS.operationMng.customer;
 
 import java.util.List;
-
-import javax.security.auth.message.callback.PrivateKeyCallback.Request;
-import javax.servlet.http.HttpSession;
-
-import org.apache.ibatis.executor.ReuseExecutor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

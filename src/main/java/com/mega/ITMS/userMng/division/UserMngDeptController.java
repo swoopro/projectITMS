@@ -36,16 +36,13 @@ public class UserMngDeptController {
 		List<UserMngDeptDTO> list = null;
 		userMngDeptDTO.setCom_id((Integer) session.getAttribute("com_id"));
 		try {
-			switch (key) {
-			case "name":
+			if ("name".equals(key)) {
 				userMngDeptDTO.setName(value);
 				list = userMngDeptDAOImpl.getDepartmentAsName(userMngDeptDTO);
-				break;
-			case "id":
+			} else if ("id".equals(key)) {
 				userMngDeptDTO.setId(value);
 				list = userMngDeptDAOImpl.getDepartmentAsId(userMngDeptDTO);
-				break;
-			default:
+			} else {
 				list = userMngDeptDAOImpl.getDepartment(userMngDeptDTO);
 			}
 		} catch (Exception e) {

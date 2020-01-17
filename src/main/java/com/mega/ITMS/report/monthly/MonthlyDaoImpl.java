@@ -6,11 +6,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public class MonthlyDaoImpl implements MonthlyDao{
+public class MonthlyDaoImpl implements MonthlyDao {
     @Autowired
     SqlSessionTemplate mybatis;
     @Override
     public List<MonthlyDto> list() {
         return mybatis.selectList("monthly.list_finance_transfer");
     }
+
 }

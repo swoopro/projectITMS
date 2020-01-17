@@ -17,7 +17,6 @@
         <property name="dataSource" ref="dbcp"/>
         <!-- set메서드라 순서바껴도댐	 -->
     </bean>
-
     <!-- dbcp담당 객체 -->
     <bean id="dbcp" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${jdbc.driver}"/>
