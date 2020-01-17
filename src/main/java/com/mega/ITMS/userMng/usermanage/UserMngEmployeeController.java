@@ -34,8 +34,8 @@ public class UserMngEmployeeController {
 	@RequestMapping("addUser")
 	public void addUser(String csv, UserMngEmployeeDTO userMngEmployeeDTO) {
 		String[] line = csv.split("\n");
-		for(int i=0; i<line.length; i++) {
-			String[] comma = line[i].split(",");
+		for (String s : line) {
+			String[] comma = s.split(",");
 			userMngEmployeeDTO = new UserMngEmployeeDTO();
 			userMngEmployeeDTO.setId(comma[0]);
 			userMngEmployeeDTO.setCom_id(Integer.parseInt(comma[1]));
@@ -72,25 +72,20 @@ public class UserMngEmployeeController {
 		userMngEmployeeDTO.setCom_id((Integer) session.getAttribute("com_id"));
 		UserMngDeptDTO userMngDeptDTO = new UserMngDeptDTO();
 		try {
-			switch (key) {
-			case "name":
+			if ("name".equals(key)) {
 				userMngEmployeeDTO.setName(value);
 				list = userMngEmployeeDAOImpl.getUserAsName(userMngEmployeeDTO);
-				break;
-			case "id":
+			} else if ("id".equals(key)) {
 				userMngEmployeeDTO.setId(value);
 				list = userMngEmployeeDAOImpl.getUserAsId(userMngEmployeeDTO);
-				break;
-			case "dept_id":
+			} else if ("dept_id".equals(key)) {
 				userMngEmployeeDTO.setDept_id(value);
 				list = userMngEmployeeDAOImpl.getUserAsDept_id(userMngEmployeeDTO);
-				break;
-			case "dept_name":
+			} else if ("dept_name".equals(key)) {
 				userMngDeptDTO.setCom_id((Integer) session.getAttribute("com_id"));
 				userMngDeptDTO.setName(value);
 				list = userMngEmployeeDAOImpl.getUserAsDept_name(userMngDeptDTO);
-				break;
-			default:
+			} else {
 				list = userMngEmployeeDAOImpl.getUserAll(userMngEmployeeDTO);
 			}
 		} catch (Exception e) {
@@ -231,25 +226,20 @@ public class UserMngEmployeeController {
         List<UserMngEmployeeDTO> dataList = null;
         
         try {
-			switch (key) {
-			case "name":
+			if ("name".equals(key)) {
 				userMngEmployeeDTO.setName(value);
 				dataList = userMngEmployeeDAOImpl.getUserAsName(userMngEmployeeDTO);
-				break;
-			case "id":
+			} else if ("id".equals(key)) {
 				userMngEmployeeDTO.setId(value);
 				dataList = userMngEmployeeDAOImpl.getUserAsId(userMngEmployeeDTO);
-				break;
-			case "dept_id":
+			} else if ("dept_id".equals(key)) {
 				userMngEmployeeDTO.setDept_id(value);
 				dataList = userMngEmployeeDAOImpl.getUserAsDept_id(userMngEmployeeDTO);
-				break;
-			case "dept_name":
+			} else if ("dept_name".equals(key)) {
 				userMngDeptDTO.setCom_id((Integer) session.getAttribute("com_id"));
 				userMngDeptDTO.setName(value);
 				dataList = userMngEmployeeDAOImpl.getUserAsDept_name(userMngDeptDTO);
-				break;
-			default:
+			} else {
 				dataList = userMngEmployeeDAOImpl.getUserAll(userMngEmployeeDTO);
 			}
 		} catch (Exception e) {

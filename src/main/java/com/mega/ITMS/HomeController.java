@@ -73,5 +73,17 @@ public class HomeController {
 		
 		return "redirect:/";
 	}
-	
+//	@Autowired
+//	MonthlyDao monthlyDao;
+//
+//	@RequestMapping(value = "/pdf", method = RequestMethod.GET)
+//	public String pdf(Model model) throws Exception {
+//		List<SumMonthlyDto> list=monthlyDao.list();
+//
+//		//뷰에게 전달할 데이터 저장
+//		model.addAttribute("list", list);
+//
+//		//출력할 뷰 이름 리턴
+//		return "pdf";
+//	}
 }

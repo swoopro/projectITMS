@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.mega.ITMS.userMng.division.UserMngDeptDTO;
 
 @RequestMapping("user/account")
 @Controller
@@ -35,20 +34,16 @@ public class UserMngAccountController {
 		List<UserMngAccountDTO> list = null;
 		userMngAccountDTO.setCom_id((Integer) session.getAttribute("com_id"));
 		try {
-			switch (key) {
-			case "name":
+			if ("name".equals(key)) {
 				userMngAccountDTO.setName(value);
 				list = userMngAccountDAOImpl.getAccountAsName(userMngAccountDTO);
-				break;
-			case "bank":
+			} else if ("bank".equals(key)) {
 				userMngAccountDTO.setBank(value);
 				list = userMngAccountDAOImpl.getAccountAsBank(userMngAccountDTO);
-				break;
-			case "acc":
+			} else if ("acc".equals(key)) {
 				userMngAccountDTO.setAcc(value);
 				list = userMngAccountDAOImpl.getAccountAsAcc(userMngAccountDTO);
-				break;
-			default:
+			} else {
 				list = userMngAccountDAOImpl.getAccount(userMngAccountDTO);
 			}
 		} catch (Exception e) {
