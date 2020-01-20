@@ -10,6 +10,111 @@
     
 <script>
 	$(function () {		
+		var count = 0;
+		var balance = 0;
+		
+		 <c:forEach items="${list}" var="dto">
+		 	<c:choose>
+		 	<c:when test="${dto.action_type eq 1}">
+		 		balance = balance + ${dto.amount_krw};
+		 	</c:when>
+			<c:when test="${dto.action_type eq 2}">
+		 		balance = balance - ${dto.amount_krw+dto.amount_hdc};
+		 	</c:when>
+		 	</c:choose>
+		 </c:forEach>
+		 
+		 $("#balance").text("현재잔액 : " + balance+ "원" );
+		
+		$("#insertBtn").click(function() {
+			for (var i = 0; i < count+1; i++) {
+					$.ajax({
+						url:"${pageContext.request.contextPath}/financialMng/transfer/insertAll",
+						async:false,
+						type: "POST",
+						data:{
+							finance_id : $("#finance_id"+i).val(),
+							action_type : $("#action_type"+i).val(),
+							item : $("#item"+i).val(),
+							amount_krw : $("#amount_krw"+i).val(),
+							amount_hdc : $("#amount_hdc"+i).val(),
+							note : $("#note"+i).val()
+						},
+						success:function(){
+							console.log("ajax success!!!");
+							location.reload();
+				}
+							
+							
+					}); //ajax end
+			} //for end
+			
+							alert("입출금내역이 등록되었습니다.");
+			
+ 		});//insertBtn end
+ 		
+// 		$(".rq").change(function() {
+//  			var dropID = $(this).attr("id");
+// 			console.log("콘솔");
+// 			var krw = $("#"+dropID+"option:selected").data("value").amount_krw;
+// 			var num = $("#"+dropID+"option:selected").data("value").num;
+// 			$("#note"+num).text(krw);
+			
+// 		});//rq end
+		
+		
+		$('#btn-add-row').click(function () {
+			count = count + 1;
+			
+			
+		    var time = new Date().toLocaleTimeString();
+		    
+		    $('#statement> tbody:last').append(' <tr>\n' +
+		        '                <td><select class="ui search dropdown rq" id="finance_id'+count+'">\n'+
+		        '						<option value="">재무고유번호</option>\n'+
+									        <c:forEach items="${request_list}" var="request_dto">
+						        		<c:choose>
+							        			<c:when test="${request_dto.receive_date ne null}">
+				'				                	<option value="${request_dto.id}" data-value="{\'amount_krw\':\'${request_dto.amount_krw }\',\'note\':\'${request_dto.note }\'}">${request_dto.id}</option>\n'+
+							        			</c:when>
+							        		</c:choose>
+							        	</c:forEach>
+		        '					 </select></td>\n' +
+		        '                <td><select class="ui search dropdown" id="action_type'+count+'">\n'+
+	    		'						<option value="">입금/출금</option>\n'+
+	    		'						<option value="1">입금</option>\n'+
+	    		'						<option value="2">출금</option>\n'+
+	    		'					</select></td>\n' +
+		        '                <td><select class="ui search dropdown" id="item'+count+'">\n'+
+		        '       				<option value="">적요</option>\n'+
+		        '        				<option value="1">수입물품대금</option>\n'+
+		        '        				<option value="2">관세</option>\n'+
+		        '        				<option value="3">물류비</option>	\n'+
+		        '        				<option value="4">관리물류비</option>\n'+
+		        '        				<option value="5">기타</option>\n'+
+		        '       		</select></td>\n' +
+		        '                <td><div class="input"><input id="amount_krw'+count+'" placeholder="금액" type="text"></div></td>\n' +
+		        '                <td><div class="input"><input id="amount_hdc'+count+'" placeholder="수수료" type="text"></div></td>\n' +
+		        '                <td><div class="input"><input id="note'+count+'" placeholder="비고" type="text"></div></td>\n' +
+		        '            </tr>');
+		});
+		$('#btn-del-row').click(function () {
+			count = count - 1;
+		    $('#statement > tbody:last > tr:last').remove();
+		});
+
+	    $("#open_menu").click(function () {
+	        $('.ui.sidebar').sidebar('setting','transition','overlay').sidebar('toggle');
+	    });
+	    $('.ui.dropdown').dropdown({
+	        direction:'auto',
+	        duration:100,
+	        onChange:function(value, text, $choice){
+
+	        }
+	    });
+		
+		
 		$("#update").click(function () {
 			var url = "${pageContext.request.contextPath}/financialMng/transfer/transfer_update";
 			var name = "update";
@@ -35,31 +140,55 @@
         <table class="ui celled table">
             <thead>
             <tr>
-                <th>전표번호</th>
-                <th>날짜</th>
-                <th>입금/출금</th>
-                <th>내용</th>
-                <th>금액(USD or KRW)</th>
-                <th>잔액</th>
-                <th>비고</th>
+            		<th>전표번호</th>
+	                <th>재무고유번호</th>
+	                <th>입금/출금</th>
+	                <th>적요</th>
+	                <th>금액</th>
+	                <th>수수료</th>
+	                <th>실 입(출)금액</th>
+	                <th>날짜</th>
+	                <th>비고</th>
             </tr></thead>
-            <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-				<td>
-                    <button class="ui button" id="update">수정</button>
-                    <button class="ui button" id="delete">삭제</button>
-                </td>
+            <tbody id="tbody1">
+     			 <c:forEach items="${list}" var="dto">
+     			 	<tr>
+            		<td>${dto.id}</td>
+	                <td>${dto.finance_id}</td>
+	                <td>
+	                <c:choose>
+	                	<c:when test="${dto.action_type eq 1}">입금</c:when>
+	                	<c:when test="${dto.action_type eq 2}">출금</c:when>
+	                </c:choose>
+	                </td>
+	                <td>
+	                <c:choose>
+	                	<c:when test="${dto.item eq 1}">수입물품대금</c:when>
+	                	<c:when test="${dto.item eq 2}">관세</c:when>
+	                	<c:when test="${dto.item eq 3}">물류비</c:when>
+	                	<c:when test="${dto.item eq 4}">관리물류비</c:when>
+	                	<c:when test="${dto.item eq 5}">기타</c:when>
+	                </c:choose>
+	                </td>
+	                <td>${dto.amount_krw}</td>
+	                <td>${dto.amount_hdc}</td>
+	                <c:choose>
+	                	<c:when test="${dto.amount_hdc ne null}">
+	                	<td>${dto.amount_krw+dto.amount_hdc}</td>
+	                	</c:when>
+	                </c:choose>
+	                
+	                <td>${dto.closed_date}</td>
+	                <td>${dto.note}</td>
+	                <td>
+			        	<button class="ui button transferupdate" id="update">수정</button>
+			        	<button class="ui button transferdelete" id="delete">삭제</button>
+			        </td>
             </tr>
+     			 </c:forEach>
             </tbody>
         </table>
-
+            <h4 align="center" id="balance"></h4>
     </div>
 </div>
 
@@ -70,78 +199,61 @@
     <div class="field">
         <table class="ui celled table" id="statement">
             <thead>
-            <tr>
-                <th>전표번호</th>
-                <th >날짜</th>
-                <th>입금/출금</th>
-                <th >적요</th>
-                <th >금액(USD or KRW)</th>
-                <th >비고</th>
-            </tr>
+	            <tr>
+	                <th>재무고유번호</th>
+	                <th>입금/출금</th>
+	                <th>적요</th>
+	                <th>금액</th>
+	                <th>수수료</th>
+	                <th>비고</th>
+	            </tr>
             </thead>
             <tbody>
-            <tr>
-                <td ><div class="ui icon input"><input placeholder="전표번호" type="text"></div></td>
-                <td ><div class="ui icon input"><input placeholder="날짜" type="text"></div></td>
-                <td ><div class="ui icon input"><input placeholder="입금/출금" type="text"></div></td>
-                <td><div class="ui icon input"><input placeholder="적요" type="text"></div></td>
-                <td><div class="ui icon input"><input placeholder="금액" type="text"></div></td>
-                <td><div class="ui icon input"><input placeholder="비고" type="text"></div></td>
-            </tr>
+	            <tr>
+	                <td><select id="finance_id0" class="ui search dropdown rq">
+	                	<option value="">재무고유번호</option>
+	                	<c:forEach items="${request_list}" var="request_dto" varStatus="status">
+	                		<c:choose>
+	                			<c:when test="${request_dto.receive_date ne null}">
+				                	<option value="${request_dto.id}" data-value="{'num':'${status.index }','amount_krw':'${request_dto.amount_krw }','note':'${request_dto.note }'}">${request_dto.id}</option>
+	                				
+	                			</c:when>
+	                		</c:choose>
+	                	</c:forEach>
+	                	</select></td>
+	                <td><select class="ui search dropdown" id="action_type0">
+	                		<option value="">입금/출금</option>
+	                		<option value="1">입금</option>
+	                		<option value="2">출금</option>
+	                </select></td>
+	                <td><select class="ui search dropdown" id="item0">
+	                		<option value="">적요</option>
+	                		<option value="1">수입물품대금</option>
+	                		<option value="2">관세</option>
+	                		<option value="3">물류비</option>	
+	                		<option value="4">관리물류비</option>
+	                		<option value="5">기타</option>
+	                </select></td>
+	                <td><div class="input"><input id="amount_krw0" placeholder="금액" type="text"></div></td>
+					<td><div class="input"><input id="amount_hdc0" placeholder="수수료" type="text"></div></td>
+	                <td><div class="input"><input id="note0" placeholder="비고" type="text"></div></td>
+	            </tr>
         <div class="ui left floated icon buttons">
             <button class="ui button" id="btn-add-row"><i class="plus icon"></i></button>
             <button class="ui button" id="btn-del-row"><i class="minus icon"></i></button>
         </div>
             </tbody>
-        <tfoot>
+        </table>
 </div>
 
-        <div class="field">
             <table class="ui definition table">
-                <tbody>
-                <tr>
-                    <td colspan="4">합계</td>
-                    <td colspan="1">현재잔액(KRW): 수식(한화)</td>
-                    <td colspan="1">현재잔액(USD): 수식(달러)</td>
-                </tr>
-                </tbody>
-        </div>
      
-        <div class="ui right floated small primary labeled icon button">
+        <div class="ui right floated small primary labeled icon button" id="insertBtn">
             <i class="pencil alternate icon"></i>입출금내역등록
         </div>
-        </tfoot>
         </table>
     </div>
 </div>
 
-
-<script>
-	$('#btn-add-row').click(function () {
-	    var time = new Date().toLocaleTimeString();
-	    $('#statement> tbody:last').append(' <tr>\n' +
-	        '                <td><div class="ui icon input"><input placeholder="전표번호" type="text"></div></td>\n' +
-	        '                <td><div class="ui icon input"><input placeholder="날짜" type="text"></div></td>\n' +
-	        '                <td><div class="ui icon input"><input placeholder="입금/출금" type="text"></div></td>\n' +
-	        '                <td><div class="ui icon input"><input placeholder="내용" type="text"></div></td>\n' +
-	        '                <td><div class="ui icon input"><input placeholder="금액" type="text"></div></td>\n' +
-	        '                <td><div class="ui icon input"><input placeholder="비고" type="text"></div></td>\n' +
-	        '            </tr>');
-	});
-	$('#btn-del-row').click(function () {
-	    $('#statement > tbody:last > tr:last').remove();
-	});
-
-    $("#open_menu").click(function () {
-        $('.ui.sidebar').sidebar('setting','transition','overlay').sidebar('toggle');
-    });
-    $('.ui.dropdown').dropdown({
-        direction:'auto',
-        duration:100,
-        onChange:function(value, text, $choice){
-
-        }
-    });
-</script>
 </body>
 </html>

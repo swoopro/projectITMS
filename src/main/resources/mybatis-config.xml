@@ -41,5 +41,6 @@
 		<mapper resource="mapper/myReportMapper.xml" />
 		<mapper resource="mapper/tradeRecordMapper.xml" />
 		<mapper resource="mapper/requestMapper.xml" />
+		<mapper resource="mapper/transferMapper.xml" />
 	</mappers>
 </configuration>
