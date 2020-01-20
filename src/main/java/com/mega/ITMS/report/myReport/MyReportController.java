@@ -32,17 +32,35 @@ public class MyReportController {
         return mav;
     }
 
-    @RequestMapping(value = "submitMyReport.do", method = RequestMethod.POST)
+    @RequestMapping(value = "submitMyReport.do")
     public String insert(@ModelAttribute MyReportDto dto) throws Exception {
-        System.out.println("came.");
         myReportDao.insertReport(dto);
         return "redirect:myReportList.do";
     }
 
-    @RequestMapping(value = "detail/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "detail/{id}")
     public ModelAndView myReportDetail(@PathVariable("id") int id, ModelAndView mav){
         mav.setViewName("report/myReport/myReportDetail");
         mav.addObject("dto", myReportDao.myReportDetail(id));
         return mav;
+    }
+
+    @RequestMapping(value = "edit/{id}")
+    public ModelAndView myReportEdit(@PathVariable("id") int id, ModelAndView mav){
+        mav.setViewName("report/myReport/myReportEdit");
+        mav.addObject("dto", myReportDao.myReportDetail(id));
+        return mav;
+    }
+
+    @RequestMapping(value = "del/{id}")
+    public String myReportDel(@PathVariable int id) {
+        myReportDao.myReportDel(id);
+        return "redirect:../myReportList.do";
+    }
+
+    @RequestMapping(value = "update/{id}", method = RequestMethod.POST)
+    public String updateMyReport(@ModelAttribute MyReportDto dto) {
+        myReportDao.updateMyReport(dto);
+        return "redirect:../myReportList.do";
     }
 }
