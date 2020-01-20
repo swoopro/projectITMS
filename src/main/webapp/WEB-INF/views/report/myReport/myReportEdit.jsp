@@ -11,17 +11,17 @@
 </head>
 <body>
 <div class="content_body">
-    <form name="submitMyReport" method="post" action="${pageContext.request.contextPath}/report/myReport/submitMyReport.do">
+    <form name="update" method="post" action="${pageContext.request.contextPath}/report/myReport/update/${dto.id}">
         <table class="ui celled table">
             <thead>
             <tr>
-                <th colspan="16"><h3 class="ui centered header">신규보고작성</h3></th>
+                <th colspan="16"><h3 class="ui centered header">나의보고서</h3></th>
             </tr>
             <tr>
                 <th colspan="6"><h4 class="ui centered header">제목</h4></th>
                 <th colspan="10">
                     <div class="ui fluid input">
-                        <input placeholder="보고서 제목을 입력하세요." type="text" name="title">
+                        <input placeholder=${dto.title} type="text" name="title">
                     </div>
                 </th>
             </tr>
@@ -31,7 +31,8 @@
                 <th colspan="16">
                     <div class="ui form">
                         <div class="field">
-                            <textarea class="form-control" id="p_content" name="content"></textarea>
+                            <textarea class="form-control" id="p_content" name="content"
+                            placeholder="${dto.content}"></textarea>
                             <script type="text/javascript">
                                 CKEDITOR.replace('p_content'
                                     , {
@@ -44,8 +45,8 @@
             </tr>
             </tbody>
         </table>
-        <div class="ui right floated buttons">
-            <button class="ui button"><i class="edit icon"></i>등록</button>
+        <div class="ui buttons">
+            <button class="ui button"><i class="edit icon"></i>수정등록</button>
         </div>
     </form>
 </div>

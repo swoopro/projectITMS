@@ -44,8 +44,8 @@
             </tr>
             </tbody>
         </table>
-        <div class="ui right floated primary labeled icon button">
-            <i class="edit icon"></i><input type="submit" value="등록">
+        <div class="ui right floated buttons">
+            <button class="ui button"><i class="edit icon"></i>등록</button>
         </div>
     </form>
 </div>
