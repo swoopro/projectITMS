@@ -18,12 +18,7 @@ public class RequestDAO {
 	}
 	
 	public void update(RequestDTO requestDTO) {
-		try {
 			myBatis.update("request.pay_check", requestDTO);
-			System.out.println(">>>������Ʈ ����...");
-		} catch (Exception e) {
-			System.out.println(">>>������Ʈ ����...");
-		}
 	}
 
 }

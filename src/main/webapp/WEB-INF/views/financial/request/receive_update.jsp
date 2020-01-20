@@ -5,8 +5,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <%@include file="/WEB-INF/views/include_nav.jsp"%>
-    <link href="<c:url value="/resources/style.css" />" rel="stylesheet">
+	<link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/resources/include/Semantic-Master/semantic.css">
+    <script src="${pageContext.request.contextPath}/resources/include/jquery-3.3.1.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/include/Semantic-Master/semantic.js"></script>
     <title>ITMS</title>
     
     <script>

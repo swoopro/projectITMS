@@ -2,11 +2,16 @@ package com.mega.ITMS.financialMng.request;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.mega.ITMS.financialMng.transfer.TransferDAO;
+import com.mega.ITMS.financialMng.transfer.TransferDTO;
 
 @RequestMapping("/financialMng/request")
 
@@ -16,11 +21,14 @@ public class RequestController {
 	@Autowired
 	RequestDAO dao;
 	
+	@Autowired
+	TransferDAO transferdao;
+	
 	@RequestMapping("/page1.do")
 	private ModelAndView pay(ModelAndView mav){
-		//List<RequestDTO> list = dao.selectAll();
+		List<RequestDTO> list = dao.selectAll();
 		mav.setViewName("financial/request/pay_request");
-		//mav.addObject("list",list);
+		mav.addObject("list",list);
 		return mav;
 		
 	}
@@ -76,16 +84,22 @@ public class RequestController {
 		return mav;
 	}
 	
-	@RequestMapping("pay_check")
 	@ResponseBody
-	public void pay_check(RequestDTO requestDTO){
-		try {
-			System.out.println("���������@@@@@@@@@" + requestDTO.getId());
-			
-		} catch (Exception e) {
-			System.out.println("DTO ����");
-		}
+	@RequestMapping("pay_check")
+	public List<RequestDTO> pay_check(RequestDTO requestDTO, HttpSession session){
+		session.setAttribute("id", "temporaryID");
+		requestDTO.setResponse_id((String)session.getAttribute("id"));
 		dao.update(requestDTO);
+		List<RequestDTO> list = dao.selectAll();
+		System.out.println(list.get(0).getReceive_date() + "----------------");
+		return list;
 	}
-
+	
+	@ResponseBody
+	@RequestMapping("payend")
+	public TransferDTO payend(TransferDTO transferDTO){
+		transferdao.insert(transferDTO);
+		transferDTO = transferdao.selectpayend(transferDTO);
+		return transferDTO;
+	}
 }
