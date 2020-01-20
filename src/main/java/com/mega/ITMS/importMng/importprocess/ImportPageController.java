@@ -1,6 +1,7 @@
 package com.mega.ITMS.importMng.importprocess;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +23,24 @@ public class ImportPageController {
 	/* 메인화면으로 이동 */
 	@RequestMapping("/importMain.do")
 	public ModelAndView importMain(ModelAndView mav) {
+		System.out.println("컨트롤러 메인 진입했어요!");
 		mav.setViewName("import/importprocess/importMain");
 		int temporaryCompanyID = 1; 
 		String temporaryUserID = "wltn";
 
-		List<Import_tradeFileDTO> tlist = dao.importTradeFileSelect(temporaryCompanyID);
-		List<Import_basicTradeDTO> blist= dao.importBasicTradeSelect(temporaryCompanyID);
-		mav.addObject("tradeFileList", tlist);
-		mav.addObject("basicTradeList", blist);
+		List<Import_tradeFileDTO> tlist = dao.importTradeFileSelectJBS(temporaryCompanyID);
+//		List<Import_stepDTO> stepList = dao.importTradeFileCASEselect(temporaryCompanyID);
+		
+		/*
+		 * HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+		 * ArrayList<HashMap<Integer, Integer>> mlist = new ArrayList<HashMap<Integer,
+		 * Integer>>(); for (int i = 0; i < tlist.size(); i++) { //
+		 * System.out.println(tlist.get(i).getBasic_id()+", "
+		 * +tlist.get(i).getType_file()); map.put(tlist.get(i).getBasic_id(),
+		 * tlist.get(i).getType_file()); mlist.add(map); } System.out.println("맵 리스트: "
+		 * +mlist);
+		 */		
+		mav.addObject("tlist", tlist);
 		
 		return mav;
 	}
@@ -177,9 +188,11 @@ public class ImportPageController {
 		Import_customerDTO cusPartnerDTO = dao.importCustomerSelectOne(shipDTO.getDcb_id());
 		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); /* �ּ�,tel */
 		
+		List<Import_customerDTO> cList = dao.importCustomerSelectAll(cusDTO); //JOIN basic_tradeimportAJaxCustomer 
+		
 		List<Import_employeeDTO> eList2 = dao.importEmployeeSelectAll(temporaryCompanyID); //회사의 직원 selectAll
 		ArrayList<Import_businessDTO> bAList2 = dao.importBusinessSelectAll(temporaryCompanyID, "거래처"); //회사의 판매(거래처) select
-		ArrayList<Import_businessDTO> bPList2 = dao.importBusinessSelectAll(temporaryCompanyID, "기타업체"); //회사의 협력(기타업체) select
+//		ArrayList<Import_businessDTO> bPList2 = dao.importBusinessSelectAll(temporaryCompanyID, "기타업체"); //회사의 협력(기타업체) select
 		List<Import_productDTO> product2 = dao.importProductSelectAll(temporaryCompanyID); //회사가 등록한 제품 selectAll
 
 		
@@ -190,7 +203,7 @@ public class ImportPageController {
 		
 		model.addAttribute("eList2", eList2);
 		model.addAttribute("bAList2", bAList2);
-		model.addAttribute("bPList", bPList2);
+//		model.addAttribute("bPList", bPList2);
 		model.addAttribute("product2", product2);
 		model.addAttribute("basicDTO", basicDTO);
 		model.addAttribute("shipDTO", shipDTO);
@@ -202,10 +215,59 @@ public class ImportPageController {
 		model.addAttribute("comDTO", comDTO);
 		model.addAttribute("detailList", detailList);
 		model.addAttribute("proList", proList);
+		model.addAttribute("cList", cList);
 		
 		return "import/importprocess/importPOedit";
 	} 
 
+//	import 각 메뉴 : fianace
+	@RequestMapping("/importPOfinance.do")
+	public String importPOfinance(Model model) {
+		
+		
+		return "import/importprocess/importPOfinance";
+	}
+	
+//	import PI edit
+	@RequestMapping("/importPIedit.do")
+	public String importPIedit(Model model, String basicID) {
+		int basic_id= Integer.parseInt(basicID);
+		int temporaryCompanyID = 1; 
+		ArrayList<Import_productDTO> proList = new ArrayList<Import_productDTO>();
+
+		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); /* �ּ�,tel */
+		List<Import_orderDetailDTO> detailList = dao.importOrderDetailAll(temporaryCompanyID);
+		Import_basicTradeDTO basicDTO= dao.importBasicTradeSelectPK(basic_id);
+		Import_orderShipping shipDTO = dao.importOrderShippingOne(basic_id);
+		Import_businessDTO bsDTO = dao.importBusinessSelectOne(basicDTO.getB_id());
+		Import_customerDTO cusDTO = dao.importCustomerSelectOne(basicDTO.getC_id());
+		System.out.println("디테일리스트 "+detailList);
+		for (int i = 0; i < detailList.size(); i++) {
+			Import_productDTO dto = dao.importProductSelectPID(detailList.get(i).getP_id());
+			proList.add(dto);
+		}
+
+		model.addAttribute("basicDTO", basicDTO);
+		model.addAttribute("shipDTO", shipDTO);
+		model.addAttribute("bsDTO", bsDTO);
+		model.addAttribute("cusDTO", cusDTO);
+		model.addAttribute("detailList", detailList);
+		model.addAttribute("proList", proList);
+		model.addAttribute("comDTO", comDTO);
+
+
+		
+		return "import/importprocess/importPIedit";
+	}
+	
+//	import 각 메뉴 : PI fianace
+	@RequestMapping("/importPIfinance.do")
+	public String importPIfinance(Model model) {
+		
+		
+		return "import/importprocess/importPIfinance";
+	}
+	
 
 	
 	@RequestMapping("/importAddOrderAjax.do")
@@ -232,4 +294,51 @@ public class ImportPageController {
 		
 		return mav;
 	}
+	
+	@RequestMapping("/importProductInsert2.do")
+	public ModelAndView importProductInsert2(Import_orderDetailDTO dto) {
+		ModelAndView mav = new ModelAndView();
+		System.out.println(dto);
+		mav.setViewName("import/importprocess/importMain");
+		dao.importProductInsert(dto);
+		
+		
+		return mav;
+	}
+
+	
+	@ResponseBody
+	@RequestMapping("/importPOeditAjax")
+	public String importPOeditAjax(Import_basicTradeDTO dto) {
+		dao.importPOeditAjax(dto);
+		
+		return "success";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/importPOdetailAjax")
+	public String importDeletePOdetailAjax(int id) {
+		dao.importDeletePOdetailAjax(id);
+		return "success";
+	}
+	
+	@RequestMapping("/importShipPIedit.do")
+	public ModelAndView importShipPIedit(ModelAndView mav,Import_orderShipping dto, int basic_id){
+		System.out.println(">>>importShipPIedit 컨트롤러 진입성공");
+		dao.importShipPIedit(dto);
+		
+		Import_tradeFileDTO tFDTO = new Import_tradeFileDTO();
+		
+		tFDTO.setBasic_id(basic_id);
+		tFDTO.setFile_name("PI");
+		tFDTO.setType_file(2);
+		
+		dao.importTradeFileInsert(tFDTO);
+		
+		mav.setViewName("redirect:/import/importprocess/importMain.do");
+		
+		
+		return mav;
+	}
+
 }

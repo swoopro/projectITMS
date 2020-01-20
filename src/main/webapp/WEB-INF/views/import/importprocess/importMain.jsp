@@ -16,23 +16,23 @@
 						function() {
 							location.href = "${pageContext.request.contextPath}/import/importprocess/importOrder.do";
 						}); // click end
-		$(".ui button") //각각 아이콘 메뉴 버튼 클릭시
+		$(".ui button")
+				//각각 아이콘 메뉴 버튼 클릭시
 				.click(
 						function() {
 							console.log("클릭");
-/* 							var idValue = $(this).attr("id");
-							var no = $("#" + idValue + "").data("option").no;
- */							
- 							var POdata = $(this).data("option")
- 							
-/*  						var process = $("#" + idValue + "").data("option").process;
-							var category = $("#" + idValue + "").data("option").category
- */							
+							/* 							var idValue = $(this).attr("id");
+							 var no = $("#" + idValue + "").data("option").no;
+							 */
+							var clickData = $(this).data("option")
+
+							/*  						var process = $("#" + idValue + "").data("option").process;
+							 var category = $("#" + idValue + "").data("option").category
+							 */
 							location.href = "${pageContext.request.contextPath}/import/importprocess/import"
-									+ POdata.process
-									+ POdata.category
-									+ ".do?basicID="
-									+ POdata.basicID;
+									+ clickData.process
+									+ clickData.category
+									+ ".do?basicID=" + clickData.basicID;
 						}); // click end
 
 		<c:forEach var="tradeList" items="${tradeFileList}">
@@ -68,12 +68,12 @@
 		<br>
 		<div class="ui styled fluid accordion">
 			<div>
-				<c:forEach var="basicTradeList" items="${basicTradeList}"
+				<c:forEach var="tlist" items="${tlist}"
 					varStatus="status">
 					<c:choose>
-						<c:when test="${tradeFileList[status.index].type_file == 1 }">
+						<c:when test="${tlist.type_file == 1 }">
 							<div class="title">
-								<i class="dropdown icon"></i> 수입번호: ${basicTradeList.doc_no}
+								<i class="dropdown icon"></i> 수입번호: ${tlist.doc_no}
 							</div>
 							<div class="content">
 								<div class="ui ordered steps">
@@ -85,23 +85,19 @@
 
 											<div class="ui small basic icon buttons">
 												<button class="ui button" data-content="상세보기"
-													id="IM001POdetail"
-													data-option='{"basicID":"${basicTradeList.id}","process":"PO","category":"detail"}'>
+													data-option='{"basicID":"${tlist.basic_id}","process":"PO","category":"detail"}'>
 													<i class="file icon"></i>
 												</button>
 												<button class="ui button" data-content="프린트"
-													id="IM001POprint"
-													data-option='{"basicID":"${basicTradeList.id}","process":"PO","category":"print"}'>
+													data-option='{"basicID":"${tlist.basic_id}","process":"PO","category":"print"}'>
 													<i class="save icon"></i>
 												</button>
 												<button class="ui button" data-content="등록/수정"
-													id="IM001POedit"
-													data-option='{"basicID":"${basicTradeList.id}","process":"PO","category":"edit"}'>
+													data-option='{"basicID":"${tlist.basic_id}","process":"PO","category":"edit"}'>
 													<i class="edit icon"></i>
 												</button>
 												<button class="ui button" data-content="재무팀요청"
-													id="IM001POfina"
-													data-option='{"basicID":"${basicTradeList.id}","process":"PO","category":"fina"}'>
+													data-option='{"basicID":"${tlist.basic_id}","process":"PO","category":"finance"}'>
 													<i class="upload icon"></i>
 												</button>
 
@@ -112,13 +108,61 @@
 									<div class="active step">
 										<div class="content">
 											<div class="title">PI</div>
-											<div class="ui disabled icon input">
-												<i class="search icon"></i> <input value="내용조회"
-													type="button">
+											<div class="ui small basic icon buttons">
+												<button class="ui button" data-content="상세보기"
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"detail"}'>
+													<i class="file icon"></i>
+												</button>
+												<button class="ui button" data-content="프린트"
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"print"}'>
+													<i class="save icon"></i>
+												</button>
+												<button class="ui button" data-content="등록/수정"
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"edit"}'>
+													<i class="edit icon"></i>
+												</button>
+												<button class="ui button" data-content="재무팀요청"
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"finance"}'>
+													<i class="upload icon"></i>
+												</button>
+
 											</div>
-											<button class="ui grey basic button">입금요청</button>
 										</div>
 									</div>
+
+									<div class="ui steps">
+										<div class="content">
+											<table class="ui celled table" id="goodsTable"
+												style="max-height: 100px; overflow-x: scroll;">
+												<thead>
+													<tr>
+														<th>item</th>
+														<th>amount</th>
+														<th>재무확인일</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>관세</td>
+														<td>50,000 USD</td>
+														<td>2020-02-02</td>
+													</tr>
+													<tr>
+														<td>물품관리비</td>
+														<td>1,000 USD</td>
+														<td>2020-02-02</td>
+													</tr>
+													<tr>
+														<td>물품관리비</td>
+														<td>2,000 USD</td>
+														<td>2020-02-02</td>
+													</tr>
+
+												</tbody>
+											</table>
+										</div>
+									</div>
+
 
 
 								</div>
@@ -126,9 +170,9 @@
 							</div>
 
 						</c:when>
-						<c:when test="${tradeFileList[status.index].type_file == 2 }">
+						<c:when test="${tlist.type_file == 2 }">
 							<div class="title">
-								<i class="dropdown icon"></i> 수입번호: ${basicTradeList.doc_no}
+								<i class="dropdown icon"></i> 수입번호: ${tlist.doc_no}
 							</div>
 							<div class="content">
 								<div class="ui ordered steps">
@@ -140,20 +184,19 @@
 
 											<div class="ui small basic icon buttons">
 												<button class="ui button" data-content="상세보기"
-													id="IM001POdetail"
-													data-option='{"no":"001","process":"PO","category":"detail"}'>
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"detail"}'>
 													<i class="file icon"></i>
 												</button>
 												<button class="ui button" data-content="프린트"
-													id="IM001POprint">
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"print"}'>
 													<i class="save icon"></i>
 												</button>
 												<button class="ui button" data-content="등록/수정"
-													id="IM001POedit">
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"edit"}'>
 													<i class="edit icon"></i>
 												</button>
 												<button class="ui button" data-content="재무팀요청"
-													id="IM001POfina">
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"finance"}'>
 													<i class="upload icon"></i>
 												</button>
 
@@ -164,11 +207,87 @@
 									<div class="completed step">
 										<div class="content">
 											<div class="title">PI</div>
-											<div class="ui disabled icon input">
-												<i class="search icon"></i> <input value="내용조회"
-													type="button">
+											<div class="ui small basic icon buttons">
+												<button class="ui button" data-content="상세보기"
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"detail"}'>
+													<i class="file icon"></i>
+												</button>
+												<button class="ui button" data-content="프린트"
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"print"}'>
+													<i class="save icon"></i>
+												</button>
+												<button class="ui button" data-content="등록/수정"
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"edit"}'>
+													<i class="edit icon"></i>
+												</button>
+												<button class="ui button" data-content="재무팀요청"
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"finance"}'>
+													<i class="upload icon"></i>
+												</button>
+
 											</div>
-											<button class="ui grey basic button">입금요청</button>
+										</div>
+									</div>
+
+									<div class="active step">
+										<div class="content">
+											<div class="title">CI/PL</div>
+											<div class="ui small basic icon buttons">
+												<button class="ui button" data-content="상세보기"
+													data-option='{"basicID":"${tlist.basic_id}","process":"CI/PL","category":"detail"}'>
+													<i class="file icon"></i>
+												</button>
+												<button class="ui button" data-content="프린트"
+													data-option='{"basicID":"${tlist.basic_id}","process":"CI/PL","category":"print"}'>
+													<i class="save icon"></i>
+												</button>
+												<button class="ui button" data-content="등록/수정"
+													data-option='{"basicID":"${tlist.basic_id}","process":"CI/PL","category":"edit"}'>
+													<i class="edit icon"></i>
+												</button>
+												<button class="ui button" data-content="재무팀요청"
+													data-option='{"basicID":"${tlist.basic_id}","process":"CI/PL","category":"finance"}'>
+													<i class="upload icon"></i>
+												</button>
+
+											</div>
+										</div>
+									</div>
+
+
+
+
+
+									<div class="ui steps">
+										<div class="content">
+											<table class="ui celled table" id="goodsTable"
+												style="max-height: 100px; overflow-x: scroll;">
+												<thead>
+													<tr>
+														<th>item</th>
+														<th>amount</th>
+														<th>재무확인일</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>관세</td>
+														<td>50,000 USD</td>
+														<td>2020-02-02</td>
+													</tr>
+													<tr>
+														<td>물품관리비</td>
+														<td>1,000 USD</td>
+														<td>2020-02-02</td>
+													</tr>
+													<tr>
+														<td>물품관리비</td>
+														<td>2,000 USD</td>
+														<td>2020-02-02</td>
+													</tr>
+
+												</tbody>
+											</table>
 										</div>
 									</div>
 
@@ -179,9 +298,9 @@
 
 						</c:when>
 
-						<c:when test="${tradeFileList[status.index].type_file == 3 }">
+						<c:when test="${tlist.type_file == 3 }">
 							<div class="title">
-								<i class="dropdown icon"></i> 수입번호: ${basicTradeList.doc_no}
+								<i class="dropdown icon"></i> 수입번호: ${tlist.doc_no}
 							</div>
 							<div class="content">
 								<div class="ui ordered steps">
@@ -193,20 +312,19 @@
 
 											<div class="ui small basic icon buttons">
 												<button class="ui button" data-content="상세보기"
-													id="IM001POdetail"
-													data-option='{"no":"001","process":"PO","category":"detail"}'>
+													data-option='{"basicID":"${tlist.basic_id}","process":"PO","category":"detail"}'>
 													<i class="file icon"></i>
 												</button>
 												<button class="ui button" data-content="프린트"
-													id="IM001POprint">
+													data-option='{"basicID":"${tlist.basic_id}","process":"PO","category":"print"}'>
 													<i class="save icon"></i>
 												</button>
 												<button class="ui button" data-content="등록/수정"
-													id="IM001POedit">
+													data-option='{"basicID":"${tlist.basic_id}","process":"PO","category":"edit"}'>
 													<i class="edit icon"></i>
 												</button>
 												<button class="ui button" data-content="재무팀요청"
-													id="IM001POfina">
+													data-option='{"basicID":"${tlist.basic_id}","process":"PO","category":"finance"}'>
 													<i class="upload icon"></i>
 												</button>
 
@@ -217,11 +335,110 @@
 									<div class="completed step">
 										<div class="content">
 											<div class="title">PI</div>
-											<div class="ui disabled icon input">
-												<i class="search icon"></i> <input value="내용조회"
-													type="button">
+											<div class="ui small basic icon buttons">
+												<button class="ui button" data-content="상세보기"
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"detail"}'>
+													<i class="file icon"></i>
+												</button>
+												<button class="ui button" data-content="프린트"
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"print"}'>
+													<i class="save icon"></i>
+												</button>
+												<button class="ui button" data-content="등록/수정"
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"edit"}'>
+													<i class="edit icon"></i>
+												</button>
+												<button class="ui button" data-content="재무팀요청"
+													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"finance"}'>
+													<i class="upload icon"></i>
+												</button>
+
 											</div>
-											<button class="ui grey basic button">입금요청</button>
+										</div>
+									</div>
+
+									<div class="completed step">
+										<div class="content">
+											<div class="title">CI/PL</div>
+											<div class="ui small basic icon buttons">
+												<button class="ui button" data-content="상세보기"
+													data-option='{"basicID":"${tlist.basic_id}","process":"CI/PL","category":"detail"}'>
+													<i class="file icon"></i>
+												</button>
+												<button class="ui button" data-content="프린트"
+													data-option='{"basicID":"${tlist.basic_id}","process":"CI/PL","category":"print"}'>
+													<i class="save icon"></i>
+												</button>
+												<button class="ui button" data-content="등록/수정"
+													data-option='{"basicID":"${tlist.basic_id}","process":"CI/PL","category":"edit"}'>
+													<i class="edit icon"></i>
+												</button>
+												<button class="ui button" data-content="재무팀요청"
+													data-option='{"basicID":"${tlist.basic_id}","process":"CI/PL","category":"finance"}'>
+													<i class="upload icon"></i>
+												</button>
+
+											</div>
+										</div>
+									</div>
+
+									<div class="active step">
+										<div class="content">
+											<div class="title">운송</div>
+											<div class="ui small basic icon buttons">
+												<button class="ui button" data-content="상세보기"
+													data-option='{"basicID":"${tlist.basic_id}","process":"trans","category":"detail"}'>
+													<i class="file icon"></i>
+												</button>
+												<button class="ui button" data-content="프린트"
+													data-option='{"basicID":"${tlist.basic_id}","process":"trans","category":"print"}'>
+													<i class="save icon"></i>
+												</button>
+												<button class="ui button" data-content="등록/수정"
+													data-option='{"basicID":"${tlist.basic_id}","process":"trans","category":"edit"}'>
+													<i class="edit icon"></i>
+												</button>
+												<button class="ui button" data-content="재무팀요청"
+													data-option='{"basicID":"${tlist.basic_id}","process":"trans","category":"finance"}'>
+													<i class="upload icon"></i>
+												</button>
+
+											</div>
+										</div>
+									</div>
+
+
+
+									<div class="ui steps">
+										<div class="content">
+											<table class="ui celled table" id="goodsTable"
+												style="max-height: 100px; overflow-x: scroll;">
+												<thead>
+													<tr>
+														<th>item</th>
+														<th>amount</th>
+														<th>재무확인일</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td>관세</td>
+														<td>50,000 USD</td>
+														<td>2020-02-02</td>
+													</tr>
+													<tr>
+														<td>물품관리비</td>
+														<td>1,000 USD</td>
+														<td>2020-02-02</td>
+													</tr>
+													<tr>
+														<td>물품관리비</td>
+														<td>2,000 USD</td>
+														<td>2020-02-02</td>
+													</tr>
+
+												</tbody>
+											</table>
 										</div>
 									</div>
 
@@ -232,10 +449,10 @@
 
 						</c:when>
 
-						<c:when test="${tradeFileList[status.index].type_file == 4 }">
+						<c:when test="${tlist.type_file == 4 }">
 
 							<div class="title">
-								<i class="dropdown icon"></i> 수입번호: ${basicTradeList.doc_no}
+								<i class="dropdown icon"></i> 수입번호: ${tlist.doc_no}
 							</div>
 							<div class="content">
 								<div class="ui ordered steps">

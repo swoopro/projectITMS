@@ -42,7 +42,6 @@ page[size="A4"] {
 	<page size="A4">
 
 
-	<div class="content_body">
 
 
 
@@ -207,7 +206,6 @@ page[size="A4"] {
 				</div>
 			</div>
 		</div>
-	</div>
 
 	</page>
 

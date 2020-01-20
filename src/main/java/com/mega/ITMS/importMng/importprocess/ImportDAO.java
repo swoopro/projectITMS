@@ -114,6 +114,27 @@ public class ImportDAO {
 		return null;
 	}
 	
+	public List<Import_tradeFileDTO> importTradeFileSelectJBS(int com_id) {
+		try {
+			List<Import_tradeFileDTO> list = myBatis.selectList("test", com_id);
+			return list;
+		} catch (Exception e) {
+		}
+		
+		return null;
+	}
+
+	
+	public List<Import_stepDTO> importTradeFileCASEselect(int com_id) {
+		try {
+			List<Import_stepDTO> list = myBatis.selectList("selectTradeFIleCASE", com_id);
+			return list;
+		} catch (Exception e) {
+		}
+		
+		return null;
+	}
+	
 	public List<Import_productDTO> importProductSelectAllPID(int p_id) {
 		try {
 			List<Import_productDTO> list = myBatis.selectList("selectAllProductPID", p_id);
@@ -161,9 +182,9 @@ public class ImportDAO {
 	}
 
 	
-	public List<Import_orderDetailDTO> importOrderDetailAll(int basic_id) {
+	public List<Import_orderDetailDTO> importOrderDetailAll(int com_id) {
 		try {
-			List<Import_orderDetailDTO> list= myBatis.selectList("selectAllOrderDetail", basic_id);
+			List<Import_orderDetailDTO> list= myBatis.selectList("selectAllOrderDetail", com_id);
 			return list;
 			
 		} catch (Exception e) {
@@ -184,12 +205,11 @@ public class ImportDAO {
 	}
 	
 	public void importProductInsert(Import_orderDetailDTO orderDetailDTO) {
-		System.out.println("�󼼿��� dto Ȯ��" + orderDetailDTO);
 		try {
 			myBatis.insert("insertOrderDetail", orderDetailDTO);
-			System.out.println(">>>ProductInsert.....");
+			System.out.println(">>>SUCCESSED: ProductInsert.....");
 		} catch (Exception e) {
-			System.out.println(">>>ProductInsert.....");
+			System.out.println(">>>FAILED: ProductInsert.....");
 		}
 	}
 	
@@ -211,6 +231,43 @@ public class ImportDAO {
 		}
 	}
 	
+	public List<Import_customerDTO> importCustomerJoinSelect(int b_id) {
+		try {
+			List<Import_customerDTO> list = myBatis.selectList("selectAllCustomerJoin", b_id);
+			System.out.println(">>>importCustomerJoinSelect SELECT Successed");
+			return list;
+		} catch (Exception e) {
+			System.out.println(">>>importCustomerJoinSelect SELECT Failed");
+		}
+		return null;
+	}
 	
+	public void importPOeditAjax(Import_basicTradeDTO dto) {
+		try {
+			myBatis.update("POeditUpdate", dto);
+			System.out.println(">>>SUCCESSED: POeditUpdate...");
+		} catch (Exception e) {
+			System.out.println(">>>FAILED: POeditUpdate...");
+		}
+	}
+	
+	public void importDeletePOdetailAjax(int id) {
+		
+		try {
+			myBatis.delete("deleteDetailPID", id);
+			System.out.println(">>>SUCCESSED: importPOdetailAjax");
+		} catch (Exception e) {
+			System.out.println(">>>FAILED: importPOdetailAjax");
+		}
+	}
+	
+	public void importShipPIedit(Import_orderShipping dto) {
+		try {
+			myBatis.insert("PIeditUpdate", dto);
+			System.out.println(">>>SUCCESSED: importShipPIedit.do");
+		} catch (Exception e) {
+			System.out.println(">>>FAILED: importShipPIedit.do");
+		}
+	}
 	
 }
