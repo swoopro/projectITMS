@@ -40,19 +40,13 @@ $(function(){
 					function(data,status){
 						location.href='authority?curPage=1&key=&value=';
 			});
-			
-			/* $.ajax({
-				url : "delUser",
-				type : 'POST',
-				dataType : "JSON",
-				data : {
-					'id' : checked_val
-				},
-				success : function(result){
-					console.log(result)
-				}
-			});//ajax */
 		}
+	});
+	
+	$("#downExcel").click(function(){
+		var key = $("#xlskey").val()
+		var value = $("#xlsvalue").val()
+		location.href = "downExcel?key="+key+"&value="+value;
 	});
 	
 });
