@@ -14,10 +14,10 @@
 		<typeAlias type="com.mega.ITMS.userMng.division.UserMngDeptDTO" alias="deptMng"></typeAlias>
 		<typeAlias type="com.mega.ITMS.userMng.usermanage.UserMngEmployeeDTO" alias="employeeMng"></typeAlias>
 		<typeAlias type="com.mega.ITMS.userMng.account.UserMngAccountDTO" alias="accMng"></typeAlias>
-<!--  		<typeAlias type="com.mega.ITMS.operationMng.product.OperationMngProductJoinDTO" alias="omPdJoinDTO"></typeAlias> -->
 		<typeAlias type="com.mega.ITMS.financialMng.request.RequestDTO" alias="requestDTO"/>
 		<typeAlias type="com.mega.ITMS.financialMng.transfer.TransferDTO" alias="transferDTO"/>
 	</typeAliases>
+	
 	<!-- 사용할MAPPER목록 설정 -->
 	<mappers>
 		<mapper resource="mapper/customerMapper.xml" />

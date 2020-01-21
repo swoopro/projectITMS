@@ -34,12 +34,12 @@ $(function() {
 
 <body>
 	<div class="content_body">
-		<br><h1>거래처 정보 등록 페이지</h1><br>
+		<br><h1 align="center">거래처 정보 등록 페이지</h1><br><br>
 
 	<div class="ui grid">
 
 		<!-- 입력 폼 DIV-->
-		<form action="insertBn" method="post">
+<!-- 		<form action="insertBn" method="post">
 			<div class="three wide column">
 				<table border="1" style="width:300px;">
 					<tr>
@@ -96,15 +96,43 @@ $(function() {
 					</tr>
 				</table>
 			</div>
+		</form> -->
+		
+		<form class="ui form" action="insertBn" method="post" style="margin-left: 475px;">
+		  <div class="field">
+		    <label>구분</label>
+		    <input type="text" name="type" id="type" placeholder="'거래처' 또는 '기타' 입력">
+		  </div>
+		  <div class="field">
+		    <label>회사명</label>
+		    <input type="text" name="name" id="name" placeholder="">
+		  </div>
+		  <div class="field">
+		    <label>대표자명</label>
+		    <input type="text" name="ceo" id="ceo" placeholder="">
+		  </div>
+		  <div class="field">
+		    <label>회사 주소</label>
+		    <input type="text" name="addr" id="addr" placeholder="">
+		  </div>
+		  <div class="field">
+		    <label>회사 전화번호</label>
+		    <input type="text" name="tel" id="tel" placeholder=" '-'를 포함하여 입력하세요">
+		  </div>
+		  <div class="field">
+		    <label>회사 국가번호</label>
+		    <input type="text" name="country_code" id="country_code" placeholder="">
+		  </div>
+		  <button class="ui primary button" type="submit" id="insert" style="width: 500px;">거래처 등록</button>
 		</form>
 		
 		<!-- 화살표 DIV -->
-		<div class="one wide column">
+		<!-- <div class="one wide column">
 			<button class="ui icon button" style="margin-top: 140px; margin-left:15px;"><i class="double angle right icon"></i></button>
-		</div>
+		</div> -->
 
 		<!-- 입력 내용 확인 DIV -->
-		<div class="eleven wide column">
+<!-- 		<div class="eleven wide column">
 		  	<table class="ui celled table">
 			  <thead>
 			    <tr><th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">구분</font></font></th>
@@ -114,7 +142,7 @@ $(function() {
 			    <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">회사 전화번호</font></font></th>
 			    <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">회사 국가번호</font></font></th>
 			  </tr></thead>
-			  <!-- for문 들어갈 자리 -->
+			  for문 들어갈 자리
 			  <tbody>
 			    <tr>
 			      <td data-label="type"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font></td>
@@ -126,7 +154,7 @@ $(function() {
 			    </tr>
 			  </tbody>
 			</table>		
-		</div>
+		</div> -->
 	
 	</div> <!-- grid DIV -->	
 	</div> <!-- content_body DIV -->
