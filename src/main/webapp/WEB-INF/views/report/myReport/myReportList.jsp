@@ -9,8 +9,10 @@
     <title>ITMS</title>
     <script>
         let no = 1;
+
         function x() {
-            no=no+1;}
+            no = no + 1;
+        }
     </script>
 </head>
 <body>
@@ -21,19 +23,29 @@
             <th colspan="16"><h3 class="ui centered header">나의보고서</h3></th>
         </tr>
         <tr>
-            <th colspan="2">NO</th>
+            <th colspan="1">NO</th>
             <th colspan="11">제목</th>
-            <th colspan="3">작성일</th>
+            <th colspan="2">작성일</th>
+            <th colspan="2">선택</th>
         </tr>
         </thead>
         <tbody>
         <c:forEach var="row" items="${list}">
             <tr>
-                <th colspan="2"> <script>document.write(no);</script></th>
+                <th colspan="1">
+                    <script>document.write(no);</script>
+                </th>
                 <script>x()</script>
-                <th colspan="11"><a href="${pageContext.request.contextPath}/report/myReport/detail/${row.id}">${row.title}</a></th>
-                <th colspan="3"><fmt:formatDate value="${row.issued_date}"
-                                    pattern="yyyy-MM-dd"/></th>
+                <th colspan="11"><a
+                        href="${pageContext.request.contextPath}/report/myReport/detail/${row.id}">${row.title}</a></th>
+                <th colspan="2"><fmt:formatDate value="${row.issued_date}"
+                                                pattern="yyyy-MM-dd"/></th>
+                <th colspan="2">
+                    <div class="ui buttons">
+                        <button class="ui button" id="print">
+                                출력</button>
+                    </div>
+                </th>
             </tr>
         </c:forEach>
         </tbody>

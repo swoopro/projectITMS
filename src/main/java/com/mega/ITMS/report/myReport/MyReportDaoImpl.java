@@ -21,6 +21,17 @@ public class MyReportDaoImpl implements MyReportDao{
         mybatis.insert("report.insert",dto);
     }
     public MyReportDto myReportDetail(int id){
+
         return mybatis.selectOne("report.myReportDetail", id);
+    }
+
+    @Override
+    public void myReportDel(int id) {
+        mybatis.delete("report.myReportDel", id);
+    }
+
+    @Override
+    public void updateMyReport(MyReportDto dto) {
+        mybatis.update("report.update", dto);
     }
 }
