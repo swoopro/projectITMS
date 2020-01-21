@@ -95,9 +95,9 @@ public class OperationMngCustomerDAOImpl implements OperationMngCustomerDAO{
 //	담당자 & 거래처 조인 테이블(Customer & Business Table)
 	
 	public List<OperationMngCustomerJoinDTO> getCustomerBusinessReadAll(Object com_id) {
-		System.out.println("-----------------------------------------------");
+//		System.out.println("-----------------------------------------------");
 		/*System.out.println(a_com_id);*/
-		System.out.println("-----------------------------------------------");
+//		System.out.println("-----------------------------------------------");
 		List<OperationMngCustomerJoinDTO> list = myBatis.selectList("customer.selectAllCsJoin", com_id);
 		return list;
 	}

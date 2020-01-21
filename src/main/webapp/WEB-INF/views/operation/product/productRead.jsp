@@ -283,6 +283,7 @@
   </c:forEach>
   </tbody>
 </table>
+	<button class="ui button" type="button" id="downExcel" style="width: 150px; float: right;">엑셀 다운로드</button>
 </div> <!-- content_body DIV -->
 
 <!-- Modal -->
@@ -292,14 +293,14 @@
 			<i class="large chart line icon"></i><font style="font-size: 40px">원가관리</font>
 		</div>
 		<!-- Filter 버튼 DIV -->		
-		<div class="ui blue label" style="float: right; height: 50px; margin-top: px;">
-			<div class="ui blue label" style="height: 35px; font-size: 15px; margin-bottom: 3px; margin-right: 10px; background-color: blue;">
+		<div class="ui label" style="float: right; height: 50px; margin-top: px;">
+			<div class="ui label" style="height: 35px; font-size: 15px; margin-bottom: 3px; margin-right: 10px;">
 			  <i class="filter icon"></i>
 			  단가 입력일
 			</div>
-			<button class="ui toggle labeled icon button" id="down" value="0">
+			<button class="ui toggle labeled icon primary button" id="down" value="0">
 			  <i class="sort amount down icon"></i>내림차순</button>
-			<button class="ui toggle labeled icon button" id="up" value="1">
+			<button class="ui toggle labeled icon primary button" id="up" value="1">
 			  <i class="sort amount up icon"></i>오름차순</button>
 		</div>			
 	</div>
@@ -321,7 +322,7 @@
 	</div>
 	
 	<div class="ui actions">
-<!-- 		<button class="ui primary button">버튼</button> -->
+ 		<button class="ui button" type="button" id="downExcel" style="width: 150px; float: right; margin-right: 5px; margin-bottom: 10px;">엑셀 다운로드</button>
 	</div>
 </div>
 

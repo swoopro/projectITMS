@@ -159,7 +159,7 @@ public class OperationMngProductController {
 	
 	@RequestMapping("deletePd")
 	public String deletePd(OperationMngProductDTO omPdDTO) {
-		// productRead.jsp에서 넘겨 받은 id, com_id를 받기 위한 DTO
+		// productRead.jsp에서 넘겨 받은 id, code, com_id를 받기 위한 DTO
 		
 		omPdDAO.delProduct(omPdDTO);
 		

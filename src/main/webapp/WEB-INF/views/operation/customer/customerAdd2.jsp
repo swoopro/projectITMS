@@ -34,12 +34,12 @@ $(function() {
 
 <body>
 	<div class="content_body">
-		<br><h1>담당자 정보 등록 페이지</h1><br>
+		<br><h1 align="center">담당자 정보 등록 페이지</h1><br><br>
 
 	<div class="ui grid">
 
 		<!-- 입력 폼 DIV-->
-		<form action="insertCs" method="post">
+<!-- 		<form action="insertCs" method="post">
 			<div class="three wide column">
 				<table border="1" style="width:300px;">
 					<tr>
@@ -60,7 +60,7 @@ $(function() {
 						<td>담당자 연락처</td>
 					</tr>
 					<tr>
-						<td><input type="text" name="tel" id="tel" style="width:300px;"" placeholder=" '-'를 포함하여 입력하세요"></td>
+						<td><input type="text" name="tel" id="tel" style="width:300px;" placeholder=" '-'를 포함하여 입력하세요"></td>
 					</tr>
 
 					<tr>
@@ -79,9 +79,9 @@ $(function() {
 
 					<tr>
 						<td align="center">
-<!-- 						<button class="ui primary button" type="submit" id="">
+<						<button class="ui primary button" type="submit" id="">
 							<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">담당자 추가</font></font>
-						</button> -->
+						</button>
 						<button class="ui primary button" type="submit" id="insert">
 							<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">담당자 등록</font></font>
 						</button>
@@ -89,15 +89,40 @@ $(function() {
 					</tr>
 				</table>
 			</div>
+		</form> -->
+		
+		<form class="ui form" action="insertCs" method="post" style="margin-left: 450px;">
+		  <div class="field">
+		    <label>업체 아이디</label>
+		    <input type="text" name="b_id" id="b_id" placeholder="'거래처' 또는 '기타업체'의 ID 입력">
+		  </div>
+		  <div class="field">
+		    <label>담당자명</label>
+		    <input type="text" name="name" id="name" placeholder="">
+		  </div>
+		  <div class="field">
+		    <label>담당자 연락처</label>
+		    <input type="text" name="tel" id="tel" placeholder=" '-'를 포함하여 입력하세요">
+		  </div>
+		  <div class="field">
+		    <label>소속부서</label>
+		    <input type="text" name="c_key" id="c_key" placeholder="">
+		  </div>
+		  <div class="field">
+		    <label>거래품목</label>
+		    <input type="text" name="c_value" id="c_value" placeholder="">
+		  </div>
+		  <button class="ui primary button" type="submit" id="insert" style="width: 500px;">담당자 등록</button>
 		</form>
 		
+		
 		<!-- 화살표 DIV -->
-		<div class="one wide column">
+<!-- 		<div class="one wide column">
 			<button class="ui icon button" style="margin-top: 100px; margin-left: 15px;"><i class="double angle right icon"></i></button>
-		</div>
+		</div> -->
 
 		<!-- 입력 내용 확인 DIV -->
-		<div class="eleven wide column">	
+<!-- 		<div class="eleven wide column">	
 		<table class="ui celled table">
 		  <thead>
 		    <tr><th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">업체 아이디</font></font></th>
@@ -107,7 +132,7 @@ $(function() {
 		    <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">소속부서</font></font></th>
 		    <th><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">거래품목</font></font></th>
 		  </tr></thead>
-		  <!-- for문 들어갈 자리 -->
+		  for문 들어갈 자리
 		  <tbody>
 		    <tr>
 		      <td data-label="Name"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font></td>
@@ -119,7 +144,7 @@ $(function() {
 		    </tr>
 		  </tbody>
 		</table>
-		</div>
+		</div> -->
 	
 	</div> <!-- grid DIV -->
 	</div> <!-- content_body DIV -->

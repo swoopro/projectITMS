@@ -200,7 +200,7 @@
 	  </c:forEach>
 	  </tbody>
 	</table>
-
+	<button class="ui button" type="button" id="downExcel" style="width: 150px; float: right;">엑셀 다운로드</button>
 </div> <!-- content_body DIV -->
 </body>
 </html>
