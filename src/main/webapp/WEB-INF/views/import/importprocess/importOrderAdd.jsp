@@ -15,10 +15,13 @@
 		var customerList = new Array();
 		var businessList = new Array();
 		var businessPList = new Array();
+		var partnerList = new Array();
 		var date = new Date();
 		var user_id;
 		var b_id = 0;
 		var c_id;
+		var businessID;
+		var partnerID;
 		var com_id = ${companyDTO.id};
         var currentDate = date.getFullYear() + "년 " + ( date.getMonth() + 1 ) + "월 " + date.getDate() + "일";
         var count = 0;
@@ -63,8 +66,8 @@
 
 
 			$("#customerSelect").html(""); // 판매업체 드롭박스 값 변경시 이전 값 초기화
-			var businessID = $('#dropBusiness').dropdown('get value');
-
+			businessID = $('#dropBusiness').dropdown('get value');
+			console.log("판매처아이디"+businessID)
 			for (var i = 0; i < businessList.length; i++) {
 				if(businessID == businessList[i].id){ //판매업체 리스트와 드롭박스의 value 값이 일치시
 					$("#businessTel").text(businessList[i].tel);
@@ -82,7 +85,8 @@
 	 				},
 	 				success: function(data) {
 	 					for (var i = 0; i < data.length; i++) { // 판매업체의 담당자 드롭박스 항목 루프문
-							$("#customerSelect").append("<div class='item' data-value='"+data[i].id+"'>"+data[i].name +"</div>");
+	 						console.log("ajax customer 테스트" + data[i].name);
+							$("#dropCustomer").append("<option value="+data[i].id+">"+data[i].name+"</option>");
 							customerList[i] = data[i];
 						} //sucs for end
 	 				}// success end
@@ -92,30 +96,63 @@
 		
 		}); //+++
 		
-		$('#dropCustomer').dropdown({onChange(value, text, selItem) { //판매업체 담당자 드롭박스 값 변경시
-			console.log("customer 드롭다운 값: "+$('#dropCustomer').dropdown('get value'));
-			var dropCustomerValue = $('#dropCustomer').dropdown('get value');
-			$("#customerTel").text(customerList[dropCustomerValue].tel); //판매업체 전화번호란 입력
-			$("#c_id").val(customerList[dropCustomerValue].id);
-			c_id = customerList[dropCustomerValue].id;
-		} //dropCustomer end
-
-		});
-		
-		$('#dropPBusiness').change(function() {
-			console.log("dropPBusiness 테스트");
-			console.log($('#dropPBusiness option:selected').val());
-			for (var i = 0; i < businessPList.length; i++) {
-				if($('#dropPBusiness option:selected').val() == businessPList[i].id){
-					$("#businessPAddr").text(businessPList[i].addr);
-					$("#businessPTel").text(businessPList[i].tel);
-					$("#b_id").val(businessPList[i].id);
-					b_id = businessPList[i].id;
+		$("#dropCustomer").change(function() { //판매자 담당자 드롭박스 변경시
+			console.log("customer 드롭다운 값: "+$(this).val());
+			
+			for (var i = 0; i < customerList.length; i++) { 
+				console.log("customerList 값: " + customerList[i].tel); 
+				if($(this).val() == customerList[i].id){ //담당자의 드롭박스 아이디와 customerList[i].id 값과 같을시
+					$("#customerTel").text(customerList[i].tel);
+					c_id = customerList[i].id;
 				}
 			}
-		});
+			
+			/* $("#c_id").val(customerList[$(this).val()].id); */
+		}); //dropCustomer end 
 		
-  		$("#dropProduct0").change(function() {
+		$('#dropPBusiness').change(function() { //협력업체 드롭박스
+			console.log($(this).val());
+			for (var i = 0; i < businessPList.length; i++) {
+				if($(this).val() == businessPList[i].id){
+					$("#businessPAddr").text(businessPList[i].addr);
+					$("#businessPTel").text(businessPList[i].tel);
+					$("#cb_id").val(businessPList[i].id);
+					partnerID = businessPList[i].id;
+					
+				}
+			}
+			
+ 			$.ajax({ // 판매업체 드롭박스 선택한 담당자 검색 ajax
+ 				url: "${pageContext.request.contextPath}/import/importprocess/importAJaxCustomer.do",
+ 			    traditional : true,
+ 				type: "POST",
+ 				data: {
+ 					com_id : '${companyDTO.id}',
+ 					b_id : partnerID
+ 				},
+ 				success: function(data) {
+ 					for (var i = 0; i < data.length; i++) { // 판매업체의 담당자 드롭박스 항목 루프문
+ 						console.log("ajax partnerID 테스트" + data[i].name);
+						$("#dropPartner").append("<option value="+data[i].id+">"+data[i].name+"</option>");
+						partnerList[i] = data[i];
+					} //sucs for end
+ 				}// success end
+ 			});//ajax end
+
+		}); // 협력업체 드롭박스 end
+		
+		$("#dropPartner").change(function() { //협력업체 담당자 드롭박스
+			console.log("협력업체 담당자 드롭박스 확인");
+			for (var i = 0; i < partnerList.length; i++) {
+				if(partnerList[i].id == $(this).val()){
+					console.log("협력업체 담당자 드롭박스 if값 확인");
+					$("#partnerTel").text(partnerList[i].tel);
+					$("#dcb_id").val(partnerList[i].id);
+				}
+			}
+		}); //협력업체 담당자 드롭박스 end
+		
+  		$("#dropProduct0").change(function() { //첫번째 제품 등록
   			
 			console.log("dropProduct 테스트");
 			$("#productCode0").text($('#dropProduct0 option:selected').data("value").code);
@@ -150,7 +187,7 @@
 									' <tr>\n'
 											+ '                <td>\n'
 											+ '                    <select class="ui search dropdown testDrop" id="dropProduct'+count+'" data-value="'+count+'">\n'
-											+'						<option value="">제품 검색</option>\n'
+											+'						<option value="">제품 검색</option> \n'
 
 
 		 										<c:forEach var="product" items="${productList}" varStatus="status">
@@ -197,6 +234,7 @@
 				});
 				$('#btn-del-row').click(function() { //제품 열 삭제
 					$('#goodsTable > tbody:last > tr:last').remove();
+					count = count - 1;
 				}); //btn-del end
  				
 				$("#importInsertBtn").click(function () { //수입신규등록 버튼 누를 시
@@ -215,12 +253,13 @@
 								doc_no : doc_no,
  								notes : notes,
 								user_id : user_id,
-								b_id : b_id,
+								b_id : businessID,
 								c_id : c_id,
 								type_tr : 2,
 								com_id : com_id
  							},
 							success: function(data) {
+
 								console.log(data);
 							}// success end
 						});//ajax end
@@ -240,17 +279,22 @@
 
 			    		     +" $form"+i+".append(qty); \n"
 			    		     +" $form"+i+".append(p_id); \n"
- 			    		     +" $form"+i+".submit();  \n" //eval end
-  							 +" console.log(\'"+i+"번째 form 되었어요.\')   \n"	
+  			    		     +" $form"+i+".submit();  \n" //eval end
+   							 +" console.log(\'"+i+"번째 form 되었어요.\')   \n"	
   					);
 					} // for end
- 				    		}); //importInsertBtn end
+					
+					$("#importAddShip").submit();
+					
+ 				    }); //importInsertBtn end
  				    		
  				    $("#resultBtn").click(function () {
- 				    	var qtyInput = $("#productInput"+count).val();
+  				    	var qtyInput = $("#productInput"+count).val();
 		    		    var pID = $("#dropProduct"+count+" option:selected").val();
  				    	console.log("테스트: " + qtyInput + " .. " + pID);
-					}); //resultBtn click end
+
+ 						
+ 				    }); //resultBtn click end
 
 }); // func end
 
@@ -276,7 +320,18 @@
 				name="notes" value="">
 		</form>
 
-		<form action="" method="get"></form>
+		<form id="importAddShip"
+			action="${pageContext.request.contextPath}/import/importprocess/importAddShipping.do"
+			method="get" target="iframe2">
+			<input type="hidden" id="id" name="id" value="0"> <input type="hidden"
+				id="basic_id" name="basic_id" value="0"> <input type="hidden"
+				id="cb_id" name="cb_id" value="0"> <input type="hidden" id="dcb_id"
+				name="dcb_id" value="0"> <input type="hidden" id="track_no"
+				name="track_no" value=""> <input type="hidden" id="o_from"
+				name="o_from" value=""> <input type="hidden" id="o_to" name="o_to" value="">
+			<input type="hidden" id="event" name="event" value="0"> <input
+				type="hidden" id="date" name="date" value="">
+		</form>
 
 		<div id="nav_html"></div>
 		<!--상단,좌측메뉴-->
@@ -392,12 +447,15 @@
 							<tr>
 								<td>담당자</td>
 								<td>
-									<div class="ui selection dropdown" id="dropCustomer">
+									<!-- 									<div class="ui selection dropdown" id="dropCustomer">
 										<input type="hidden" name="customer"> <i
 											class="dropdown icon"></i>
 										<div class="default text"></div>
 										<div class="menu" id="customerSelect"></div>
 									</div>
+ --> <select class="ui search dropdown" id="dropCustomer">
+										<option value="">담당자 검색</option>
+								</select>
 								</td>
 							</tr>
 							<tr>
@@ -432,6 +490,18 @@
 								<td>Tel</td>
 								<td><span id="businessPTel"></span></td>
 							</tr>
+							<tr>
+								<td>담당자</td>
+								<td>--> <select class="ui search dropdown" id="dropPartner">
+										<option value="">담당자 검색</option>
+								</select>
+								</td>
+							</tr>
+							<tr>
+								<td>담당자 연락처</td>
+								<td><span id="partnerTel"></span></td>
+							</tr>
+
 						</tbody>
 					</table>
 				</div>
