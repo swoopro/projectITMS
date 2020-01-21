@@ -30,7 +30,7 @@
 
 	<insert id="insertBn" parameterType="omBnDTO">
 		INSERT INTO business (id, com_id, type, name, ceo, addr, tel, country_code, date)
-		VALUES(#{id}, 1, #{type}, #{name}, #{ceo}, #{addr}, #{tel}, #{country_code}, now())
+		VALUES(#{id}, #{com_id}, #{type}, #{name}, #{ceo}, #{addr}, #{tel}, #{country_code}, now())
 	</insert>
 
 	<update id="updateBn" parameterType="omBnDTO">
@@ -74,7 +74,7 @@
 
 	<insert id="insertCs" parameterType="omCsDTO">
 		INSERT INTO customer (id, b_id, com_id, name, tel, c_key, c_value, date)
-		VALUES(#{id}, #{b_id}, 1, #{name}, #{tel}, #{c_key}, #{c_value}, now())
+		VALUES(#{id}, #{b_id}, #{com_id}, #{name}, #{tel}, #{c_key}, #{c_value}, now())
 	</insert>
 
 	<update id="updateCs" parameterType="omCsDTO">
@@ -123,28 +123,31 @@
 		<result property="b_country_code" column="country_code" />
 	</resultMap>
 
-	<select id="selectAllCsJoin" resultMap="rsMapCsJoin">
+	<select id="selectAllCsJoin" resultMap="rsMapCsJoin"> <!-- 거래처 관리 페이지 -->
 		SELECT
 		a.id, a.b_id, a.com_id, a.name, a.tel, a.c_key, a.c_value,
 		b.id as bb_id, b.com_id as b_com_id, b.type, b.name as b_name, b.ceo, b.addr, b.tel as b_tel, b.country_code
 		FROM customer as a left outer join business as b on a.b_id = b.id
 		WHERE a.com_id = #{com_id}
 	</select>
+	<!-- 입력값으로 com_id로 넘겨줬기 때문에 com_id  -->
 	
-	<select id="selectAllSearchBnCsZero" resultMap="rsMapCsJoin">
+	<select id="selectAllSearchBnCsZero" resultMap="rsMapCsJoin"> <!-- 담당자명 일 때 -->
 		SELECT
 		a.id, a.b_id, a.com_id, a.name, a.tel, a.c_key, a.c_value,
 		b.id as bb_id, b.com_id as b_com_id, b.type, b.name as b_name, b.ceo, b.addr, b.tel as b_tel, b.country_code
 		FROM customer as a left outer join business as b on a.b_id = b.id
-		WHERE a.com_id = #{com_id} and a.name = {#name}
+		WHERE a.com_id = #{a_com_id} and a.name like concat('%',#{a_name},'%')
 	</select>
+		<!-- 입력값으로 omCsJoinDTO에 담아서 넘겨줬기 때문에 omCsJoinDTO에 선언한 a_com_id로  -->
 	
-	<select id="selectAllSearchBnCsOne" resultMap="rsMapCsJoin">
+	<select id="selectAllSearchBnCsOne" resultMap="rsMapCsJoin"> <!-- 거래처명 일 때 -->
 		SELECT
 		a.id, a.b_id, a.com_id, a.name, a.tel, a.c_key, a.c_value,
 		b.id as bb_id, b.com_id as b_com_id, b.type, b.name as b_name, b.ceo, b.addr, b.tel as b_tel, b.country_code
 		FROM customer as a left outer join business as b on a.b_id = b.id
-		WHERE a.com_id = #{com_id} and b.name = {#b_name}
+		WHERE a.com_id = #{a_com_id} and b.name like concat('%',#{b_name},'%')
 	</select>
+	<!-- 입력값으로 omCsJoinDTO에 담아서 넘겨줬기 때문에 omCsJoinDTO에 선언한 a_com_id로  -->
 
 </mapper>

@@ -21,9 +21,19 @@
 	</resultMap>
 
 	<select id="selectAllPd" resultMap="rsMapPd">
-		SELECT * FROM product a WHERE date=(select max(date) from product WHERE code = a.code and com_id=#{com_id})
-		<!-- SELECT id, com_id, code, name, spec, price, max(date) as date FROM product WHERE com_id = #{com_id} group by code; -->
+		SELECT * FROM product a WHERE date=(select max(date) from product WHERE code = a.code and com_id = #{com_id})
 	</select>
+		<!-- 왜 a.code인지 ?? -->
+	
+	<select id="selectAllPdSearchZero" resultMap="rsMapPd">
+		SELECT * FROM product a WHERE date=(select max(date) from product WHERE code = a.code and com_id = #{com_id}) and name like concat('%',#{name},'%')
+	</select>
+		<!-- controller에서 받아온 입력값 search의 실제값을 omPdDTO.setName(search) 해줬으므로 #{name}으로  -->
+	
+	<select id="selectAllPdSearchOne" resultMap="rsMapPd">
+		SELECT * FROM product a WHERE date=(select max(date) from product WHERE code = a.code and com_id = #{com_id}) and code like concat('%',#{code},'%')
+	</select>
+		<!-- controller에서 받아온 입력값 search의 실제값을 omPdDTO.setCode(search) 해줬으므로 #{code}로  -->
 	
 	<select id="selectAllHistory" resultMap="rsMapPd">
 		SELECT * FROM product WHERE com_id = #{com_id} and code = #{code} order by date desc
