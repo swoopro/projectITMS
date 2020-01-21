@@ -7,154 +7,203 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@RequestMapping("operation/customer")
+
+@RequestMapping("operation/customer") // 현재 Controller에서의 default 주소
+
 @Controller
 class OperationMngCustomerController {
 
 	@Autowired
 	OperationMngCustomerDAOImpl omCsDAO;
 	
-// 페이지 연결 메서드
 	
-	// 거래처 관리 페이지
+/////////// 거래처 관리 페이지(거래처 관리 탭 클릭시 보이는 페이지)(selectAll 기능) //////////
+	
 	@RequestMapping("customerRead")
 	public void customerPage(Model model, HttpSession session) {
-		session.setAttribute("com_id", 1);
+		// select결과를 customerRead.jsp로 보내주기 위한 Model,
+		// select시 where 조건을 위해 필요한 HttpSession
+		
 		System.out.println("거래처 관리 페이지");
 		List<OperationMngCustomerJoinDTO> list = omCsDAO.getCustomerBusinessReadAll(session.getAttribute("com_id"));
+		// DAO의 메서드 입력값으로 session값을 넣어줘서 Mapper에서 where조건으로 사용
+		
 		model.addAttribute("list", list);
 	}
 	
-	// 거래처 등록 페이지
-	@RequestMapping("customerAdd1")
-	public void customerAdd1Page() {
-		System.out.println("거래처 정보 등록 페이지");
-	}
 	
-	// 담당자 등록 페이지
-	@RequestMapping("customerAdd2")
-	public void customerAdd2Page() {
-		System.out.println("담당자 정보 등록 페이지");
-	}
+////////// 거래처 관리 목록 검색(selectAll 기능) //////////
 	
-	// 거래처 수정/삭제 페이지
-	@RequestMapping("customerEditDel1")
-	public void customerEditDel1Page(OperationMngBusinessDTO omBnDTO, Model model, HttpSession session) {
-		// customerRead.jsp에서 넘겨 받은 아이디를 받기 위한 DTO,
-		// select결과를 customerEditDel1.jsp로 보내주기 위한 Model,
-		// select시 where 조건을 위해 필요한 HttpSession
-		
-//		System.out.println(omBnDTO.getId());
-		session.setAttribute("com_id", 1); // 병수씨한테 session을 받아오기 전에 임의로 1 입력
-//		System.out.println((Integer) session.getAttribute("com_id"));
-		omBnDTO.setCom_id((Integer) session.getAttribute("com_id")); // DTO에 session값 com_id 담아주기(feat. Object session이라 형변환)
-//		System.out.println(session.getAttribute("com_id"));
-		System.out.println("거래처 정보 수정/삭제 페이지");
-		omBnDTO = omCsDAO.getBusinessRead(omBnDTO); // customerRead.jsp에서 받아온 id값을 DTO에 담아주었기 때문에 새로 객체 생성하면 안됨 
-//		System.out.println(omBnDTO);
-		model.addAttribute("omBnDTO", omBnDTO); // ("select결과 페이지에서 써줄 이름", 넘겨줄 데이터)
-	}
-	
-	// 담당자 수정/삭제 페이지
-	@RequestMapping("customerEditDel2")
-	public void customerEditDel2Page(OperationMngCustomerDTO omCsDTO, Model model, HttpSession session) {
-		// customerRead.jsp에서 넘겨 받은 아이디를 받기 위한 DTO,
-		// select결과를 customerEditDel1.jsp로 보내주기 위한 Model,
-		// select시 where 조건을 위해 필요한 HttpSession
-		
-		session.setAttribute("com_id", 1); // 병수씨한테 session을 받아오기 전에 임의로 1 입력
-		omCsDTO.setCom_id((Integer) session.getAttribute("com_id")); // DTO에 session값 com_id 담아주기(feat. Object session이라 형변환)
-		System.out.println("담당자 정보 수정/삭제 페이지");
-		omCsDTO = omCsDAO.getCustomerRead(omCsDTO); // customerRead.jsp에서 받아온 id값을 DTO에 담아주었기 때문에 새로 객체 생성하면 안됨
-		model.addAttribute("omCsDTO", omCsDTO); // ("select결과 페이지에서 써줄 이름", 넘겨줄 데이터)
-	}
-	
-// CRUD 메서드
-	
-	
-	// 거래처 관리 메뉴//
-	
-	// 거래처 등록
-	
-	@RequestMapping("insertBn")
-	public String insertBn(OperationMngBusinessDTO omBnDTO) {
-		omCsDAO.addBusiness(omBnDTO);
-		return "redirect:customerRead";
-		// insert기능을 수행하면서 완료시 customerRead 컨트롤러에 들려서
-		// selectAll을 해주고 customerRead페이지로 이동하도록 redirect
-	}
-	
-	// 거래처 수정
-	@RequestMapping("updateBn")
-	public String updateBn(OperationMngBusinessDTO omBnDTO) {
-		omCsDAO.editBusiness(omBnDTO);
-		return "redirect:customerRead";
-	}
-	
-	// 거래처 삭제
-	@RequestMapping("deleteBn")
-	public String deleteBn(OperationMngBusinessDTO omBnDTO) {
-		omCsDAO.delBusiness(omBnDTO);
-		return "redirect:customerRead";
-	}
-	
-	// 거래처 목록
-	
-	// 거래처 목록 검색
 	@ResponseBody
-	@RequestMapping("searchBnCs")
-	public List<OperationMngCustomerJoinDTO> searchBnCs(OperationMngCustomerJoinDTO omCsJoinDTO, Model model, HttpSession session, int dropdown, String search) {
+	// ajax 사용시 result jsp파일을 따로 생성하지 않고 result값에 해당하는 데이터를 ResponseBody에 담아서 바로 전송
+	// pom.xml의 dependency에 jackson-databind 라이브러리를 추가하고 Response 어노테이션을 사용하면
+	// Model 객체 없이도 return 값으로 검색결과를 담아준 변수로 데이터 전송 가능	
+	
+	@RequestMapping("searchBnCs") // result 출력 파일을 생성하지 않기 때문에 ajax url의 요청 주소와 동일하게만 해주면 됨
+	public List<OperationMngCustomerJoinDTO> searchBnCs(OperationMngCustomerJoinDTO omCsJoinDTO, HttpSession session, int dropdown, String search) {
+		// select시 where 조건을 위해 필요한 HttpSession,
+		// session을 담아줄 DTO(session을 DTO에 담아 DAO의 입력값으로 넣어 Mapper의 where조건으로 사용),
+		// customerRead.jsp에서 넘겨받은 dropdown에서 선택된 값 + search의 검색어 값
 		
-		session.setAttribute("com_id", 1);
 		omCsJoinDTO.setA_com_id((Integer) session.getAttribute("com_id"));
+		// DTO에 session값 com_id 담아주기(Object session이라 형변환). DTO에 담아주어야 Mapper에서 where 조건으로 사용 가능
 		System.out.println("거래처 관리 검색 페이지");
-		System.out.println("드롭다운------------------------" + dropdown);
-		System.out.println("검색어------------------------" + search);
 		
-		List<OperationMngCustomerJoinDTO> list = null;
+		List<OperationMngCustomerJoinDTO> list = null; // if문 밖에서 객체 생성을 해줘야 return list가 밖에서 가능
 		
-		if (dropdown == 0) {
-			omCsJoinDTO.setA_name(search);
+		if (dropdown == 0) { // 담당자명 일 때
+			omCsJoinDTO.setA_name(search); // 검색어 값을 DTO에 담아 Mapper에서 where 조건으로 사용
 			list = omCsDAO.getCustomerBusinessReadAllSearchZero(omCsJoinDTO);
-		} else {
-			omCsJoinDTO.setB_name(search);
+		} else { // 거래처명 일 때
+			omCsJoinDTO.setB_name(search); // 검색어 값을 DTO에 담아 Mapper에서 where 조건으로 사용
 			list = omCsDAO.getCustomerBusinessReadAllSearchOne(omCsJoinDTO);
 		}
 		return list;
 	}
 	
-	// 담당자 //
+
+////////// 거래처 등록 페이지(거래처 등록 버튼 클릭시 보이는 페이지) //////////
 	
-	// 담당자 등록
-	@RequestMapping("insertCs")
-	public void insertCs(OperationMngCustomerDTO omCsDTO) {
-		omCsDAO.addCustomer(omCsDTO);
+	@RequestMapping("customerAdd1")
+	public void customerAdd1Page() {
+		System.out.println("거래처 정보 등록 페이지");
 	}
 	
-	// 담당자 수정
+	
+/////////// 담당자 등록 페이지(담당자 등록 버튼 클릭시 보이는 페이지) //////////
+	
+	@RequestMapping("customerAdd2")
+	public void customerAdd2Page() {
+		System.out.println("담당자 정보 등록 페이지");
+	}
+	
+	
+////////// 거래처 수정/삭제 페이지(거래처 수정/삭제 버튼 클릭시 보이는 페이지)(selectOne 기능) //////////
+	
+	@RequestMapping("customerEditDel1")
+	public void customerEditDel1Page(OperationMngBusinessDTO omBnDTO, Model model, HttpSession session) {
+		// customerRead.jsp에서 넘겨 받은 id를 받기 위한 DTO,
+		// select결과를 customerEditDel1.jsp로 보내주기 위한 Model,
+		// select시 where 조건을 위해 필요한 HttpSession
+		
+		omBnDTO.setCom_id((Integer) session.getAttribute("com_id"));
+		// DTO에 session값 com_id 담아주기(Object session이라 형변환). DTO에 담아주어야 Mapper에서 where 조건으로 사용 가능
+		
+		System.out.println("거래처 정보 수정/삭제 페이지");
+		omBnDTO = omCsDAO.getBusinessRead(omBnDTO); // customerRead.jsp에서 받아온 id값을 DTO에 담아주었기 때문에 새로 객체 생성하면 안됨
+		model.addAttribute("omBnDTO", omBnDTO); // ("select결과 페이지에서 써줄 이름", 넘겨줄 데이터)
+	}
+	
+
+////////// 담당자 수정/삭제 페이지(담당자 수정/삭제 버튼 클릭시 보이는 페이지)(selectOne 기능) //////////
+	
+	@RequestMapping("customerEditDel2")
+	public void customerEditDel2Page(OperationMngCustomerDTO omCsDTO, Model model, HttpSession session) {
+		// customerRead.jsp에서 넘겨 받은 id를 받기 위한 DTO,
+		// select결과를 customerEditDel1.jsp로 보내주기 위한 Model,
+		// select시 where 조건을 위해 필요한 HttpSession
+		
+		omCsDTO.setCom_id((Integer) session.getAttribute("com_id"));
+		// DTO에 session값 com_id 담아주기(Object session이라 형변환). DTO에 담아주어야 Mapper에서 where 조건으로 사용 가능
+		
+		System.out.println("담당자 정보 수정/삭제 페이지");
+		omCsDTO = omCsDAO.getCustomerRead(omCsDTO); // customerRead.jsp에서 받아온 id값을 DTO에 담아주었기 때문에 새로 객체 생성하면 안됨
+		model.addAttribute("omCsDTO", omCsDTO); // ("select결과 페이지에서 써줄 이름", 넘겨줄 데이터)
+	}
+	
+	
+////////// 거래처 등록(insert 기능) //////////
+	
+	@RequestMapping("insertBn")
+	public String insertBn(OperationMngBusinessDTO omBnDTO, HttpSession session) {
+		// customerRead.jsp에서 넘겨 받은 type, name, ceo, addr, tel, country를 받기 위한 DTO,
+		// select시 where 조건을 위해 필요한 HttpSession
+		
+		omBnDTO.setCom_id((Integer) session.getAttribute("com_id"));
+		// DTO에 session값 com_id 담아주기(Object session이라 형변환). DTO에 담아주어야 Mapper에서 where 조건으로 사용 가능
+		
+		omCsDAO.addBusiness(omBnDTO);
+		
+		return "redirect:customerRead";
+		// insert기능을 수행하면서 완료시 customerRead 컨트롤러에 들려서
+		// selectAll을 해주고 customerRead페이지로 이동하도록 redirect
+	}
+	
+////////// 거래처 수정(update 기능) //////////
+	
+	@RequestMapping("updateBn")
+	public String updateBn(OperationMngBusinessDTO omBnDTO) {
+		// customerRead.jsp에서 넘겨 받은 id, com_id, type, name, ceo, addr, tel, country_code를 받기 위한 DTO
+		
+		omCsDAO.editBusiness(omBnDTO);
+		
+		return "redirect:customerRead";
+		// update기능을 수행하면서 완료시 customerRead 컨트롤러에 들려서
+		// selectAll을 해주고 customerRead페이지로 이동하도록 redirect
+	}
+	
+////////// 거래처 삭제(delete 기능) //////////
+	
+	@RequestMapping("deleteBn")
+	public String deleteBn(OperationMngBusinessDTO omBnDTO) {
+		// customerRead.jsp에서 넘겨 받은 id, com_id를 받기 위한 DTO
+		
+		omCsDAO.delBusiness(omBnDTO);
+		
+		return "redirect:customerRead";
+		// delete기능을 수행하면서 완료시 customerRead 컨트롤러에 들려서
+		// selectAll을 해주고 customerRead페이지로 이동하도록 redirect
+	}
+	
+
+	
+////////// 담당자 등록(insert 기능) //////////
+	
+	@RequestMapping("insertCs")
+	public String insertCs(OperationMngCustomerDTO omCsDTO, HttpSession session) {
+		// customerRead.jsp에서 넘겨 받은 b_id, name, tel, c_key, c_value를 받기 위한 DTO,
+		// select시 where 조건을 위해 필요한 HttpSession
+		
+		omCsDTO.setCom_id((Integer) session.getAttribute("com_id"));
+		// DTO에 session값 com_id 담아주기(Object session이라 형변환). DTO에 담아주어야 Mapper에서 where 조건으로 사용 가능
+		omCsDAO.addCustomer(omCsDTO);
+		
+		return "redirect:customerRead";
+		// insert기능을 수행하면서 완료시 customerRead 컨트롤러에 들려서
+		// selectAll을 해주고 customerRead페이지로 이동하도록 redirect
+	}
+	
+	
+////////// 담당자 수정(update 기능) //////////
+	
 	@RequestMapping("updateCs")
 	public String updateCs(OperationMngCustomerDTO omCsDTO) {
+		// customerRead.jsp에서 넘겨 받은 id, b_id, com_id, name, tel, c_key, c_value를 받기 위한 DTO
+		
 		omCsDAO.editCustomer(omCsDTO);
+		
 		return "redirect:customerRead";
+		// update기능을 수행하면서 완료시 customerRead 컨트롤러에 들려서
+		// selectAll을 해주고 customerRead페이지로 이동하도록 redirect
 	}
-	// 담당자 삭제
+	
+	
+////////// 담당자 삭제(delete 기능) //////////
+	
 	@RequestMapping("deleteCs")
 	public String deleteCs(OperationMngCustomerDTO omCsDTO) {
+		// customerRead.jsp에서 넘겨 받은 id, b_id, com_id를 받기 위한 DTO
+		
 		omCsDAO.delCustomer(omCsDTO);
+		
 		return "redirect:customerRead";
+		// update기능을 수행하면서 완료시 customerRead 컨트롤러에 들려서
+		// selectAll을 해주고 customerRead페이지로 이동하도록 redirect
 	}
 	
-	
-
-
-
-
-
-
 
 }
 

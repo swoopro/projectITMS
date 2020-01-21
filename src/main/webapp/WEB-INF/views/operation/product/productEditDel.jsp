@@ -73,22 +73,24 @@
 			var id = $("#id").val();
 			var com_id = $("#com_id").val();
 			
-			if (confirm("선택한 제품의 이력이 모두 삭제 됩니다. 진행하시겠습니까?") === true) {
-			/* '제품 정보 삭제' 버튼 누를 때 DB에서 정보를 삭제하고 '제품 관리' 페이지로 이동 */
-			$.ajax({
-				url : "deletePd", // url: 가져올 페이지
-				data : {
-					id : id, // metadata : data
-					com_id : com_id
-				},
-				// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
-				success : function(result) {
-					console.log(result); // result값 확인용
-					alert("거래처 정보 삭제가 완료되었습니다");
-					location.href = "productRead"; // '메인'페이지로 이동
-				} // success
-			}); // ajax end
-			} // if end
+			if (confirm("선택한 제품의 정보와 단가 이력까지 모두 삭제 됩니다.\n진행하시겠습니까?") === true) {
+				/* '제품 정보 삭제' 버튼 누를 때 DB에서 정보를 삭제하고 '제품 관리' 페이지로 이동 */
+				$.ajax({
+					url : "deletePd", // url: 가져올 페이지
+					data : {
+						id : id, // metadata : data
+						com_id : com_id
+					},
+					// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
+					success : function(result) {
+						console.log(result); // result값 확인용
+						alert("제품 정보 삭제가 완료되었습니다");
+						location.href = "productRead"; // '메인'페이지로 이동
+					} // success
+				}); // ajax end
+			}else{
+				return false;
+			}
 		}); // click end
 		
 	}); // funtion end
@@ -98,7 +100,7 @@
 
 <body>
 	<div class="content_body">
-		<h1>제품 정보 수정/삭제 페이지</h1>
+		<br><h1>제품 정보 수정/삭제 페이지</h1><br><br>
 
 	<div class="ui centered grid">
 
