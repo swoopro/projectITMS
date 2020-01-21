@@ -66,7 +66,7 @@
 			}); // ajax end
 		}); // click end
 
-	///// '회원탈퇴' 버튼 누를 때 /////
+	///// '삭제' 버튼 누를 때 /////
 		
 		$("#cED_Del2").click(function() {
 			// ajax를 사용하여 deleteBn.jsp에 metadata와 data를 전송하고 result값을 받아오기 위해 각 입력값들을 변수에 할당
@@ -76,21 +76,27 @@
 			var b_id = $("#b_id").val();
 			var com_id = $("#com_id").val();
 			
-			/* '거래처 정보 삭제' 버튼 누를 때 DB에서 정보를 삭제하고 '거래처 관리' 페이지로 이동 */
-			$.ajax({
-				url : "deleteCs", // url: 가져올 페이지
-				data : {
-					id : id, // metadata : data
-					b_id : b_id,
-					com_id : com_id
-				},
-				// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
-				success : function(result) {
-					console.log(result); // result값 확인용
-					alert("담당자 정보 삭제가 완료되었습니다");
-					location.href = "customerRead"; // '메인'페이지로 이동
-				} // success
-			}); // ajax end
+			var choice = confirm("거래처 정보는 유지되고 담당자 정보만 삭제됩니다.\n거래처/담당자 정보 일괄 삭제를 원하시면 거래처 정보 삭제 기능을 사용해주세요. 삭제하시겠습니까?");
+			
+			if (choice == true) {
+				/* '거래처 정보 삭제' 버튼 누를 때 DB에서 정보를 삭제하고 '거래처 관리' 페이지로 이동 */
+				$.ajax({
+					url : "deleteCs", // url: 가져올 페이지
+					data : {
+						id : id, // metadata : data
+						b_id : b_id,
+						com_id : com_id
+					},
+					// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
+					success : function(result) {
+						console.log(result); // result값 확인용
+						alert("담당자 정보 삭제가 완료되었습니다");
+						location.href = "customerRead"; // '메인'페이지로 이동
+					} // success
+				}); // ajax end		
+			} else {
+				return false;
+			}
 		}); // click end
 	}); // funtion end	
 </script>
@@ -98,7 +104,7 @@
 
 <body>
 	<div class="content_body">
-		<h1>담당자 정보 수정/삭제 페이지</h1>
+		<br><h1>담당자 정보 수정/삭제 페이지</h1><br><br>
 
 	<div class="ui centered grid">
 

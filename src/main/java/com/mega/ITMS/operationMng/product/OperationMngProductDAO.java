@@ -19,9 +19,16 @@ public interface OperationMngProductDAO {
 	// selectAll
 	public List<OperationMngProductDTO> getProductReadAll(Object com_id);
 
-	// selectAll()
+	// selectAll(Search) : Zero(제품명 : name)
+	public List<OperationMngProductDTO> getProductReadAllSearchZero(OperationMngProductDTO omPdDTO);
+	
+	// selectAll(Search) : One(제품코드 : code)
+	public List<OperationMngProductDTO> getProductReadAllSearchOne(OperationMngProductDTO omPdDTO);
+	
+	// selectAll(History) : Down
 	public List<OperationMngProductDTO> getProductReadAllHistory(OperationMngProductDTO omPdDTO);
 
-	// selectAll() : HistoryUp
+	// selectAll(History) : Up
 	public List<OperationMngProductDTO> getProductReadAllHistoryUp(OperationMngProductDTO omPdDTO);
+
 }

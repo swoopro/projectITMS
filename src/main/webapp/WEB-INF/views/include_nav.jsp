@@ -23,11 +23,8 @@
                     <a class="item" href="${pageContext.request.contextPath}/operation/customer/customerRead">
                         거래처관리
                     </a>
-                    <a class="item" href="${pageContext.request.contextPath}/operation/customer/customerRead">
+                    <a class="item" href="${pageContext.request.contextPath}/operation/product/productRead">
                         제품관리
-                    </a>
-                    <a class="item" href="${pageContext.request.contextPath}/operation/price/priceRead">
-                        단가이력관리
                     </a>
                 </div>
             </div>
