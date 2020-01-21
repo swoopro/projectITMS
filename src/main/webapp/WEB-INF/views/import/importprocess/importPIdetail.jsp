@@ -169,7 +169,6 @@ page[size="A4"] {
 
 
 <script>
-	window.print();
 </script>
 </body>
 </html>

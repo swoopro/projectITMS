@@ -3,7 +3,7 @@ package com.mega.ITMS.importMng.importprocess;
 public class Import_employeeDTO {
 	private int com_id, pmenu, imunu, emenu, fmenu, rmenu, imenu1, flag;
 	private String id, pw, dept_id, name, tel, email, delegation,date;
-
+	
 	public String getDate() {
 		return date;
 	}
@@ -107,8 +107,8 @@ public class Import_employeeDTO {
 				+ ", pw=" + pw + ", dept_id=" + dept_id + ", name=" + name + ", tel=" + tel + ", email=" + email
 				+ ", delegation=" + delegation + ", date=" + date + "]";
 	}
-
-
-
-
+	
+	
+	
+	
 }
