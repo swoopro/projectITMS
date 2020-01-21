@@ -34,8 +34,8 @@ public class UserMngEmployeeController {
 	@RequestMapping("addUser")
 	public void addUser(String csv, UserMngEmployeeDTO userMngEmployeeDTO) {
 		String[] line = csv.split("\n");
-		for (String s : line) {
-			String[] comma = s.split(",");
+		for(int i=0; i<line.length; i++) {
+			String[] comma = line[i].split(",");
 			userMngEmployeeDTO = new UserMngEmployeeDTO();
 			userMngEmployeeDTO.setId(comma[0]);
 			userMngEmployeeDTO.setCom_id(Integer.parseInt(comma[1]));
@@ -72,20 +72,25 @@ public class UserMngEmployeeController {
 		userMngEmployeeDTO.setCom_id((Integer) session.getAttribute("com_id"));
 		UserMngDeptDTO userMngDeptDTO = new UserMngDeptDTO();
 		try {
-			if ("name".equals(key)) {
+			switch (key) {
+			case "name":
 				userMngEmployeeDTO.setName(value);
 				list = userMngEmployeeDAOImpl.getUserAsName(userMngEmployeeDTO);
-			} else if ("id".equals(key)) {
+				break;
+			case "id":
 				userMngEmployeeDTO.setId(value);
 				list = userMngEmployeeDAOImpl.getUserAsId(userMngEmployeeDTO);
-			} else if ("dept_id".equals(key)) {
+				break;
+			case "dept_id":
 				userMngEmployeeDTO.setDept_id(value);
 				list = userMngEmployeeDAOImpl.getUserAsDept_id(userMngEmployeeDTO);
-			} else if ("dept_name".equals(key)) {
+				break;
+			case "dept_name":
 				userMngDeptDTO.setCom_id((Integer) session.getAttribute("com_id"));
 				userMngDeptDTO.setName(value);
 				list = userMngEmployeeDAOImpl.getUserAsDept_name(userMngDeptDTO);
-			} else {
+				break;
+			default:
 				list = userMngEmployeeDAOImpl.getUserAll(userMngEmployeeDTO);
 			}
 		} catch (Exception e) {
@@ -226,20 +231,25 @@ public class UserMngEmployeeController {
         List<UserMngEmployeeDTO> dataList = null;
         
         try {
-			if ("name".equals(key)) {
+			switch (key) {
+			case "name":
 				userMngEmployeeDTO.setName(value);
 				dataList = userMngEmployeeDAOImpl.getUserAsName(userMngEmployeeDTO);
-			} else if ("id".equals(key)) {
+				break;
+			case "id":
 				userMngEmployeeDTO.setId(value);
 				dataList = userMngEmployeeDAOImpl.getUserAsId(userMngEmployeeDTO);
-			} else if ("dept_id".equals(key)) {
+				break;
+			case "dept_id":
 				userMngEmployeeDTO.setDept_id(value);
 				dataList = userMngEmployeeDAOImpl.getUserAsDept_id(userMngEmployeeDTO);
-			} else if ("dept_name".equals(key)) {
+				break;
+			case "dept_name":
 				userMngDeptDTO.setCom_id((Integer) session.getAttribute("com_id"));
 				userMngDeptDTO.setName(value);
 				dataList = userMngEmployeeDAOImpl.getUserAsDept_name(userMngDeptDTO);
-			} else {
+				break;
+			default:
 				dataList = userMngEmployeeDAOImpl.getUserAll(userMngEmployeeDTO);
 			}
 		} catch (Exception e) {
@@ -249,6 +259,8 @@ public class UserMngEmployeeController {
         // 받은 데이터를 맵에 담는다.
         Map<String, Object> beans = new HashMap<String, Object>();
         beans.put("dataList", dataList);
+       /* Map<String, Object> beans2 = new HashMap<String, Object>();
+        beans2.put("dataList2", deptList);*/
         
         // 엑셀 다운로드 메소드가 담겨 있는 객체
         Excel me = new Excel();
