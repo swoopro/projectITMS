@@ -215,18 +215,37 @@
 	</select>
 	
 	
-		<resultMap type="com.mega.ITMS.importMng.importprocess.Import_orderDetailDTO" id="orderDetailDTO">
+		<resultMap type="com.mega.ITMS.importMng.importprocess.Import_financeRequestDTO" id="financeRequestDTO">
+		<result property="id" column="id" />
+		<result property="com_id" column="com_id" />
+		<result property="basic_id" column="basic_id" />
+		<result property="cb_id" column="cb_id" />
+		<result property="detail_cb_id" column="detail_cb_id" />
+		<result property="amount_krw" column="amount_krw" />
+		<result property="request_id" column="request_id" />
+		<result property="response_id" column="response_id" />
+		<result property="issued_date" column="issued_date" />
+		<result property="note" column="note" />
+		<result property="receive_date" column="receive_date" />
+	</resultMap>
+	
+			<resultMap type="com.mega.ITMS.importMng.importprocess.Import_orderDetailDTO" id="orderDetailDTO">
 		<result property="id" column="id" />
 		<result property="basic_id" column="basic_id" />
 		<result property="p_id" column="p_id" />
 		<result property="qty" column="qty" />
 	</resultMap>
+	
  
 	<select id="selectAllOrderDetail" resultMap="orderDetailDTO">
 		SELECT * FROM order_detail
-		WHERE basic_id IN (SELECT id FROM basic_trade WHERE type_tr = 2 AND com_id = #{com_id})
+		WHERE basic_id IN (SELECT id FROM basic_trade WHERE type_tr = 2 AND basic_id = #{basic_id})
 	</select>
 	
+		<select id="selectAllFinanceRequest" resultMap="financeRequestDTO">
+			select * from finance_request where basic_id in 
+			(SELECT id FROM basic_trade WHERE type_tr = 2 AND com_id = #{com_id}) and not receive_date is null;
+	</select>
 	
 	
 	
@@ -245,6 +264,10 @@
 		VALUES(default,#{basic_id},#{cb_id},#{dcb_id},now())
 	</insert>
 	
+	<insert id="importInsertFinanceRequest" parameterType="com.mega.ITMS.importMng.importprocess.Import_financeRequestDTO">
+		INSERT INTO finance_request (id, com_id, basic_id, request_id, cb_id, detail_cb_id, issued_date, amount_krw, note)
+		VALUES(default,#{com_id},#{basic_id},#{request_id},#{cb_id},#{detail_cb_id},now(),#{amount_krw}, #{note})
+	</insert>
 	
 	
 	

@@ -135,6 +135,19 @@ public class ImportDAO {
 		return null;
 	}
 	
+	public List<Import_financeRequestDTO> importFinanceRequestSelectAll(int com_id) {
+		try {
+			List<Import_financeRequestDTO> list = myBatis.selectList("selectAllFinanceRequest", com_id);
+			System.out.println(">>>SUCCESSED: importFinanceRequest");
+			return list;
+		} catch (Exception e) {
+			System.out.println(">>>FAILED: importFinanceRequest");
+		}
+		
+		return null;
+	}
+
+	
 	public List<Import_productDTO> importProductSelectAllPID(int p_id) {
 		try {
 			List<Import_productDTO> list = myBatis.selectList("selectAllProductPID", p_id);
@@ -182,9 +195,9 @@ public class ImportDAO {
 	}
 
 	
-	public List<Import_orderDetailDTO> importOrderDetailAll(int com_id) {
+	public List<Import_orderDetailDTO> importOrderDetailAll(int basic_id) {
 		try {
-			List<Import_orderDetailDTO> list= myBatis.selectList("selectAllOrderDetail", com_id);
+			List<Import_orderDetailDTO> list= myBatis.selectList("selectAllOrderDetail", basic_id);
 			return list;
 			
 		} catch (Exception e) {
@@ -267,6 +280,15 @@ public class ImportDAO {
 			System.out.println(">>>SUCCESSED: importShipPIedit.do");
 		} catch (Exception e) {
 			System.out.println(">>>FAILED: importShipPIedit.do");
+		}
+	}
+	
+	public void insertFinanceRequest(Import_financeRequestDTO dto) {
+		try {
+			myBatis.insert("importInsertFinanceRequest", dto);
+			System.out.println(">>>SUCCESSED: importInsertFinanceRequest ");
+		} catch (Exception e) {
+			System.out.println(">>>FAILED: importInsertFinanceRequest ");
 		}
 	}
 	

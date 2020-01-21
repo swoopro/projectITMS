@@ -68,10 +68,10 @@
 		<br>
 		<div class="ui styled fluid accordion">
 			<div>
-				<c:forEach var="tlist" items="${tlist}"
-					varStatus="status">
+				<c:forEach var="tlist" items="${tlist}" varStatus="status">
 					<c:choose>
 						<c:when test="${tlist.type_file == 1 }">
+
 							<div class="title">
 								<i class="dropdown icon"></i> 수입번호: ${tlist.doc_no}
 							</div>
@@ -142,22 +142,18 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr>
-														<td>관세</td>
-														<td>50,000 USD</td>
-														<td>2020-02-02</td>
-													</tr>
-													<tr>
-														<td>물품관리비</td>
-														<td>1,000 USD</td>
-														<td>2020-02-02</td>
-													</tr>
-													<tr>
-														<td>물품관리비</td>
-														<td>2,000 USD</td>
-														<td>2020-02-02</td>
-													</tr>
+													<c:forEach var="flist" items="${flist}" varStatus="st">
+														<c:choose>
+															<c:when test="${tlist.basic_id eq flist.basic_id}">
+																<tr><td>${flist.note}</td>
+																<td>${flist.amount_krw} KRW</td>
+																<td>${flist.receive_date}</td>
+																</tr>
+															</c:when>
 
+
+														</c:choose>
+													</c:forEach>
 												</tbody>
 											</table>
 										</div>
@@ -184,19 +180,19 @@
 
 											<div class="ui small basic icon buttons">
 												<button class="ui button" data-content="상세보기"
-													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"detail"}'>
+													data-option='{"basicID":"${tlist.basic_id}","process":"PO","category":"detail"}'>
 													<i class="file icon"></i>
 												</button>
 												<button class="ui button" data-content="프린트"
-													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"print"}'>
+													data-option='{"basicID":"${tlist.basic_id}","process":"PO","category":"print"}'>
 													<i class="save icon"></i>
 												</button>
 												<button class="ui button" data-content="등록/수정"
-													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"edit"}'>
+													data-option='{"basicID":"${tlist.basic_id}","process":"PO","category":"edit"}'>
 													<i class="edit icon"></i>
 												</button>
 												<button class="ui button" data-content="재무팀요청"
-													data-option='{"basicID":"${tlist.basic_id}","process":"PI","category":"finance"}'>
+													data-option='{"basicID":"${tlist.basic_id}","process":"PO","category":"finance"}'>
 													<i class="upload icon"></i>
 												</button>
 
@@ -270,22 +266,18 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr>
-														<td>관세</td>
-														<td>50,000 USD</td>
-														<td>2020-02-02</td>
-													</tr>
-													<tr>
-														<td>물품관리비</td>
-														<td>1,000 USD</td>
-														<td>2020-02-02</td>
-													</tr>
-													<tr>
-														<td>물품관리비</td>
-														<td>2,000 USD</td>
-														<td>2020-02-02</td>
-													</tr>
+													<c:forEach var="flist" items="${flist}" varStatus="st">
+														<c:choose>
+															<c:when test="${tlist.basic_id eq flist.basic_id}">
+																<tr><td>${flist.note}</td>
+																<td>${flist.amount_krw} KRW</td>
+																<td>${flist.receive_date}</td>
+																</tr>
+															</c:when>
 
+
+														</c:choose>
+													</c:forEach>
 												</tbody>
 											</table>
 										</div>
@@ -421,22 +413,18 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr>
-														<td>관세</td>
-														<td>50,000 USD</td>
-														<td>2020-02-02</td>
-													</tr>
-													<tr>
-														<td>물품관리비</td>
-														<td>1,000 USD</td>
-														<td>2020-02-02</td>
-													</tr>
-													<tr>
-														<td>물품관리비</td>
-														<td>2,000 USD</td>
-														<td>2020-02-02</td>
-													</tr>
+													<c:forEach var="flist" items="${flist}" varStatus="st">
+														<c:choose>
+															<c:when test="${tlist.basic_id eq flist.basic_id}">
+																<tr><td>${flist.note}</td>
+																<td>${flist.amount_krw} KRW</td>
+																<td>${flist.receive_date}</td>
+																</tr>
+															</c:when>
 
+
+														</c:choose>
+													</c:forEach>
 												</tbody>
 											</table>
 										</div>
@@ -501,61 +489,6 @@
 								<i class="big disabled window close outline icon"></i>
 							</div>
 
-
-						</c:when>
-
-						<c:when test="${tradeFileList[status.index].type_file == 5 }">
-
-
-							<div class="title">
-								<i class="dropdown icon"></i> 수입번호: ${basicTradeList.doc_no}
-							</div>
-							<div class="content">
-								<div class="ui ordered steps">
-									<div class="completed step">
-
-										<div class="content">
-
-											<div class="title">PO</div>
-
-											<div class="ui small basic icon buttons">
-												<button class="ui button" data-content="상세보기"
-													id="IM001POdetail"
-													data-option='{"no":"001","process":"PO","category":"detail"}'>
-													<i class="file icon"></i>
-												</button>
-												<button class="ui button" data-content="프린트"
-													id="IM001POprint">
-													<i class="save icon"></i>
-												</button>
-												<button class="ui button" data-content="등록/수정"
-													id="IM001POedit">
-													<i class="edit icon"></i>
-												</button>
-												<button class="ui button" data-content="재무팀요청"
-													id="IM001POfina">
-													<i class="upload icon"></i>
-												</button>
-
-											</div>
-										</div>
-									</div>
-
-									<div class="completed step">
-										<div class="content">
-											<div class="title">PI</div>
-											<div class="ui disabled icon input">
-												<i class="search icon"></i> <input value="내용조회"
-													type="button">
-											</div>
-											<button class="ui grey basic button">입금요청</button>
-										</div>
-									</div>
-
-
-								</div>
-								<i class="big disabled window close outline icon"></i>
-							</div>
 
 						</c:when>
 
