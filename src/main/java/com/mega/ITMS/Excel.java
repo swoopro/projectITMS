@@ -38,6 +38,7 @@ public class Excel {
 				    
 				    
 				    Workbook workbook = xls.transformXLS(is, bean);
+				    /*Workbook workbook2 = xls.transformXLS(is, bean2);*/
     
     
 				    response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + ".xlsx\"");

@@ -61,6 +61,11 @@
 					</div>
 					</form>
 				</td>
+				<td align="right">
+					<button type="button" id="downExcel">엑셀 다운로드</button>
+					<input type="hidden" id="xlskey" value="${key}">
+					<input type="hidden" id="xlsvalue" value="${value}">
+				</td>
 			</tr>
 		</table>
 		<form action="editUser" method="post">
