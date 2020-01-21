@@ -69,6 +69,8 @@ $(function(){
         } else if (count4 == 0){
             alert("이메일 형식을 확인해주세요.");
             return false;
+        } else{
+        	alert("가입이 완료되었습니다.")
         }
     });
 });

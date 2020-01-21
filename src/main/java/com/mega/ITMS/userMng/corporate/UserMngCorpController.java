@@ -33,8 +33,9 @@ public class UserMngCorpController {
 	}
 	
 	@RequestMapping("addCorporate")
-	public void addCorporate(UserMngCorpDTO userMngCorpDTO) {
+	public String addCorporate(UserMngCorpDTO userMngCorpDTO) {
 		userMngCorpDAOImpl.addCorporate(userMngCorpDTO);
+		return "redirect:../../";
 	}
 	
 	@RequestMapping("corporateInfo")

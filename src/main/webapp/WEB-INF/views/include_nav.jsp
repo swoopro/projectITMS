@@ -74,40 +74,47 @@
             </div>
         </div>
     </div>
-    <div class="ui stackable menu">
-        <a class="active item" id="open_menu">
-            <i class="align justify icon"></i>
-        </a>
+	<div class="ui stackable menu">
+		<a class="active item" id="open_menu"> <i
+			class="align justify icon"></i>
+		</a>
 
-        <div class="right menu">
-            <div class="item" id="goBackHome">
-                <i class="home icon"></i>
-            </div>
-            <c:choose>
-                <c:when test="${id eq null}">
-                    <div class="item">
-                        <div class="ui dropdown"><i class="user icon"></i>
-                            <div class="menu">
-                                <a class="item"
-                                   href="${pageContext.request.contextPath}/user/division/deptInfo?curPage=1&key=&value=">
-                                    부서관리
-                                </a>
-                                <a class="item"
-                                   href="${pageContext.request.contextPath}/user/usermanage/authority?curPage=1&key=&value=">권한관리</a>
-                                <a class="item"
-                                   href="${pageContext.request.contextPath}/user/account/accountInfo?curPage=1&key=&value=">법인계좌관리</a>
-                            </div>
-                        </div>
-                    </div>
-                </c:when>
-                <c:otherwise>
-                    <a href="${pageContext.request.contextPath}/user/usermanage/userInfo">
-                        <div class="item">
-                            <i class="user icon"></i>
-                        </div>
-                    </a>
-                </c:otherwise>
-            </c:choose>
-        </div>
-    </div>
+		<div class="right menu">
+			<a href="${pageContext.request.contextPath}/logout"><div
+					class="item">
+					<i class="power off icon"></i>
+				</div></a> <a href="${pageContext.request.contextPath}"><div class="item">
+					<i class="home icon"></i>
+				</div></a>
+			<c:choose>
+				<c:when test="${id eq null}">
+					<a
+						href="${pageContext.request.contextPath}/user/corporate/corporateInfo"><div
+							class="item">
+							<i class="user icon"></i>
+						</div></a>
+					<div class="item">
+						<div class="ui dropdown">
+							<i class="users icon"></i>
+							<div class="menu">
+								<a class="item"
+									href="${pageContext.request.contextPath}/user/division/deptInfo?curPage=1&key=&value=">
+									부서관리 </a> <a class="item"
+									href="${pageContext.request.contextPath}/user/usermanage/authority?curPage=1&key=&value=">권한관리</a>
+								<a class="item"
+									href="${pageContext.request.contextPath}/user/account/accountInfo?curPage=1&key=&value=">법인계좌관리</a>
+							</div>
+						</div>
+					</div>
+				</c:when>
+				<c:otherwise>
+					<a
+						href="${pageContext.request.contextPath}/user/usermanage/userInfo"><div
+							class="item">
+							<i class="user icon"></i>
+						</div></a>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</div>
 </div>
