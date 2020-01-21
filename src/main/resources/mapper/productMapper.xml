@@ -65,7 +65,7 @@
 		DELETE 
 		FROM product
 		WHERE
-		id = #{id} and com_id = #{com_id}
+		code = #{code} and com_id = #{com_id} <!-- 해당 제품의 단가이력까지 한번에 삭제하기 위해 id가 아닌 code로 삭제 -->
 	</delete>
 
 </mapper>

@@ -104,12 +104,12 @@
 
 <body>
 	<div class="content_body">
-		<br><h1>담당자 정보 수정/삭제 페이지</h1><br><br>
+		<br><h1 align="center">담당자 정보 수정/삭제 페이지</h1><br><br>
 
-	<div class="ui centered grid">
+	<div class="ui grid">
 
 		<!-- 입력 폼 DIV-->
-		<form action="">
+<%-- 		<form action="">
 			<div class="four wide column">
 				<table border="1" style="width:300px;">
 					<input type="hidden" id="id" value="${omCsDTO.id}">
@@ -161,7 +161,36 @@
 					</tr>
 				</table>
 			</div>
+		</form> --%>
+		
+		<form class="ui form" style="margin-left: 470px;">
+			<input type="hidden" id="id" value="${omCsDTO.id}">
+			<input type="hidden" id="com_id" value="${omCsDTO.com_id}">
+			
+		  <div class="field">
+		    <label>업체 아이디</label>
+		    <input type="text" name="b_id" id="b_id" value="${omCsDTO.b_id}" placeholder="'거래처' 또는 '기타업체'의 ID 입력" disabled="disabled">
+		  </div>
+		  <div class="field">
+		    <label>담당자명</label>
+		    <input type="text" name="name" id="name" value="${omCsDTO.name}" placeholder="">
+		  </div>
+		  <div class="field">
+		    <label>담당자 연락처</label>
+		    <input type="text" name="tel" id="tel" value="${omCsDTO.tel}" placeholder=" '-'를 포함하여 입력하세요">
+		  </div>
+		  <div class="field">
+		    <label>소속부서</label>
+		    <input type="text" name="c_key" id="c_key" value="${omCsDTO.c_key}" placeholder="">
+		  </div>
+		  <div class="field">
+		    <label>거래품목</label>
+		    <input type="text" name="c_value" id="c_value" value="${omCsDTO.c_value}" placeholder="">
+		  </div>
+		  <button class="ui primary button" type="button" id="cED_Edit2" style="width: 250px;">담당자 수정</button>
+		  <button class="ui primary button" type="button" id="cED_Del2" style="width: 250px;">담당자 삭제</button>
 		</form>
+		
 		
 <!-- 		화살표 DIV 
 		<div class="one wide column">
