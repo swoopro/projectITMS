@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,25 +25,34 @@ public class ImportPageController {
 
 	/* 메인화면으로 이동 */
 	@RequestMapping("/importMain.do")
-	public ModelAndView importMain(ModelAndView mav) {
-		System.out.println("컨트롤러 메인 진입했어요!");
+	public ModelAndView importMain(ModelAndView mav, HttpSession session) {
 		mav.setViewName("import/importprocess/importMain");
-		int temporaryCompanyID = 1;
-		String temporaryUserID = "wltn";
+		int temporaryCompanyID = (Integer) session.getAttribute("com_id");
+
 
 		List<Import_financeRequestDTO> flist = dao.importFinanceRequestSelectAll(temporaryCompanyID);
 		List<Import_tradeFileDTO> tlist = dao.importTradeFileSelectJBS(temporaryCompanyID);
-//		List<Import_stepDTO> stepList = dao.importTradeFileCASEselect(temporaryCompanyID);
 
-		/*
-		 * HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-		 * ArrayList<HashMap<Integer, Integer>> mlist = new ArrayList<HashMap<Integer,
-		 * Integer>>(); for (int i = 0; i < tlist.size(); i++) { //
-		 * System.out.println(tlist.get(i).getBasic_id()+", "
-		 * +tlist.get(i).getType_file()); map.put(tlist.get(i).getBasic_id(),
-		 * tlist.get(i).getType_file()); mlist.add(map); } System.out.println("맵 리스트: "
-		 * +mlist);
-		 */
+		System.out.println("flist 값: " + flist);
+		mav.addObject("tlist", tlist);
+		mav.addObject("flist", flist);
+
+		return mav;
+	}
+	
+	/* 검색화면으로 이동 */
+	@RequestMapping("/importSearch.do")
+	public ModelAndView importSearch(ModelAndView mav, HttpSession session, String doc_no) {
+		mav.setViewName("import/importprocess/importSearch");
+		int temporaryCompanyID = (Integer) session.getAttribute("com_id");
+		
+		Import_basicTradeDTO dto = new Import_basicTradeDTO();
+		
+		dto.setCom_id(temporaryCompanyID);
+		dto.setDoc_no(doc_no);
+
+		List<Import_financeRequestDTO> flist = dao.importFinanceRequestSelectAllSearch(dto);
+		List<Import_tradeFileDTO> tlist = dao.importTradeFileSelectJBSSearch(dto);
 
 		System.out.println("flist 값: " + flist);
 		mav.addObject("tlist", tlist);
@@ -51,18 +61,19 @@ public class ImportPageController {
 		return mav;
 	}
 
+
 	/* import 주문발주 */
 	@RequestMapping("/importOrder.do")
-	public ModelAndView importOrder(ModelAndView mav) {
+	public ModelAndView importOrder(ModelAndView mav, HttpSession session) {
 		mav.setViewName("import/importprocess/importOrderAdd");
-		int temporaryCompanyID = 1;
+		int temporaryCompanyID = (Integer) session.getAttribute("com_id");
 		String temporaryUserID = "wltn";
 
 		List<Import_employeeDTO> eList = dao.importEmployeeSelectAll(temporaryCompanyID); // 회사의 직원 selectAll
 		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); // 회사의 정보
 		ArrayList<Import_businessDTO> bAList = dao.importBusinessSelectAll(temporaryCompanyID, "거래처"); // 회사의 판매(거래처)
 																										// select
-		ArrayList<Import_businessDTO> bPList = dao.importBusinessSelectAll(temporaryCompanyID, "기타업체"); // 회사의 협력(기타업체)
+		ArrayList<Import_businessDTO> bPList = dao.importBusinessSelectAll(temporaryCompanyID, "기타"); // 회사의 협력(기타업체)
 																										// select
 		List<Import_productDTO> product = dao.importProductSelectAll(temporaryCompanyID); // 회사가 등록한 제품 selectAll
 
@@ -93,17 +104,17 @@ public class ImportPageController {
 		dto.setBasic_id(id);
 		dao.importOrderShippingInsert(dto);
 
-		mav.setViewName("import/importprocess/importMain");
+		mav.setViewName("redirect:/import/importprocess/importMain.do");
 
 		return mav;
 	}
 
 	/* import 메인 각 메뉴 : detail */
 	@RequestMapping("/importPOdetail.do")
-	public String importPOdetail(Model model, String basicID) {
+	public String importPOdetail(Model model, String basicID, HttpSession session) {
 		int basic_id = Integer.parseInt(basicID);
 
-		int temporaryCompanyID = 1;
+		int temporaryCompanyID = (Integer) session.getAttribute("com_id");
 		String temporaryUserID = "wltn";
 		ArrayList<Import_productDTO> proList = new ArrayList<Import_productDTO>();
 
@@ -138,10 +149,10 @@ public class ImportPageController {
 
 	/* import 메인 각 메뉴 : print */
 	@RequestMapping("/importPOprint.do")
-	public String importPOprint(Model model, String basicID) {
+	public String importPOprint(Model model, String basicID, HttpSession session) {
 		int basic_id = Integer.parseInt(basicID);
 
-		int temporaryCompanyID = 1;
+		int temporaryCompanyID = (Integer) session.getAttribute("com_id");
 		String temporaryUserID = "wltn";
 		ArrayList<Import_productDTO> proList = new ArrayList<Import_productDTO>();
 
@@ -176,11 +187,11 @@ public class ImportPageController {
 
 	/* import 메인 각 메뉴 : edit */
 	@RequestMapping("/importPOedit.do")
-	public String importPOedit(Model model, String basicID) {
+	public String importPOedit(Model model, String basicID, HttpSession session) {
 		int basic_id = Integer.parseInt(basicID);
 		System.out.println(">>>import ���ο��� ���Ǵ� �޴��� : detail");
 
-		int temporaryCompanyID = 1; //
+		int temporaryCompanyID = (Integer) session.getAttribute("com_id");
 		ArrayList<Import_productDTO> proList = new ArrayList<Import_productDTO>();
 
 		Import_basicTradeDTO basicDTO = dao.importBasicTradeSelectPK(basic_id);
@@ -229,10 +240,10 @@ public class ImportPageController {
 	}
 
 //	import 각 메뉴 : finance
-	@RequestMapping(value = { "/importPOfinance.do", "/importPIfinance.do", "/importCI/PLfinance.do" })
-	public String importPOfinance(Model model, String basicID) {
-		String temporaryEmployeeID = "wltn";
-		int temporaryCompanyID = 1;
+	@RequestMapping(value = { "/importPOfinance.do", "/importPIfinance.do", "/importCIPLfinance.do" })
+	public String importPOfinance(Model model, String basicID, HttpSession session) {
+		String temporaryEmployeeID = (String) session.getAttribute("id");
+		int temporaryCompanyID = (Integer) session.getAttribute("com_id");
 		int basic_id = Integer.parseInt(basicID);
 		Import_basicTradeDTO basicDTO = dao.importBasicTradeSelectPK(basic_id);
 		Import_businessDTO bsDTO = dao.importBusinessSelectOne(basicDTO.getB_id());
@@ -260,9 +271,9 @@ public class ImportPageController {
 
 //	import PI edit
 	@RequestMapping("/importPIedit.do")
-	public String importPIedit(Model model, String basicID) {
+	public String importPIedit(Model model, String basicID, HttpSession session) {
 		int basic_id = Integer.parseInt(basicID);
-		int temporaryCompanyID = 1;
+		int temporaryCompanyID = (Integer) session.getAttribute("com_id");
 		ArrayList<Import_productDTO> proList = new ArrayList<Import_productDTO>();
 
 		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); /* �ּ�,tel */
@@ -288,11 +299,42 @@ public class ImportPageController {
 
 		return "import/importprocess/importPIedit";
 	}
+	
+	@RequestMapping("/importCIPLedit.do")
+	public String importCIPLedit(Model model, String basicID, HttpSession session) {
+		int basic_id = Integer.parseInt(basicID);
+		int temporaryCompanyID = (Integer) session.getAttribute("com_id");
+		ArrayList<Import_productDTO> proList = new ArrayList<Import_productDTO>();
+
+		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); /* �ּ�,tel */
+		List<Import_orderDetailDTO> detailList = dao.importOrderDetailAll(basic_id);
+		Import_basicTradeDTO basicDTO = dao.importBasicTradeSelectPK(basic_id);
+		Import_orderShipping shipDTO = dao.importOrderShippingOne(basic_id);
+		Import_businessDTO bsDTO = dao.importBusinessSelectOne(basicDTO.getB_id());
+		Import_customerDTO cusDTO = dao.importCustomerSelectOne(basicDTO.getC_id());
+		System.out.println("디테일리스트 " + detailList);
+		for (int i = 0; i < detailList.size(); i++) {
+			Import_productDTO dto = dao.importProductSelectPID(detailList.get(i).getP_id());
+			System.out.println("제품dto 확인용" + dto);
+			proList.add(dto);
+		}
+
+		model.addAttribute("basicDTO", basicDTO);
+		model.addAttribute("shipDTO", shipDTO);
+		model.addAttribute("bsDTO", bsDTO);
+		model.addAttribute("cusDTO", cusDTO);
+		model.addAttribute("detailList", detailList);
+		model.addAttribute("proList", proList);
+		model.addAttribute("comDTO", comDTO);
+
+		return "import/importprocess/importCLedit";
+	}
+
 
 	@RequestMapping("/importPIdetail.do")
-	public String importPIdetail(Model model, String basicID) {
+	public String importPIdetail(Model model, String basicID, HttpSession session) {
 		int basic_id = Integer.parseInt(basicID);
-		int temporaryCompanyID = 1;
+		int temporaryCompanyID = (Integer) session.getAttribute("com_id");
 		ArrayList<Import_productDTO> proList = new ArrayList<Import_productDTO>();
 
 		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); /* �ּ�,tel */
@@ -319,11 +361,42 @@ public class ImportPageController {
 		return "import/importprocess/importPIdetail";
 	}
 	
+	@RequestMapping("/importCIPLdetail.do")
+	public String importCIPLdetail(Model model, String basicID, HttpSession session) {
+		int basic_id = Integer.parseInt(basicID);
+		int temporaryCompanyID = (Integer) session.getAttribute("com_id");
+		ArrayList<Import_productDTO> proList = new ArrayList<Import_productDTO>();
+
+		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); /* �ּ�,tel */
+		List<Import_orderDetailDTO> detailList = dao.importOrderDetailAll(basic_id);
+		Import_basicTradeDTO basicDTO = dao.importBasicTradeSelectPK(basic_id);
+		Import_orderShipping shipDTO = dao.importOrderShippingOne(basic_id);
+		Import_businessDTO bsDTO = dao.importBusinessSelectOne(basicDTO.getB_id());
+		Import_customerDTO cusDTO = dao.importCustomerSelectOne(basicDTO.getC_id());
+		System.out.println("디테일리스트 " + detailList);
+		for (int i = 0; i < detailList.size(); i++) {
+			Import_productDTO dto = dao.importProductSelectPID(detailList.get(i).getP_id());
+			System.out.println("제품dto 확인용" + dto);
+			proList.add(dto);
+		}
+
+		model.addAttribute("basicDTO", basicDTO);
+		model.addAttribute("shipDTO", shipDTO);
+		model.addAttribute("bsDTO", bsDTO);
+		model.addAttribute("cusDTO", cusDTO);
+		model.addAttribute("detailList", detailList);
+		model.addAttribute("proList", proList);
+		model.addAttribute("comDTO", comDTO);
+
+		return "import/importprocess/importCLdetail";
+	}
+
+	
 
 	@RequestMapping("/importPIprint.do")
-	public String importPIprint(Model model, String basicID) {
+	public String importPIprint(Model model, String basicID, HttpSession session) {
 		int basic_id = Integer.parseInt(basicID);
-		int temporaryCompanyID = 1;
+		int temporaryCompanyID = (Integer) session.getAttribute("com_id");
 		ArrayList<Import_productDTO> proList = new ArrayList<Import_productDTO>();
 
 		Import_companyDTO comDTO = dao.importCompanySelect(temporaryCompanyID); /* �ּ�,tel */
@@ -410,7 +483,7 @@ public class ImportPageController {
 		Import_tradeFileDTO tFDTO = new Import_tradeFileDTO();
 
 		tFDTO.setBasic_id(basic_id);
-		tFDTO.setFile_name("PI");
+		tFDTO.setFile_name("PI"+basic_id);
 		tFDTO.setType_file(2);
 
 		dao.importTradeFileInsert(tFDTO);
@@ -419,10 +492,51 @@ public class ImportPageController {
 
 		return mav;
 	}
+	
+	@RequestMapping("/importShipPLedit.do")
+	public ModelAndView importShipCLedit(ModelAndView mav, int basic_id) {
+		System.out.println(">>>importShipPIedit 컨트롤러 진입성공");
+
+		Import_tradeFileDTO tFDTO = new Import_tradeFileDTO();
+
+		tFDTO.setBasic_id(basic_id);
+		tFDTO.setFile_name("CL"+basic_id);
+		tFDTO.setType_file(3);
+
+		dao.importTradeFileInsert(tFDTO);
+
+		mav.setViewName("redirect:/import/importprocess/importMain.do");
+
+		return mav;
+	}
+	
+	@RequestMapping("/importFlag.do")
+	public ModelAndView importFlag(ModelAndView mav, String basic_id) {
+
+		Import_tradeFileDTO tFDTO = new Import_tradeFileDTO();
+
+		tFDTO.setBasic_id(Integer.parseInt(basic_id));
+		tFDTO.setFile_name("FLAG"+basic_id);
+		tFDTO.setType_file(5);
+
+		dao.importTradeFileInsert(tFDTO);
+
+		mav.setViewName("redirect:/import/importprocess/importMain.do");
+
+		return mav;
+	}
+
+
+
+	private int Integer(String basic_id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 	@RequestMapping("/importFinanceRequest")
 	public String financeRequestForm(Model model, Import_financeRequestDTO dto) {
-//		System.out.println("@@@컨트롤러 finanaceReuquest"+dto);
+		System.out.println("@@@importFinanceRequest IN");
+		System.out.println("@@@DTO Confirm" + dto);
 		dao.insertFinanceRequest(dto);
 
 		return "redirect:/import/importprocess/importMain.do";
