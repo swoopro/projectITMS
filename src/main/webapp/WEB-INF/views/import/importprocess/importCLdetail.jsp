@@ -44,7 +44,7 @@ page[size="A4"] {
 		<div class="row">
 			<div class="ui grid">
 				<div class="left floated four wide column">
-					<h2 class="ui header">PI수정/등록</h2>
+					<h2 class="ui header">CL</h2>
 
 				</div>
 				<div class="right floated four wide column">
@@ -169,7 +169,6 @@ page[size="A4"] {
 
 
 <script>
-	window.print();
 </script>
 </body>
 </html>

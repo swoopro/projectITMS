@@ -38,5 +38,8 @@ public class Import_tradeFileDTO {
 		return "Import_tradeFileDTO [file_name=" + file_name + ", issued_date=" + issued_date + ", id=" + id
 				+ ", basic_id=" + basic_id + ", type_file=" + type_file + "]";
 	}
-
+	
+	
+	
+	
 }

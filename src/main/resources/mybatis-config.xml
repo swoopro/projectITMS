@@ -16,6 +16,17 @@
 		<typeAlias type="com.mega.ITMS.userMng.account.UserMngAccountDTO" alias="accMng"></typeAlias>
 		<typeAlias type="com.mega.ITMS.financialMng.request.RequestDTO" alias="requestDTO"/>
 		<typeAlias type="com.mega.ITMS.financialMng.transfer.TransferDTO" alias="transferDTO"/>
+		<!-- 지수 merge 후 -->
+		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_basicTradeDTO" alias="Import_basicTradeDTO"/>
+		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_businessDTO" alias="Import_businessDTO"/>
+		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_companyDTO" alias="Import_companyDTO"/>
+		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_customerDTO" alias="Import_customerDTO"/>
+		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_employeeDTO" alias="Import_employeeDTO"/>
+		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_orderDetailDTO" alias="Import_orderDetailDTO"/>
+		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_orderShipping" alias="Import_orderShipping"/>
+		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_productDTO" alias="Import_productDTO"/>
+		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_tradeFileDTO" alias="Import_tradeFileDTO"/>
+		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_financeRequestDTO" alias="Import_financeRequestDTO"/>
 	</typeAliases>
 	
 	<!-- 사용할MAPPER목록 설정 -->
