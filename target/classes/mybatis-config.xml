@@ -6,13 +6,6 @@
 	<typeAliases>
 	<!-- mapper파일만들 때마다 alias지정 -->
 	<!-- mapper파일에서 쓸 타입을 패키지.클래스으로 써주어야 하는데, 너무 길어서 alias를 지정함. -->
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> 민경_laptop
 		<typeAlias type="com.mega.ITMS.operationMng.customer.OperationMngBusinessDTO" alias="omBnDTO"></typeAlias>
 		<typeAlias type="com.mega.ITMS.operationMng.customer.OperationMngCustomerDTO" alias="omCsDTO"></typeAlias>
 		<typeAlias type="com.mega.ITMS.operationMng.product.OperationMngProductDTO" alias="omPdDTO"></typeAlias>
@@ -23,7 +16,8 @@
 		<typeAlias type="com.mega.ITMS.userMng.account.UserMngAccountDTO" alias="accMng"></typeAlias>
 		<typeAlias type="com.mega.ITMS.financialMng.request.RequestDTO" alias="requestDTO"/>
 		<typeAlias type="com.mega.ITMS.financialMng.transfer.TransferDTO" alias="transferDTO"/>
-		<!-- 지수 merge 후 -->
+		<typeAlias type="com.mega.ITMS.financialMng.request.payDTO" alias="payDTO"/>
+		<typeAlias type="com.mega.ITMS.financialMng.request.IncomeDTO" alias="incomeDTO"/>
 		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_basicTradeDTO" alias="Import_basicTradeDTO"/>
 		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_businessDTO" alias="Import_businessDTO"/>
 		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_companyDTO" alias="Import_companyDTO"/>
@@ -48,25 +42,7 @@
 		<mapper resource="mapper/monthlyMapper.xml" />
 		<mapper resource="mapper/myReportMapper.xml" />
 		<mapper resource="mapper/tradeRecordMapper.xml" />
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
-		<typeAlias type="com.mega.ITMS.financialMng.request.RequestDTO" alias="requestDTO"></typeAlias>
-		<typeAlias type="com.mega.ITMS.financialMng.transfer.TransferDTO" alias="transferDTO"></typeAlias>
-	</typeAliases>
-	<!-- 사용할MAPPER목록 설정 -->
-	<mappers>
 		<mapper resource="mapper/requestMapper.xml" />
 		<mapper resource="mapper/transferMapper.xml" />
->>>>>>> Stashed changes
->>>>>>> Stashed changes
-=======
->>>>>>> 민경_laptop
-=======
-		<mapper resource="mapper/requestMapper.xml" />
-		<mapper resource="mapper/transferMapper.xml" />
->>>>>>> master
 	</mappers>
 </configuration>
