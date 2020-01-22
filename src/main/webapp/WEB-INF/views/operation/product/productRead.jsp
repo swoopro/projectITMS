@@ -28,9 +28,15 @@
 	    $("#pED1Bnt").click(function(){ 
             var checkbox = $("input[name=checkbox]:checked"); // 체크 된(checked) 레코드의 값을 가져옴
             console.log(checkbox.val());
-            location.href = "productEditDel?id="+checkbox.val();
-	        // 선택한 레코드의 거래처(Business Table) PK를 넘겨주는 동시에 페이지 이동을 위해(get방식)
-	        // 거래처 수정/삭제 페이지에서 해당 레코드 정보를 select하여 주기 위한 id가 필요해서
+            
+            if (checkbox.val() == null) {
+				alert("수정/삭제 하고자 하는 제품 정보를 선택해주세요.")
+			} else {
+	            location.href = "productEditDel?id="+checkbox.val();
+		        // 선택한 레코드의 거래처(Business Table) PK를 넘겨주는 동시에 페이지 이동을 위해(get방식)
+		        // 거래처 수정/삭제 페이지에서 해당 레코드 정보를 select하여 주기 위한 id가 필요해서
+			}
+            
         }); // click end
         
 	// 제품 단가 이력 모달창(모달창 띄우고 제품 단가 이력 데이터 출력)    
@@ -39,32 +45,38 @@
             var checkbox = $("input[name=checkbox]:checked"); // 체크 된(checked) 레코드의 값을 가져옴
             var code = checkbox.parent().parent().parent().parent().parent().children().children().children().eq(1).text();
             // checkbox 위치를 기준으로 code 값을 가져옴
+            console.log(checkbox);
+            console.log("code : " + code);
             
-            $.ajax({
-				url : "priceHistory", // url: 가져올 페이지(controller에서 받아줄 @RequestMapping 주소)
-				data : {
-					code : code, // mapper에서 select를 하기 위한 where 조건으로 필요
-					filter : filter // controller에서 오름차순, 내림차순에 따라 쿼리문을 다르게 실행 시켜주기 위해 필요
-				},
-				
-				// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
-				success : function(result) {
-					/* console.log(result); */
-					$("#content").empty(); // 기존 출력 결과를 백지화 시켜 주기 위해
-					$("#content").append('<input type="hidden" id="code" value="'+code+'">');
-					// ajax 성공 시 code값을 다른 .click 함수에서 사용하기 위해 hidden으로 
-					$(result).each(function(index, data){
-						/* console.log(index + " ~~~~~ " + data); */
-						$("#content").append('<tr><td>'+data.code
-								+'</td><td>'+data.name
-								+'</td><td>'+data.spec
-								+'</td><td>'+data.price
-								+'</td><td>'+dateTimeFormat('/Date('+data.date+')/')
-								+'</td></tr>');
-					})
-					$(".ui.modal").modal("show"); // 모달창을 띄워주기 위한 함수
-				} // success
-			}); // ajax end 
+            if (checkbox.val() == null) {
+            	alert("단가 이력을 확인하고자 하는 제품 정보를 선택해주세요.")
+			} else {
+	            $.ajax({
+					url : "priceHistory", // url: 가져올 페이지(controller에서 받아줄 @RequestMapping 주소)
+					data : {
+						code : code, // mapper에서 select를 하기 위한 where 조건으로 필요
+						filter : filter // controller에서 오름차순, 내림차순에 따라 쿼리문을 다르게 실행 시켜주기 위해 필요
+					},
+					
+					// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
+					success : function(result) {
+						/* console.log(result); */
+						$("#content").empty(); // 기존 출력 결과를 백지화 시켜 주기 위해
+						$("#content").append('<input type="hidden" id="code" value="'+code+'">');
+						// ajax 성공 시 code값을 다른 .click 함수에서 사용하기 위해 hidden으로 
+						$(result).each(function(index, data){
+							/* console.log(index + " ~~~~~ " + data); */
+							$("#content").append('<tr><td>'+data.code
+									+'</td><td>'+data.name
+									+'</td><td>'+data.spec
+									+'</td><td>'+data.price
+									+'</td><td>'+dateTimeFormat('/Date('+data.date+')/')
+									+'</td></tr>');
+						})
+						$(".ui.modal").modal("show"); // 모달창을 띄워주기 위한 함수
+					} // success
+				}); // ajax end 
+			} // if else end
         }); // pHBnt click end
        
      // 제품 단가 이력 내림차순(모달창에 append 결과만 바꿔서 제품 단가 이력 데이터 출력)
@@ -95,7 +107,8 @@
 								+'</td></tr>');
 					}) // result end
 				}	// success end	     		
-	     	}) // ajax end	        
+	     	}) // ajax end
+	     	
 		}); // click end (#down)
 			
 	// 제품 단가 이력 오름차순(모달창에 append 결과만 바꿔서 제품 단가 이력 데이터 출력)	
@@ -128,7 +141,59 @@
 				}	// success end	     		
 	     	}) // ajax end
 		}); // click end (#up)
-            	    
+		
+        // 제품 관리 검색 기능(회사명 or 담당자명)
+        $("#searchBnt").click(function(){
+        	
+        	var dropdownCheck = $("#dropdown").val();
+        	console.log("드롭다운 벨류");
+        	console.log(dropdownCheck);
+        	console.log("드롭다운 벨류");
+        	
+			if (dropdownCheck == "") {
+				alert("분류를 선택해야만 검색이 가능합니다.")
+				return false;
+			}else{
+	        	var checkbox = $("input[name=checkbox]:checked"); // 체크 된(checked) 레코드의 값을 가져옴
+	        	var code = checkbox.parent().parent().parent().parent().parent().children().children().children().eq(1).text();
+			 	var dropdown = $("#dropdown").val();
+			 	var search = $("#search").val();
+			 	var code = 0;
+			 	console.log(code);
+			 	console.log(dropdown);
+			 	console.log(search);
+			 	
+			 	$.ajax({
+			 		url: "productSearch",
+			 		data : {
+			 			/* code : code, */
+			 			dropdown : dropdown,
+			 			search : search
+			 		},
+			 		// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
+					success : function(result) {
+						console.log(result);
+						$(".tbody1").empty(); // 기존 출력 결과를 백지화 시켜 주기 위해
+						$("#content").append('<input type="hidden" id="code" value="'+code+'">');
+						// ajax 성공 시 code값을 다른 .click 함수에서 사용하기 위해 hidden으로 
+						$(result).each(function(index, data){
+							/* console.log(index + " ~~~~~ " + data); */
+							$(".tbody1").append('<tr><td data-label="radio checkbox" id="r_checkbox"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;"><div class="ui radio checkbox"><input type="radio" name="checkbox" id="checkbox" value="'+data.id+'"><label></label></div></font></font>\n'
+									+'</td><td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">'+data.code
+									+'</font></font></td><td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">'+data.name
+									+'</font></font></td><td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">'+data.spec
+									+'</font></font></td><td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">'+data.price
+									+'</font></font></td></tr>');
+							// 이 ajax에서는 뿌려줄 위치만 지정하면 되기 때문에 <font><font>를 지정하지 않아도 되지만
+							// productRead.jsp의 검색 결과 ajax에서도 뿌려주기만 하는 경우에는 가능
+							// 그러나 검색 결과에서 dto.code값을 가져와서 모달창을 띄워주는 ajax에서 code값이 필요하므로
+							// <font><font>까지 정확하게 지정해주어야 code값을 찾을 수 있다.
+						}) // result end		 		
+					} // success end
+			 	}); // ajax end		 				
+			} // if else end
+		}) // searchBnt click end
+                   	    
 	}); // funtion end 
 	</script>
 	
@@ -145,33 +210,49 @@
 
 <body>
 <div class="content_body">
-	<h1>제품 관리 페이지</h1>
+	<br><a href="productRead"><h1><i class="home icon"></i>		제품 관리 페이지</h1></a><br><br>
 	
-	<a href="productAdd">
-	<button class="ui primary button" type="submit" id="">
-		<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">제품 정보 등록</font></font>
-	</button>
-	</a>
-	<select class="ui dropdown">
-  		<option value="">분류</option>
-  		<option value="1">제품코드</option>
-  		<option value="0">제품명</option>
-	</select>
-	<div class="ui icon input">
-	<input type="text" name="search" placeholder="검색어를 입력하세요" >
-	<button class="ui icon button"><i class="search icon"></i></button>
+	<!-- parent DIV -->
+	<div style="width: 100%; margin: 10px auto;">
+	<div style="float: left; width:12%; box-sizing: border-box;">
+		<a href="productAdd">
+		<button class="ui primary button" type="submit">
+			<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">제품 정보 등록</font></font>
+		</button>
+		</a>
 	</div>
-	<!-- <a href="productEditDel"> -->
-  	<button class="ui primary button" type="button" id="pED1Bnt">
-  	<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">제품 정보 수정/삭제</font></font>
-  	</button>
-  	<!-- </a> -->
-  	<!-- <a href="productHistory"> -->
-  	<button class="ui primary button" type="button" id="pHBnt">
-  	<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">제품 정보 이력</font></font>
-  	</button>
-  	<!-- </a> -->
+
+	<div style="float: left; margin-left: 17%; margin-right: 10%; width:38%; box-sizing: border-box;">
+		<select class="ui dropdown" name="dropdown" id="dropdown">
+		  		<option value="">분류</option>
+		  		<option value="1">제품코드</option>		  		
+		  		<option value="0">제품명</option>
+		</select>
+		<div class="ui icon input">
+			<input type="text" name="search" id="search" placeholder="검색어를 입력하세요" autocomplete="off">
+			<button class="ui icon button" type="submit" id="searchBnt"><i class="search icon"></i></button>
+		</div>
+	</div>
+	
+	<div style="float: left; width:13%; box-sizing: border-box;">
+		<!-- <a href="productEditDel"> -->
+	  	<button class="ui primary button" type="button" id="pED1Bnt">
+	  	<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">제품 정보 수정/삭제</font></font>
+	  	</button>
+	  	<!-- </a> -->
+  	</div>
   	
+  	<div style="float: right; width:10%; box-sizing: border-box;">
+	  	<!-- <a href="productHistory"> -->
+	  	<button class="ui primary button" type="button" id="pHBnt" style="margin-left: 4%;">
+	  	<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">제품 단가 이력</font></font>
+	  	</button>
+	  	<!-- </a> -->
+  	</div>
+  	</div>
+  	<!-- parent DIV end-->
+  	
+  	<br><br>
   	<table class="ui celled table">
   <thead>
     <tr>
@@ -184,10 +265,10 @@
   </thead>
   
   <!-- for문 들어갈 자리 -->
+  <tbody class="tbody1">
   <c:forEach items="${list}" var="dto">
-  <tbody>
      <tr id="pED">
-     <td data-label="radio checkbox"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+     <td data-label="radio checkbox" id="r_check"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
 		<div class="ui radio checkbox">
 		 	<input type="radio" name="checkbox" id="checkbox" value="${dto.id}"> <!-- productEditDel.jsp로 넘겨주기 위한 제품 PK(id) -->
 		    <label></label>
@@ -199,9 +280,10 @@
       <td data-label="spec"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">${dto.spec}</font></font></td>
       <td data-label="price"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">${dto.price}</font></font></td>
     </tr>
-  </tbody>
   </c:forEach>
+  </tbody>
 </table>
+	<button class="ui button" type="button" id="downExcel" style="width: 150px; float: right;">엑셀 다운로드</button>
 </div> <!-- content_body DIV -->
 
 <!-- Modal -->
@@ -211,30 +293,16 @@
 			<i class="large chart line icon"></i><font style="font-size: 40px">원가관리</font>
 		</div>
 		<!-- Filter 버튼 DIV -->		
-		<div class="ui blue label" style="float: right; height: 50px; margin-top: px;">
-			<div class="ui blue label" style="height: 35px; font-size: 15px; margin-bottom: 3px; margin-right: 10px; background-color: blue;">
+		<div class="ui label" style="float: right; height: 50px; margin-top: px;">
+			<div class="ui label" style="height: 35px; font-size: 15px; margin-bottom: 3px; margin-right: 10px;">
 			  <i class="filter icon"></i>
 			  단가 입력일
 			</div>
-			<button class="ui toggle labeled icon button" id="down" value="0">
+			<button class="ui toggle labeled icon primary button" id="down" value="0">
 			  <i class="sort amount down icon"></i>내림차순</button>
-			<button class="ui toggle labeled icon button" id="up" value="1">
+			<button class="ui toggle labeled icon primary button" id="up" value="1">
 			  <i class="sort amount up icon"></i>오름차순</button>
-		</div>		
-<!-- 		<div class="ui grey basic floating labeled icon dropdown button" style="float: right; height: 35px; margin-top: 10px">
-			<i class="small filter icon"></i>
-			<span class="text" style="font-size: 20px;">필터</span>
-			<div class="menu">
-				<div class="header">
-			      <i class="small calendar alternate outline icon"></i>단가 입력일 기준
-			    </div>
- 			    <div class="divider"></div>
-			    <div class="item" id="down">
-			      <i class="sort amount down icon"></i>내림차순</div>
-			    <div class="item" id="up">
-			      <i class="sort amount up icon"></i>오름차순</div>
-		  	</div>
-		</div> -->		
+		</div>			
 	</div>
 
 	<div class="ui content">
@@ -254,7 +322,7 @@
 	</div>
 	
 	<div class="ui actions">
-		<button class="ui primary button">버튼</button>
+ 		<button class="ui button" type="button" id="downExcel" style="width: 150px; float: right; margin-right: 5px; margin-bottom: 10px;">엑셀 다운로드</button>
 	</div>
 </div>
 

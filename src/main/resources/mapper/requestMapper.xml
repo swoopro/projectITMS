@@ -8,28 +8,37 @@
 
 <mapper namespace="request">
 
-    <resultMap type="requestDTO" id="rs">
-        <result property="id" column="id"/>
-        <result property="com_id" column="com_id"/>
-        <result property="basic_id" column="basic_id"/>
-        <result property="request_id" column="request_id"/>
-        <result property="response_id" column="response_id"/>
-        <result property="cb_id" column="cb_id"/>
-        <result property="detail_cb_id" column="detail_cb_id"/>
-        <result property="issued_date" column="issued_date"/>
-        <result property="amount_usd" column="amount_usd"/>
-        <result property="amount_krw" column="amount_krw"/>
-        <result property="note" column="note"/>
-        <result property="receive_date" column="receive_date"/>
-    </resultMap>
+	<select id="select" parameterType="requestDTO" resultMap="rs">
+		SELECT
+		columnname1,
+		columnname2,
+		columnname3
+		FROM finanace_request
+		WHERE columnname1 = #{value}
+	</select>
 
-    <select id="selectAll" resultMap="rs">
+	<resultMap type="requestDTO" id="rs">
+		<result property="id" column="id" />
+		<result property="com_id" column="com_id" />
+		<result property="basic_id" column="basic_id" />
+		<result property="request_id" column="request_id" />
+		<result property="response_id" column="response_id" />
+		<result property="cb_id" column="cb_id" />
+		<result property="detail_cb_id" column="detail_cb_id" />
+		<result property="issued_date" column="issued_date" />
+		<result property="amount_usd" column="amount_usd" />
+		<result property="amount_krw" column="amount_krw" />
+		<result property="note" column="note" />
+		<result property="receive_date" column="receive_date" />
+	</resultMap>
+
+	<select id="selectAll" resultMap="rs">
 		SELECT * FROM finance_request
 <<<<<<< Updated upstream
 	</select>
 
-    <update id="pay_check" parameterType="requestDTO">
-		UPDATE finance_request SET receive_date = now()
+	<update id="pay_check" parameterType="requestDTO">
+		UPDATE finance_request SET receive_date = now(), response_id = #{response_id}
 		WHERE id=#{id}
 	</update>
 

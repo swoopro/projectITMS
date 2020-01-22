@@ -18,7 +18,7 @@ public class TransferDTO {
 	int amount_usd;
 	int amount_krw;
 	int amount_hdc;
-	Timestamp closed_date;
+	String closed_date;
 	String note;
 	
 	public int getId() {
@@ -63,10 +63,10 @@ public class TransferDTO {
 	public void setAmount_hdc(int amount_hdc) {
 		this.amount_hdc = amount_hdc;
 	}
-	public Timestamp getClosed_date() {
+	public String getClosed_date() {
 		return closed_date;
 	}
-	public void setClosed_date(Timestamp closed_date) {
+	public void setClosed_date(String closed_date) {
 		this.closed_date = closed_date;
 	}
 	public String getNote() {
@@ -77,6 +77,12 @@ public class TransferDTO {
 	}
 	
 	
+	@Override
+	public String toString() {
+		return "TransferDTO [id=" + id + ", finance_id=" + finance_id + ", action_type=" + action_type + ", item="
+				+ item + ", amount_usd=" + amount_usd + ", amount_krw=" + amount_krw + ", amount_hdc=" + amount_hdc
+				+ ", closed_date=" + closed_date + ", note=" + note + "]";
+	}
 }
 <<<<<<< HEAD
 <<<<<<< Updated upstream

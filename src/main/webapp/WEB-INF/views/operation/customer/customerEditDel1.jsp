@@ -77,20 +77,28 @@
 			var id = $("#id").val();
 			var com_id = $("#com_id").val();
 			
-			/* '거래처 정보 삭제' 버튼 누를 때 DB에서 정보를 삭제하고 '거래처 관리' 페이지로 이동 */
-			$.ajax({
-				url : "deleteBn", // url: 가져올 페이지
-				data : {
-					id : id, // metadata : data
-					com_id : com_id
-				},
-				// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
-				success : function(result) {
-					console.log(result); // result값 확인용
-					alert("거래처 정보 삭제가 완료되었습니다");
-					location.href = "customerRead"; // '메인'페이지로 이동
-				} // success
-			}); // ajax end
+			var choice = confirm("거래처 정보 삭제시 해당 담당자 정보도 모두 삭제됩니다.\n삭제하시겠습니까?");
+			console.log(choice);
+
+			if (choice == true) {
+				/* '거래처 정보 삭제' 버튼 누를 때 DB에서 정보를 삭제하고 '거래처 관리' 페이지로 이동 */
+				$.ajax({
+					url : "deleteBn", // url: 가져올 페이지
+					data : {
+						id : id, // metadata : data
+						com_id : com_id
+					},
+					// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
+					success : function(result) {
+						console.log(result); // result값 확인용
+						alert("거래처 정보 삭제가 완료되었습니다");
+						location.href = "customerRead"; // '메인'페이지로 이동
+					} // success
+				}); // ajax end				
+			} else {
+				return false;
+			}
+			
 		}); // click end
 		
 	}); // funtion end
@@ -99,12 +107,12 @@
 
 <body>
 	<div class="content_body">
-		<h1>거래처 정보 수정/삭제 페이지</h1>
+		<br><h1 align="center">거래처 정보 수정/삭제 페이지</h1><br><br>
 
-	<div class="ui centered grid">
+	<div class="ui grid">
 
 		<!-- 입력 폼 DIV-->
-		<form action="">
+<%-- 		<form action="">
 			<div class="four wide column">
 				<table border="1" style="width:300px;">
 					<input type="hidden" id="id" value="${omBnDTO.id}">
@@ -163,7 +171,40 @@
 					</tr>
 				</table>
 			</div>
+		</form> --%>
+		
+		<form class="ui form" style="margin-left: 500px;">
+			<input type="hidden" id="id" value="${omBnDTO.id}">
+			<input type="hidden" id="com_id" value="${omBnDTO.com_id}">
+			
+		  <div class="field">
+		    <label>구분</label>
+		    <input type="text" name="type" id="type" value="${omBnDTO.type}" placeholder="'거래처' 또는 '기타' 입력">
+		  </div>
+		  <div class="field">
+		    <label>회사명</label>
+		    <input type="text" name="name" id="name" value="${omBnDTO.name}" placeholder="">
+		  </div>
+		  <div class="field">
+		    <label>대표자명</label>
+		    <input type="text" name="ceo" id="ceo" value="${omBnDTO.ceo}" placeholder="">
+		  </div>
+		  <div class="field">
+		    <label>회사 주소</label>
+		    <input type="text" name="addr" id="addr" value="${omBnDTO.addr}" placeholder="">
+		  </div>
+		  <div class="field">
+		    <label>회사 전화번호</label>
+		    <input type="text" name="tel" id="tel" value="${omBnDTO.tel}" placeholder=" '-'를 포함하여 입력하세요">
+		  </div>
+		  <div class="field">
+		    <label>회사 국가번호</label>
+		    <input type="text" name="country_code" id="country_code" value="${omBnDTO.country_code}" placeholder="">
+		  </div>
+		  <button class="ui primary button" type="button" id="cED_Edit1" style="width: 250px;">거래처 수정</button>
+		  <button class="ui primary button" type="button" id="cED_Del1" style="width: 250px;">거래처 삭제</button>
 		</form>
+		
 		
 <!-- 		화살표 DIV 
 		<div class="one wide column">

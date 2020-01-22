@@ -41,127 +41,123 @@ page[size="A4"] {
 
 
 	<page size="A4">
-	<div class="row">
-		<div class="ui grid">
-			<div class="left floated eight wide column">
-				<h2 class="ui header">Proforma Invoice</h2>
-
-			</div>
-			<div class="right floated four wide column">
-				어벤져스 주식회사 +82-02-700-7000 <br> 2020-01-05-00:00:00 <br>
-				Invoice no. 888-8888-8888
-			</div>
-		</div>
 		<div class="row">
-			<div class="ui form segment">
-				<div class="two fields">
-					<div class="field">
-						<table class="ui definition table">
-							<h4>구매자</h4>
-							<tbody>
-								<tr>
-									<td>회사명</td>
-									<td>성우상사
-										</div>
-									</td>
-								</tr>
-							</tfoot>
-							<tr>
-								<td>회사주소</td>
-								<td>빈칸(회사명 검색으로 자동입력)</td>
-							</tr>
-							<tr>
-								<td>담당자</td>
-								<td>최지수</td>
-							</tr>
-							<tr>
-								<td>구매처 담당자 연락처</td>
-								<td>+82-2-700-0000</td>
-							</tr>
-							<tr>
-								<td>Tel</td>
-								<td>빈칸(회사명 검색으로 자동입력)</td>
-							</tr>
-							</tbody>
-						</table>
-					</div>
-					<div class="field">
-						<table class="ui definition table">
-							<h4>Ship</h4>
-							<tbody>
-								<tr>
-									<td>도착지</td>
-									<td>
-중국									</td>
-								</tr>
-								<tr>
-									<td>지불현황</td>
-									<td>
-50%									</td>
-								</tr>
-								<tr>
-									<td>도착예상시간</td>
-									<td>2020-03-05</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<br>
-				<div class="field">
-					<label>주문상세내역</label>
-					<table class="ui celled table" id="goodsTable">
-						<thead>
-							<tr>
-								<th colspan="7">Description of Goods</th>
-							</tr>
-							<tr>
-								<th>제품코드</th>
-								<th>제조사</th>
-								<th>제품명</th>
-								<th>상세규격</th>
-								<th>단가</th>
-								<th>수량</th>
-								<th>소계</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>A공구</td>
-								<td>B사</td>
-								<td>Gimin</td>
-								<td>규격</td>
-								<td>45</td>
-								<td>50,000</td>
-								<td>수식</td>
-							</tr>
-							<tr>
-								<td>B공구</td>
-								<td>C사</td>
-								<td>JISOO</td>
-								<td>규격</td>
-								<td>50</td>
-								<td>1,000</td>
-								<td>수식</td>
-							</tr>
-						</tbody>
-					</table>
+			<div class="ui grid">
+				<div class="left floated four wide column">
+					<h2 class="ui header">PI수정/등록</h2>
 
-					<div class="field">
-						<table class="ui definition table">
-							<tbody>
+				</div>
+				<div class="right floated four wide column">
+					${comDTO.name} +82 ${comDTO.tel}<br> ${basicDTO.issued_date}<br>
+					Invoice no. ${basicDTO.doc_no}
+				</div>
+			</div>
+			<div class="row">
+				<div class="ui form segment">
+					<div class="two fields">
+						<div class="field">
+							<table class="ui definition table">
+								<h4>판매자</h4>
+								<tbody>
+									<tr>
+										<td>회사명</td>
+										<td>${bsDTO.name}</td>
+									</tr>
+								</tfoot>
 								<tr>
-									<td colspan="4">합계</td>
-									<td colspan="1">총수량: 수량수식</td>
-									<td colspan="1">총금액: 금액수식</td>
+									<td>회사주소</td>
+									<td>${bsDTO.addr}</td>
 								</tr>
+								<tr>
+									<td>담당자</td>
+									<td>${cusDTO.name}</td>
+								</tr>
+								<tr>
+									<td>담당자 연락처</td>
+									<td>${cusDTO.tel}</td>
+								</tr>
+								<tr>
+									<td>Tel</td>
+									<td>${bsDTO.tel}</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="field">
+						<form action="${pageContext.request.contextPath}/import/importprocess/importShipPIedit.do" id="formShip">
+							<table class="ui definition table">
+							<input type="hidden" name="id" value="${shipDTO.id}">
+							<input type="hidden" name="basic_id" value="${basicDTO.id}">
+								<h4>Ship</h4>
+								<tbody>
+									<tr>
+										<td>운송추적번호</td>
+										<td>${shipDTO.track_no}</td>
+									</tr>
+
+									<tr>
+										<td>출발지</td>
+										<td>${shipDTO.o_from}</td>
+									</tr>
+									<tr>
+										<td>도착지</td>
+										<td>${shipDTO.o_to}</td>
+									</tr>
+								</tbody>
+							</table>
+							</form>
+						</div>
+					</div>
+					<br>
+					<div class="field">
+						<label>주문상세내역</label>
+						<table class="ui celled table" id="goodsTable">
+							<thead>
+								<tr>
+									<th colspan="7">Description of Goods</th>
+								</tr>
+								<tr>
+									<th>제품코드</th>
+									<th>제조사</th>
+									<th>제품명</th>
+									<th>상세규격</th>
+									<th>단가</th>
+									<th>수량</th>
+									<th>소계</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${detailList}" var="detailList"
+									varStatus="status">
+									<tr>
+										<td>${proList[status.index].code}</td>
+										<td>${proList[status.index].name}</td>
+										<td>${proList[status.index].spec}</td>
+										<td>${proList[status.index].price}</td>
+										<td>${detailList.qty }</td>
+										<td><span id="result${status.index}">${proList[status.index].price * detailList.qty}</span></td>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
+
+						<div class="field">
+							<table class="ui definition table">
+								<tbody>
+									<tr>
+										<td colspan="4">합계</td>
+										<td colspan="1">총수량: 수량수식</td>
+										<td colspan="1">총금액: 금액수식</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+
+
 
 
 

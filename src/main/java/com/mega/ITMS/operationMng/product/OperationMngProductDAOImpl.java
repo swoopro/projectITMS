@@ -51,7 +51,25 @@ public class OperationMngProductDAOImpl implements OperationMngProductDAO{
 		
 	}
 	
-	// selectAll (History)
+	// selectAll (Search)
+	//	제품 테이블(Product Table) : 검색(productSearch) 제품명 : dropdown == 0
+	@Override
+	public List<OperationMngProductDTO> getProductReadAllSearchZero(OperationMngProductDTO omPdDTO) {
+		List<OperationMngProductDTO> list = myBatis.selectList("product.selectAllPdSearchZero", omPdDTO);
+		return list;
+		
+	}
+	
+	// selectAll (Search)
+	//	제품 테이블(Product Table) : 검색(productSearch) 제품코드 : dropdown == 1
+	@Override
+	public List<OperationMngProductDTO> getProductReadAllSearchOne(OperationMngProductDTO omPdDTO) {
+		List<OperationMngProductDTO> list = myBatis.selectList("product.selectAllPdSearchOne", omPdDTO);
+		return list;
+		
+	}
+	
+	// selectAll (History)Down
 	@Override
 	public List<OperationMngProductDTO> getProductReadAllHistory(OperationMngProductDTO omPdDTO) {
 		List<OperationMngProductDTO> list = myBatis.selectList("product.selectAllHistory", omPdDTO);

@@ -66,7 +66,7 @@
 			}); // ajax end
 		}); // click end
 
-	///// '회원탈퇴' 버튼 누를 때 /////
+	///// '삭제' 버튼 누를 때 /////
 		
 		$("#cED_Del2").click(function() {
 			// ajax를 사용하여 deleteBn.jsp에 metadata와 data를 전송하고 result값을 받아오기 위해 각 입력값들을 변수에 할당
@@ -76,21 +76,27 @@
 			var b_id = $("#b_id").val();
 			var com_id = $("#com_id").val();
 			
-			/* '거래처 정보 삭제' 버튼 누를 때 DB에서 정보를 삭제하고 '거래처 관리' 페이지로 이동 */
-			$.ajax({
-				url : "deleteCs", // url: 가져올 페이지
-				data : {
-					id : id, // metadata : data
-					b_id : b_id,
-					com_id : com_id
-				},
-				// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
-				success : function(result) {
-					console.log(result); // result값 확인용
-					alert("담당자 정보 삭제가 완료되었습니다");
-					location.href = "customerRead"; // '메인'페이지로 이동
-				} // success
-			}); // ajax end
+			var choice = confirm("거래처 정보는 유지되고 담당자 정보만 삭제됩니다.\n거래처/담당자 정보 일괄 삭제를 원하시면 거래처 정보 삭제 기능을 사용해주세요. 삭제하시겠습니까?");
+			
+			if (choice == true) {
+				/* '거래처 정보 삭제' 버튼 누를 때 DB에서 정보를 삭제하고 '거래처 관리' 페이지로 이동 */
+				$.ajax({
+					url : "deleteCs", // url: 가져올 페이지
+					data : {
+						id : id, // metadata : data
+						b_id : b_id,
+						com_id : com_id
+					},
+					// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
+					success : function(result) {
+						console.log(result); // result값 확인용
+						alert("담당자 정보 삭제가 완료되었습니다");
+						location.href = "customerRead"; // '메인'페이지로 이동
+					} // success
+				}); // ajax end		
+			} else {
+				return false;
+			}
 		}); // click end
 	}); // funtion end	
 </script>
@@ -98,12 +104,12 @@
 
 <body>
 	<div class="content_body">
-		<h1>담당자 정보 수정/삭제 페이지</h1>
+		<br><h1 align="center">담당자 정보 수정/삭제 페이지</h1><br><br>
 
-	<div class="ui centered grid">
+	<div class="ui grid">
 
 		<!-- 입력 폼 DIV-->
-		<form action="">
+<%-- 		<form action="">
 			<div class="four wide column">
 				<table border="1" style="width:300px;">
 					<input type="hidden" id="id" value="${omCsDTO.id}">
@@ -155,7 +161,36 @@
 					</tr>
 				</table>
 			</div>
+		</form> --%>
+		
+		<form class="ui form" style="margin-left: 470px;">
+			<input type="hidden" id="id" value="${omCsDTO.id}">
+			<input type="hidden" id="com_id" value="${omCsDTO.com_id}">
+			
+		  <div class="field">
+		    <label>업체 아이디</label>
+		    <input type="text" name="b_id" id="b_id" value="${omCsDTO.b_id}" placeholder="'거래처' 또는 '기타업체'의 ID 입력" disabled="disabled">
+		  </div>
+		  <div class="field">
+		    <label>담당자명</label>
+		    <input type="text" name="name" id="name" value="${omCsDTO.name}" placeholder="">
+		  </div>
+		  <div class="field">
+		    <label>담당자 연락처</label>
+		    <input type="text" name="tel" id="tel" value="${omCsDTO.tel}" placeholder=" '-'를 포함하여 입력하세요">
+		  </div>
+		  <div class="field">
+		    <label>소속부서</label>
+		    <input type="text" name="c_key" id="c_key" value="${omCsDTO.c_key}" placeholder="">
+		  </div>
+		  <div class="field">
+		    <label>거래품목</label>
+		    <input type="text" name="c_value" id="c_value" value="${omCsDTO.c_value}" placeholder="">
+		  </div>
+		  <button class="ui primary button" type="button" id="cED_Edit2" style="width: 250px;">담당자 수정</button>
+		  <button class="ui primary button" type="button" id="cED_Del2" style="width: 250px;">담당자 삭제</button>
 		</form>
+		
 		
 <!-- 		화살표 DIV 
 		<div class="one wide column">

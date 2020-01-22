@@ -55,21 +55,73 @@
 					data:{
 						id : requestID 
 					},
-					success:function(){
+					success:function(result){
+						if(result.length>0){
 						$("#"+btnID).hide();
-						$("#"+divID).html("<i class = 'check icon'></i><br>")
-					}			
+							$(result).each(function(i, dto) {
+								var id = dto.id;
+								var receive_date = dto.receive_date;
+								
+								if (id == requestID) {
+									$("#"+divID).html("<i class = 'check icon'></i>"+receive_date);
+									
+									$("#d2").append(
+											"<tr> \n"
+											+"<td>"+dto.id+"</td> \n"
+							                +"<td></td> \n"
+							                +"<td>"+dto.note+"</td> \n"
+							                +"<td>"+dto.amount_krw+"</td> \n"
+							                +"<td> \n"
+							                +"<button class='ui button' id='detail'>상세</button> \n"
+							                +"</td> \n"
+							                +"<td>"+dto.request_id+"</td> \n"
+							                +"<td>"+dto.response_id+"</td> \n"
+							                +"<td><div class='payend_d2'> \n"
+							                +"<input type='hidden' value="+dto.id+"> \n"
+							                +"<button disabled='disabled' class='ui button payend' data-value={'id':"+dto.id+"}>결제완료</button> \n"
+							                +"</div></td> \n"
+							                +"<td> \n"
+							                +"<button class='ui button payupdate' id='update'>수정</button> \n"
+							                +"<button class='ui button paydelete' id='delete'>삭제</button> \n"
+							                +"</td> \n"
+							        		+"</tr>");
+								}
+							});
+						}
+					}	// success end		
 				}); // ajax end
  		}); //click end
+ 		
+ 		
+ 		$(".payend").click(function() {
+			var finance_id = $(this).data("value").id;
+			$.ajax({
+				url:"${pageContext.request.contextPath}/financialMng/request/payend",
+				data:{
+					finance_id : finance_id
+				},
+				success:function(result){
+					
+					console.log(result.finance_id);
+					console.log($(".payend_d2").children());
+					/* console.log($(".payend_d2").children()[0])
+					console.log($(".payend_d2").children().eq(0))
+					console.log($(".payend_d2").children()[1])
+					console.log($(".payend_d2").children().eq(1)) */
+					$(".payend_d2").children().each(function(i, tag){
+						if(tag.value == result.finance_id){
+							$(".payend_d2").children().eq(i).parent().html("<i class = 'check icon'></i>"+result.closed_date);
+						}
+					});
+				}
+			});
+		});
 	});	
 </script>
       
 </head>
 <body>
 		
-<%-- <%
-	String response_id = (String)session.getAttribute("id"); // 세션에 등록된 id가져오기 
-%>  --%>
 
 <div class="content_body">
 <div class="ui form segment">
@@ -84,7 +136,8 @@
         <table class="ui celled table">
             <thead>
             <tr>
-                <th style="" rowspan="2">PO번호</th>
+                <th rowspan="2">전표번호</th>
+                <th rowspan="2">PO번호</th>
                 <th rowspan="2">항목</th>
                 <th rowspan="1">금액</th>
                 <th rowspan="1" colspan="3">송금정보</th>
@@ -105,13 +158,14 @@
             <c:forEach items="${list}" var="dto" varStatus="status">
             <tr>
                 <td>${dto.id}</td>
+                <td></td>
                 <td>${dto.note}</td>
                 <td>${dto.amount_krw}</td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td>${dto.request_id}</td>
-                <td></td>
+                <td>${issued_date}</td>
                 <td>
                 	<div id="d1${status.count}">
                 	<c:choose>
@@ -119,7 +173,7 @@
 		                    <button class="ui button pay" id="check${status.count}" data-value='{"id":"${dto.id}","divID":"d1${status.count}"}'>요청확인</button>
                 		</c:when>
                 		<c:otherwise>
-                			<i class = 'check icon'></i>${dto.receive_date}
+                			<i class ='check icon'></i>${dto.receive_date}
                 		</c:otherwise>
                 	</c:choose>
                     </div>
@@ -154,26 +208,39 @@
                 <th>송금계좌정보</th>
                 <th>신천인아이디</th>
                 <th>수령인아이디</th>
+                <th></th>
+                <th colspan=2></th>
             </tr></thead>
-            <tbody>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <button class="ui button" id="detail">상세</button>
-                </td>
-                <td></td>
-                <td></td>
-                <td>
-                    <button class="ui button">결제완료</button>
-                </td>
-                 <td>
-                    <button class="ui button" id="update">수정</button>
-                    <button class="ui button" id="delete">삭제</button>
-                </td>
-            </tr>
+            
+            <c:forEach items="${list}" var="dto" varStatus="status">
+            <tbody id="d2">
+	            <c:choose>
+	            	<c:when test="${dto.receive_date ne null}"> <!-- 널이 아니면 -->
+			            <tr>
+			                <td>${dto.id}</td>
+			                <td></td>
+			                <td>${dto.note}</td>
+			                <td>${dto.amount_krw}</td>
+			                <td><button class='ui button' id='detail'>상세</button></td>
+			                <td>${dto.request_id}</td>
+			                <td>${dto.response_id}</td>
+			                
+			                
+			                
+			                <td>
+			                	<div class="payend_d2">
+			                	<input type="hidden" value="${dto.id}">
+			                    <button disabled="disabled" class="ui button payend" data-value='{"id":"${dto.id}"}'>결제완료</button>
+			                	</div>
+			                </td>
+			                 <td>
+			                    <button class="ui button payupdate" id="update">수정</button>
+			                    <button class="ui button paydelete" id="delete">삭제</button>
+			                </td>
+			            </tr>
+	            	</c:when>
+	            </c:choose>
+            </c:forEach>
             </tbody>
         </table>
 
@@ -231,16 +298,7 @@
     </div>
 </div>
 
-
-
-
-
 </div>
-
-
-
-
-
 </body>
 <<<<<<< Updated upstream
 =======

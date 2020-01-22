@@ -8,6 +8,7 @@
 	</select>
 
     <insert id="insert">
+<<<<<<< HEAD
     		insert into report
     			(title, content, issued_date)
     		values
@@ -16,6 +17,23 @@
 	<select id="myReportDetail" resultType="com.mega.ITMS.report.myReport.MyReportDto">
 		select * from report where id=#{id}
 	</select>
+=======
+    	insert into report
+    	(title, content, issued_date)
+    	values
+		(#{title},#{content},now())
+    </insert>
+    <select id="myReportDetail" resultType="com.mega.ITMS.report.myReport.MyReportDto">
+		select * from report where id=#{id}
+	</select>
+	<delete id="myReportDel">
+	DELETE FROM report
+	WHERE id = #{id}
+	</delete>
+	<update id="update" parameterType="com.mega.ITMS.report.myReport.MyReportDto">
+		update report SET content=#{content}, title=#{title} where id=#{id}
+	</update>
+>>>>>>> master
 </mapper>
 
 

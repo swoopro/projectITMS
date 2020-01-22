@@ -7,9 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <%@include file="/WEB-INF/views/include_nav.jsp"%>
-    <link href="<c:url value="/resources/style.css" />" rel="stylesheet">
-    <title>ITMS</title>
+<meta charset="EUC-KR">
 <title>Insert title here</title>
 </head>
 <body>

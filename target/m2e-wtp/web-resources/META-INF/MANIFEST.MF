@@ -1,13 +1,4 @@
-<<<<<<< HEAD
-Manifest-Version: 1.0
-Built-By: minkyung
-Build-Jdk: 1.8.0_232
-Created-By: Maven Integration for Eclipse
-
-=======
 Manifest-Version: 1.0
 Built-By: JBS
 Build-Jdk: 1.8.0_221
 Created-By: Maven Integration for Eclipse
-
->>>>>>> 정병수

@@ -1,6 +1,10 @@
 package com.mega.ITMS.operationMng.customer;
 
 import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import org.apache.ibatis.executor.ReuseExecutor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -90,25 +94,25 @@ public class OperationMngCustomerDAOImpl implements OperationMngCustomerDAO{
 
 //	담당자 & 거래처 조인 테이블(Customer & Business Table)
 	
-	public List<OperationMngCustomerJoinDTO> getCustomerBusinessReadAll(Object a_com_id) {
+	public List<OperationMngCustomerJoinDTO> getCustomerBusinessReadAll(Object com_id) {
 //		System.out.println("-----------------------------------------------");
-//		System.out.println(a_com_id);
+		/*System.out.println(a_com_id);*/
 //		System.out.println("-----------------------------------------------");
-		List<OperationMngCustomerJoinDTO> list = myBatis.selectList("customer.selectAllCsJoin", a_com_id);
+		List<OperationMngCustomerJoinDTO> list = myBatis.selectList("customer.selectAllCsJoin", com_id);
 		return list;
 	}
 	
 //	담당자 & 거래처 조인 테이블(Customer & Business Table) : 검색(searchBnCs) 담당자명 : dropdown == 0
 	
-	public List<OperationMngCustomerJoinDTO> getCustomerBusinessReadAllSearchZero(Object a_com_id) {
-		List<OperationMngCustomerJoinDTO> list = myBatis.selectList("customer.selectAllSearchBnCsZero", a_com_id);
+	public List<OperationMngCustomerJoinDTO> getCustomerBusinessReadAllSearchZero(OperationMngCustomerJoinDTO omCsJoinDTO) {
+		List<OperationMngCustomerJoinDTO> list = myBatis.selectList("customer.selectAllSearchBnCsZero", omCsJoinDTO);
 		return list;
 	}
 	
 //	담당자 & 거래처 조인 테이블(Customer & Business Table) : 검색(searchBnCs) 거래처명 : dropdown == 1
 	
-	public List<OperationMngCustomerJoinDTO> getCustomerBusinessReadAllSearchOne(Object a_com_id) {
-		List<OperationMngCustomerJoinDTO> list = myBatis.selectList("customer.selectAllSearchBnCsOne", a_com_id);
+	public List<OperationMngCustomerJoinDTO> getCustomerBusinessReadAllSearchOne(OperationMngCustomerJoinDTO omCsJoinDTO) {
+		List<OperationMngCustomerJoinDTO> list = myBatis.selectList("customer.selectAllSearchBnCsOne", omCsJoinDTO);
 		return list;
 	}
 	
