@@ -3,8 +3,9 @@ package com.mega.ITMS.operationMng.customer;
 import java.util.List;
 
 public interface OperationMngCustomerDAO {
+	
 
-// 거래처 테이블(Business Table)
+////////// 거래처 테이블(Business Table) //////////
 	
 	// insert
 	public void addBusiness(OperationMngBusinessDTO omBnDTO);
@@ -18,11 +19,8 @@ public interface OperationMngCustomerDAO {
 	// selectOne
 	public OperationMngBusinessDTO getBusinessRead(OperationMngBusinessDTO omBnDTO);
 	
-	// selectAll
-	public List<OperationMngBusinessDTO> getBusinessReadAll(Object com_id);
-	
 
-// 담당자 테이블(Customer Table)
+////////// 담당자 테이블(Customer Table) ///////////
 	
 	// insert
 	public void addCustomer(OperationMngCustomerDTO omCsDTO);
@@ -36,8 +34,18 @@ public interface OperationMngCustomerDAO {
 	// selectOne
 	public OperationMngCustomerDTO getCustomerRead(OperationMngCustomerDTO omCsDTO);
 	
+	
+///// 담당자 & 거래처 조인 테이블(Customer & Business Table) //////	
+	
 	// selectAll
-	public void getCustomerReadAll();
+	List<OperationMngCustomerJoinDTO> getCustomerBusinessReadAll(Object com_id);
+	
+	// selectAll(SearchZero)
+	List<OperationMngCustomerJoinDTO> getCustomerBusinessReadAllSearchZero(OperationMngCustomerJoinDTO omCsJoinDTO);
+	
+	// selectAll(SearchOne)
+	List<OperationMngCustomerJoinDTO> getCustomerBusinessReadAllSearchOne(OperationMngCustomerJoinDTO omCsJoinDTO);
+	
 
 	
 }

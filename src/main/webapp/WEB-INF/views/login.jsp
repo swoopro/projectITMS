@@ -5,12 +5,13 @@
 <head>
 	<link rel="stylesheet" type="text/css"
           href="resources/include/Semantic-Master/semantic.css">
-    <link rel="stylesheet" href="resources/include/style.css">
+    <link href="<c:url value="/resources/style.css" />" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script src="resources/js/loginCheck.js"></script>
 	<title>Home</title>
 </head>
 <body>
+<div class="content_body">
 <div class="ui middle aligned center aligned grid">
     <div class="column">
         <h2 class="ui teal image header">
@@ -49,6 +50,7 @@
             New to us? <a href="user/corporate/register_corp">Sign Up</a>
         </div>
     </div>
+</div>
 </div>
 </body>
 </html>

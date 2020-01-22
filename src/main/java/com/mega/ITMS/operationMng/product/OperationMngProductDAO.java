@@ -25,10 +25,10 @@ public interface OperationMngProductDAO {
 	// selectAll(Search) : One(제품코드 : code)
 	public List<OperationMngProductDTO> getProductReadAllSearchOne(OperationMngProductDTO omPdDTO);
 	
-	// selectAll(History) : Down
-	public List<OperationMngProductDTO> getProductReadAllHistory(OperationMngProductDTO omPdDTO);
+	// selectAll(History) : Down(내림차순, default)
+	public List<OperationMngProductDTO> getProductReadAllHistoryDown(OperationMngProductDTO omPdDTO);
 
-	// selectAll(History) : Up
+	// selectAll(History) : Up(오름차순)
 	public List<OperationMngProductDTO> getProductReadAllHistoryUp(OperationMngProductDTO omPdDTO);
 
 }
