@@ -47,7 +47,7 @@
 </head>
 <body>
 	<form
-		action="${pageContext.request.contextPath}/import/importprocess/importFinanceRequest" method="get">
+		action="${pageContext.request.contextPath}/import/importprocess/importFinanceRequest" method="POST">
 		<input type="hidden" name="com_id" id="com_id" value="${comDTO.id}"> <input
 			type="hidden" name="basic_id" id="basic_id" value="${basicDTO.id}"> <input
 			type="hidden" name="request_id" id="request_id" value="${temporaryEmployeeID}"> <input
