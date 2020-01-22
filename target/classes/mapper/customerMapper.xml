@@ -4,7 +4,7 @@
 
 <mapper namespace="customer">
 
-<!-- Business Table -->
+<!-- 거래처 테이블(Business Table) -->
 
 	<select id="selectBn" parameterType="omBnDTO" resultMap="rsMapBn">
 		SELECT *
@@ -47,7 +47,7 @@
 		id = #{id} and com_id = #{com_id}
 	</delete>
 
-<!-- Customer Table -->
+<!-- 담당자 테이블(Customer Table) -->
 
 	<select id="selectCs" parameterType="omCsDTO" resultMap="rsMapCs">
 		SELECT *
@@ -90,7 +90,7 @@
 	</delete>
 
 
-<!-- Customer & Business Join Table -->	
+<!-- 거래처 & 담당자 조인 테이블(Customer & Business Join Table) -->	
 
 	<!-- 거래처 관리 목록 -->
 	<select id="selectOneCsJoin" parameterType="omCsJoinDTO" resultMap="rsMapCsJoin">
