@@ -4,7 +4,7 @@
 
 <mapper namespace="customer">
 
-<!-- Business Table -->
+<!-- 거래처 테이블(Business Table) -->
 
 	<select id="selectBn" parameterType="omBnDTO" resultMap="rsMapBn">
 		SELECT *
@@ -47,9 +47,7 @@
 		id = #{id} and com_id = #{com_id}
 	</delete>
 
-<!-- ******************************************************************************************* -->
-
-<!-- Customer Table -->
+<!-- 담당자 테이블(Customer Table) -->
 
 	<select id="selectCs" parameterType="omCsDTO" resultMap="rsMapCs">
 		SELECT *
@@ -90,10 +88,9 @@
 		WHERE
 		id = #{id} and com_id = #{com_id}
 	</delete>
-	
-<!-- ******************************************************************************************* -->
 
-<!-- Customer & Business Join Table -->	
+
+<!-- 거래처 & 담당자 조인 테이블(Customer & Business Join Table) -->	
 
 	<!-- 거래처 관리 목록 -->
 	<select id="selectOneCsJoin" parameterType="omCsJoinDTO" resultMap="rsMapCsJoin">
@@ -132,7 +129,7 @@
 	</select>
 	<!-- 입력값으로 com_id로 넘겨줬기 때문에 com_id  -->
 	
-	<select id="selectAllSearchBnCsZero" resultMap="rsMapCsJoin"> <!-- 담당자명 일 때 -->
+	<select id="selectAllSearchBnCsZero" resultMap="rsMapCsJoin"> <!-- 거래처 관리 페이지 검색 : 담당자명 일 때 -->
 		SELECT
 		a.id, a.b_id, a.com_id, a.name, a.tel, a.c_key, a.c_value,
 		b.id as bb_id, b.com_id as b_com_id, b.type, b.name as b_name, b.ceo, b.addr, b.tel as b_tel, b.country_code
@@ -141,7 +138,7 @@
 	</select>
 		<!-- 입력값으로 omCsJoinDTO에 담아서 넘겨줬기 때문에 omCsJoinDTO에 선언한 a_com_id로  -->
 	
-	<select id="selectAllSearchBnCsOne" resultMap="rsMapCsJoin"> <!-- 거래처명 일 때 -->
+	<select id="selectAllSearchBnCsOne" resultMap="rsMapCsJoin"> <!-- 거래처 관리 페이지 검색 : 거래처명 일 때 -->
 		SELECT
 		a.id, a.b_id, a.com_id, a.name, a.tel, a.c_key, a.c_value,
 		b.id as bb_id, b.com_id as b_com_id, b.type, b.name as b_name, b.ceo, b.addr, b.tel as b_tel, b.country_code

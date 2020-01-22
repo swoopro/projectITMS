@@ -24,6 +24,7 @@
 		SELECT * FROM product a WHERE date=(select max(date) from product WHERE code = a.code and com_id = #{com_id})
 	</select>
 		<!-- 왜 a.code인지 ?? -->
+		<!-- 서브쿼리문 : where조건으로 date가 제일 최신인 것만 으로 검색하여 제품 정보 전체 목록 출력 / 내림차순의 효과 -->
 	
 	<select id="selectAllPdSearchZero" resultMap="rsMapPd">
 		SELECT * FROM product a WHERE date=(select max(date) from product WHERE code = a.code and com_id = #{com_id}) and name like concat('%',#{name},'%')
@@ -35,7 +36,7 @@
 	</select>
 		<!-- controller에서 받아온 입력값 search의 실제값을 omPdDTO.setCode(search) 해줬으므로 #{code}로  -->
 	
-	<select id="selectAllHistory" resultMap="rsMapPd">
+	<select id="selectAllHistoryDown" resultMap="rsMapPd">
 		SELECT * FROM product WHERE com_id = #{com_id} and code = #{code} order by date desc
 	</select>
 
@@ -48,7 +49,7 @@
 		VALUES(#{id}, #{com_id}, #{code}, #{name}, #{spec}, #{price}, now())
 	</insert>
 	
-	<insert id="insertPd2" parameterType="omPdDTO">
+	<insert id="insertPd2" parameterType="omPdDTO"> <!-- 제품 정보 수정 시 : 단가 이력 관리를 위해 insert가 필요 -->
 		INSERT INTO product (com_id, code, name, spec, price, date)
 		VALUES(#{com_id}, #{code}, #{name}, #{spec}, #{price}, now())
 	</insert>

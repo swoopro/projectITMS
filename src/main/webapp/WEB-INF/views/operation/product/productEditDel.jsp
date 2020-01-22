@@ -22,8 +22,10 @@
 	
 			}
 		});
+
+// ********************************************************************************************************************************* //
 		
-		/* '제품 정보 수정' 버튼 누를 때 DB에서 정보를 추가(이력을 위해 수정이 아닌 추가)하고 '제품 관리' 페이지로 이동 */
+	///// '제품 정보 수정' 버튼 누를 때 DB에서 정보를 추가(이력을 위해 수정이 아닌 추가)하고 '제품 관리' 페이지로 이동 /////
 		$("#pED_Add").click(function() {
 			// ajax를 사용하여 updatePd.jsp에 metadata와 data를 전송하고 result값을 받아오기 위해 각 입력값들을 변수에 할당
 			// update메소드 사용시 모든 항목값들을 수정하기 위해 각 항목값들 필요
@@ -33,19 +35,11 @@
 			var name = $("#name").val();
 			var spec = $("#spec").val();
 			var price = $("#price").val();
-
-			console.log(id)
-			console.log(com_id)
-			console.log(code)
-			console.log(name)
-			console.log(spec)
-			console.log(price)
 			
-			/* '거래처 정보 수정' 버튼 누를 때 DB에서 정보를 수정하고 '거래처 관리' 페이지로 이동 */
 			$.ajax({
-				url : "updatePd", // url: 가져올 페이지(controller에서 받아줄 @RequestMapping 주소)
+				url : "updatePd", // url: (controller에서 받아줄 @RequestMapping 주소)
 				data : {
-					id : id, // metadata : data
+					id : id,
 					com_id : com_id,
 					code : code,
 					name : name,
@@ -53,47 +47,43 @@
 					price : price
 
 				},
-				/* async : true, */
-				
 				// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
 				success : function(result) {
-					console.log(result); // result값 확인용						
+					console.log(result);					
 					alert("제품 정보 수정이 완료되었습니다");
-					location.href = "productRead"; // '거래처 관리'페이지로 이동
+					location.href = "productRead"; // '제품 관리'페이지로 이동
 				} // success
 			}); // ajax end
-		}); // click end
+		}); // pED_Add click end
 
 						
-		/* '제품 삭제 수정' 버튼 누를 때 DB에서 정보를 삭제하고 '제품 관리' 페이지로 이동 */
+		/* '제품 정보 삭제' 버튼 누를 때 DB에서 정보를 삭제하고 '제품 관리' 페이지로 이동 */
 		$("#pED_Del").click(function() {
 			// ajax를 사용하여 deletePd.jsp에 metadata와 data를 전송하고 result값을 받아오기 위해 각 입력값들을 변수에 할당
-			// delete메소드의 where 조건으로 id값 필요
-			// delete메소드의 where 조건으로 com_id값 필요
 			var id = $("#id").val();
-			var code = $("#code").val();
-			var com_id = $("#com_id").val();
-			
+			var code = $("#code").val(); // delete메소드의 where 조건으로 code값 필요
+			var com_id = $("#com_id").val(); // delete메소드의 where 조건으로 com_id값 필요
 			if (confirm("선택한 제품의 정보와 단가 이력까지 모두 삭제 됩니다.\n진행하시겠습니까?") === true) {
-				/* '제품 정보 삭제' 버튼 누를 때 DB에서 정보를 삭제하고 '제품 관리' 페이지로 이동 */
 				$.ajax({
-					url : "deletePd", // url: 가져올 페이지
+					url : "deletePd", // url: (controller에서 받아줄 @RequestMapping 주소)
 					data : {
-						id : id, // metadata : data
+						id : id,
 						code : code,
 						com_id : com_id
 					},
 					// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
 					success : function(result) {
-						console.log(result); // result값 확인용
+						console.log(result);
 						alert("제품 정보 삭제가 완료되었습니다");
-						location.href = "productRead"; // '메인'페이지로 이동
+						location.href = "productRead"; // '제품 관리' 페이지로 이동
 					} // success
 				}); // ajax end
 			}else{
-				return false;
-			}
-		}); // click end
+				return false; // 페이지 이동 안함
+			} // if else end
+		}); // pED_Del click end
+
+// ********************************************************************************************************************************* //		
 		
 	}); // funtion end
 	
@@ -102,61 +92,13 @@
 
 <body>
 	<div class="content_body">
-		<br><h1 align="center">제품 정보 수정/삭제 페이지</h1><br><br>
-
+<!-- ****************************************************************************************************************************** -->	
+	<br><h1 align="center">제품 정보 수정/삭제 페이지</h1><br><br>
+<!-- ****************************************************************************************************************************** -->
 	<div class="ui grid">
-
-		<!-- 입력 폼 DIV-->
-<%-- 		<form action="">
-			<div class="four wide column">
-				<table border="1" style="width:300px;">
-					<input type="hidden" id="id" value="${omPdDTO.id}">
-					<input type="hidden" id="com_id" value="${omPdDTO.com_id}">
-					<tr>
-						<td>제품 코드</td>
-					</tr>
-					<tr>
-						<td><input type="text" name="" id="code" value="${omPdDTO.code}" placeholder="" style="width:300px;" disabled="disabled"></td>
-					</tr>
-
-					<tr>
-						<td>제품명</td>
-					</tr>
-					<tr>
-						<td><input type="text" name="" id="name" value="${omPdDTO.name}" style="width:300px;"></td>
-					</tr>
-
-					<tr>
-						<td>제품 상세</td>
-					</tr>
-					<tr>
-						<td><input type="text" name="" id="spec" value="${omPdDTO.spec}" style="width:300px;" placeholder=""></td>
-					</tr>
-
-					<tr>
-						<td>제품 단가</td>
-					</tr>
-					<tr>
-						<td><input type="text" name="" id="price" value="${omPdDTO.price}" style="width:300px;"></td>
-					</tr>
-
-					<tr>
-						<td align="center">
-						<button class="ui primary button" type="button" id="pED_Add">
-							<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">제품 수정</font></font>
-						</button>
-						<button class="ui primary button" type="button" id="pED_Del">
-							<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">제품 삭제</font></font>
-						</button>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</form> --%>
-		
-		<form class="ui form" style="margin-left: 470px;">
-			<input type="hidden" id="id" value="${omPdDTO.id}">
-			<input type="hidden" id="com_id" value="${omPdDTO.com_id}">
+		<form class="ui form" style="margin-left: 355px;">
+			<input type="hidden" id="id" value="${omPdDTO.id}"> <!-- ajax로 Controller로 보내 DAO를 통해 Mapper에서 where조건으로 사용하기 위해 -->
+			<input type="hidden" id="com_id" value="${omPdDTO.com_id}"> <!-- ajax로 Controller로 보내 DAO를 통해 Mapper에서 where조건으로 사용하기 위해 -->
 			
 		  <div class="field">
 		    <label>제품코드</label>
@@ -177,37 +119,9 @@
 		  <button class="ui primary button" type="button" id="pED_Add" style="width: 250px;">제품 정보 수정</button>
 		  <button class="ui primary button" type="button" id="pED_Del" style="width: 250px;">제품 정보 삭제</button>
 		</form>
-		
-		
-<!-- 		화살표 DIV 
-		<div class="one wide column">
-			<button class="ui icon button" style="margin-top: 140px; margin-left: 60px;"><i class="double angle right icon"></i></button>
-		</div>
-
-		입력 내용 확인 DIV
-		<div class="eleven wide column">
-			<table border=1 id="table" style="width: 900px; float: right;">
-				<tr align="center">
-					<td>구분</td>
-					<td>회사명</td>
-					<td>대표자명</td>
-					<td>회사 주소</td>
-					<td>회사 전화번호</td>
-					<td>회사 국가번호</td>
-				</tr>
-				for문 들어갈 자리
-				<tr align="center">
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
-		</div> -->
-	
 	</div> <!-- grid DIV -->
-	</div> <!-- content_body DIV -->
+<!-- ****************************************************************************************************************************** -->
+</div> <!-- content_body DIV -->
+
 </body>
 </html>

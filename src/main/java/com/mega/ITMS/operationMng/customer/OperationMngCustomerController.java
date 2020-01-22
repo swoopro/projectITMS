@@ -1,14 +1,23 @@
 package com.mega.ITMS.operationMng.customer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mega.ITMS.Excel;
+
+import net.sf.jxls.exception.ParsePropertyException;
 
 
 @RequestMapping("operation/customer") // 현재 Controller에서의 default 주소
@@ -132,6 +141,7 @@ class OperationMngCustomerController {
 		// selectAll을 해주고 customerRead페이지로 이동하도록 redirect
 	}
 	
+	
 ////////// 거래처 수정(update 기능) //////////
 	
 	@RequestMapping("updateBn")
@@ -144,6 +154,7 @@ class OperationMngCustomerController {
 		// update기능을 수행하면서 완료시 customerRead 컨트롤러에 들려서
 		// selectAll을 해주고 customerRead페이지로 이동하도록 redirect
 	}
+	
 	
 ////////// 거래처 삭제(delete 기능) //////////
 	
@@ -158,7 +169,6 @@ class OperationMngCustomerController {
 		// selectAll을 해주고 customerRead페이지로 이동하도록 redirect
 	}
 	
-
 	
 ////////// 담당자 등록(insert 기능) //////////
 	
@@ -200,10 +210,45 @@ class OperationMngCustomerController {
 		omCsDAO.delCustomer(omCsDTO);
 		
 		return "redirect:customerRead";
-		// update기능을 수행하면서 완료시 customerRead 컨트롤러에 들려서
+		// delete기능을 수행하면서 완료시 customerRead 컨트롤러에 들려서
 		// selectAll을 해주고 customerRead페이지로 이동하도록 redirect
 	}
 	
+	
+////////// 거래처 관리 목록 엑셀 파일 다운로드(selectAll 기능) //////////
+	
+	@RequestMapping("excelCsBn")
+	public void excelCsBn(OperationMngCustomerJoinDTO omCsJoinDTO, HttpServletRequest request, HttpServletResponse response, HttpSession session, int dropdown, String search) throws Exception {
+		// select시 where 조건을 위해 필요한 HttpSession,
+		// session을 담아줄 DTO(session을 DTO에 담아 DAO의 입력값으로 넣어 Mapper의 where조건으로 사용),
+		// customerRead.jsp에서 넘겨받은 dropdown에서 선택된 값 + search의 검색어 값
+		
+		omCsJoinDTO.setA_com_id((Integer) session.getAttribute("com_id"));
+		// DTO에 session값 com_id 담아주기(Object session이라 형변환). DTO에 담아주어야 Mapper에서 where 조건으로 사용 가능
+		System.out.println("거래처 관리 검색 페이지");
+				
+		List<OperationMngCustomerJoinDTO> list = null; // if문 밖에서 객체 생성을 해줘야 return list가 밖에서 가능
+				
+		if (dropdown == 0) { // 담당자명 일 때
+			omCsJoinDTO.setA_name(search); // 검색어 값을 DTO에 담아 Mapper에서 where 조건으로 사용
+			list = omCsDAO.getCustomerBusinessReadAllSearchZero(omCsJoinDTO);
+		} else if (dropdown == 1){ // 거래처명 일 때
+			omCsJoinDTO.setB_name(search); // 검색어 값을 DTO에 담아 Mapper에서 where 조건으로 사용
+			list = omCsDAO.getCustomerBusinessReadAllSearchOne(omCsJoinDTO);
+		}else { // 검색을 선택하지 않은 상태의 거래처 관리 화면의 기본 목록일 때
+			list = omCsDAO.getCustomerBusinessReadAll(session.getAttribute("com_id"));
+		}
+		
+		// 받은 데이터를 맵 형식으로 담는다
+		Map<String, Object> beans = new HashMap<String, Object>();
+        beans.put("list", list); // ("엑셀 파일에서 출력해줄 변수명 : ${list.변수명}", 검색결과를 담아준 변수명) 
+		        
+        // 엑셀 다운로드 메소드가 담겨 있는 객체
+        Excel me = new Excel();
 
+        me.download(request, response, beans, "CsBn", "CsBn.xlsx",""); // ( , , , "다운시 생성해줄 엑셀 파일명", "기본 형식을 지정한 엑셀 파일명.xlsx", "")			
+	}
+	
+	
 }
 

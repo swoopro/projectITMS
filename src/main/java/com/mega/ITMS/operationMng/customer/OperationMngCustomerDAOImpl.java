@@ -15,104 +15,95 @@ public class OperationMngCustomerDAOImpl implements OperationMngCustomerDAO{
 	@Autowired
 	SqlSessionTemplate myBatis;
 
-// 거래처 테이블(Business Table)	
 	
-	// insert
+/////////// 거래처 테이블(Business Table) ///////////	
+	
+	// insert (거래처 정보 등록 시 실행)
 	@Override
 	public void addBusiness(OperationMngBusinessDTO omBnDTO) {
-		myBatis.insert("customer.insertBn", omBnDTO);
-		
+		myBatis.insert("customer.insertBn", omBnDTO);		
 	}
 	
-	// update
+	// update (거래처 정보 수정 시 실행)
 	@Override
 	public void editBusiness(OperationMngBusinessDTO omBnDTO) {
-		myBatis.update("customer.updateBn", omBnDTO);
-		
+		myBatis.update("customer.updateBn", omBnDTO);	
 	}
 
-	// delete
+	// delete (거래처 정보 삭제 시 실행 : 담당자 정보도 같이 삭제 / 외래키 CASECADE 설정 때문에 / 거래처가 없어지면 담당자도 필요가 없어지므로)
 	@Override
 	public void delBusiness(OperationMngBusinessDTO omBnDTO) {
-		myBatis.delete("customer.deleteBn", omBnDTO);
-		
+		myBatis.delete("customer.deleteBn", omBnDTO);		
 	}
 
-	// selectOne
+	// selectOne (거래처 수정/삭제 페이지에서 선택한 정보를 출력해주기 위해 실행)
 	@Override
 	public OperationMngBusinessDTO getBusinessRead(OperationMngBusinessDTO omBnDTO) {
-//		System.out.println("DAO ID");
-//		System.out.println(omBnDTO.getId());
-//		System.out.println(omBnDTO.getCom_id());
 		omBnDTO = myBatis.selectOne("customer.selectBn", omBnDTO);
-//		System.out.println(omBnDTO.getCeo());
 		return omBnDTO;
 	}
-	 
-	//selectAll
-	@Override
-	public List<OperationMngBusinessDTO> getBusinessReadAll(Object com_id) {
-		List<OperationMngBusinessDTO> list = myBatis.selectList("customer.selectAllBn", com_id);
-		return list;
-	}
-
-// 담당자 테이블(Customer Table)	
 	
-	// insert
+
+////////// 담당자 테이블(Customer Table) //////////
+	
+	// insert (담당자 정보 등록 시 실행)
 	@Override
 	public void addCustomer(OperationMngCustomerDTO omCsDTO) {
-		myBatis.insert("customer.insertCs", omCsDTO);
-		
+		myBatis.insert("customer.insertCs", omCsDTO);	
 	}
 	
-	// update
+	// update (거래처 정보 수정 시 실행)
 	@Override
 	public void editCustomer(OperationMngCustomerDTO omCsDTO) {
-		myBatis.update("customer.updateCs", omCsDTO);
-		
+		myBatis.update("customer.updateCs", omCsDTO);	
 	}
 
-	// delete
+	// delete (거래처 정보 삭제 시 실행 : 담당자 정보만 삭제)
 	@Override
 	public void delCustomer(OperationMngCustomerDTO omCsDTO) {
 		myBatis.delete("customer.deleteCs", omCsDTO);
-		
 	}
 
-	// selectOne
+	// selectOne (담당자 수정/삭제 페이지에서 선택한 정보를 출력해주기 위해 실행) 
 	@Override
 	public OperationMngCustomerDTO getCustomerRead(OperationMngCustomerDTO omCsDTO) {
 		omCsDTO = myBatis.selectOne("customer.selectCs", omCsDTO);
 		return omCsDTO;
 	}
-
+	
+	
+//////////	담당자 & 거래처 조인 테이블(Customer & Business Table) //////////
+	
+	// selectAll (거래처 관리 페이지 탭 클릭 시 실행)
 	@Override
-	public void getCustomerReadAll() {
-		// TODO Auto-generated method stub
-		
-	}
-
-//	담당자 & 거래처 조인 테이블(Customer & Business Table)
-	
 	public List<OperationMngCustomerJoinDTO> getCustomerBusinessReadAll(Object com_id) {
-//		System.out.println("-----------------------------------------------");
-		/*System.out.println(a_com_id);*/
-//		System.out.println("-----------------------------------------------");
+		// Controller에서 getCustomerBusinessReadAll의 입력값으로 넣어준
+		// session값을 받아 주기 위한 Object com_id
+		
 		List<OperationMngCustomerJoinDTO> list = myBatis.selectList("customer.selectAllCsJoin", com_id);
+		
 		return list;
 	}
-	
-//	담당자 & 거래처 조인 테이블(Customer & Business Table) : 검색(searchBnCs) 담당자명 : dropdown == 0
-	
+		
+	// selectAll (거래처 관리 페이지에서 검색 시 실행) : 검색(searchBnCs) 담당자명 : dropdown == 0
+	@Override
 	public List<OperationMngCustomerJoinDTO> getCustomerBusinessReadAllSearchZero(OperationMngCustomerJoinDTO omCsJoinDTO) {
+		// Controller에서 session com_id, search 값을 omCsJoinDTO에 넣어주고
+		// getCustomerBusinessReadAllSearchZero의 입력값으로 넣어준 omCsJoinDTO를 받기 위한 DTO
+		
 		List<OperationMngCustomerJoinDTO> list = myBatis.selectList("customer.selectAllSearchBnCsZero", omCsJoinDTO);
+		
 		return list;
 	}
-	
-//	담당자 & 거래처 조인 테이블(Customer & Business Table) : 검색(searchBnCs) 거래처명 : dropdown == 1
-	
+		
+	// selectAll (거래처 관리 페이지에서 검색 시 실행) : 검색(searchBnCs) 담당자명 : dropdown == 1
+	@Override
 	public List<OperationMngCustomerJoinDTO> getCustomerBusinessReadAllSearchOne(OperationMngCustomerJoinDTO omCsJoinDTO) {
+		// Controller에서 session com_id, search 값을 omCsJoinDTO에 넣어주고
+		// getCustomerBusinessReadAllSearchZero의 입력값으로 넣어준 omCsJoinDTO를 받기 위한 DTO
+		
 		List<OperationMngCustomerJoinDTO> list = myBatis.selectList("customer.selectAllSearchBnCsOne", omCsJoinDTO);
+		
 		return list;
 	}
 	
