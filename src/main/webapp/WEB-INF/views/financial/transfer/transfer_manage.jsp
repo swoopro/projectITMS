@@ -55,10 +55,12 @@
  		
 // 		$(".rq").change(function() {
 //  			var dropID = $(this).attr("id");
-// 			console.log("콘솔");
-// 			var krw = $("#"+dropID+"option:selected").data("value").amount_krw;
-// 			var num = $("#"+dropID+"option:selected").data("value").num;
-// 			$("#note"+num).text(krw);
+// 			var krw = $("#"+dropID+"option:selected").data("options");
+// // 			var krw = $("#dropID option:selected").data("values").amount_krw;
+// 			console.log(dropID);
+// 			console.log(krw 	);
+// // 			var num = $("#"+dropID+"option:selected").data("value").num;
+// // 			$("#note"+num).text(krw);
 			
 // 		});//rq end
 		
@@ -70,12 +72,12 @@
 		    var time = new Date().toLocaleTimeString();
 		    
 		    $('#statement> tbody:last').append(' <tr>\n' +
-		        '                <td><select class="ui search dropdown rq" id="finance_id'+count+'">\n'+
+		        '                <td><select class="rq" id="finance_id'+count+'">\n'+
 		        '						<option value="">재무고유번호</option>\n'+
-									        <c:forEach items="${request_list}" var="request_dto">
-						        		<c:choose>
+									    <c:forEach items="${request_list}" var="request_dto">
+						        			<c:choose>
 							        			<c:when test="${request_dto.receive_date ne null}">
-				'				                	<option value="${request_dto.id}" data-value="{\'amount_krw\':\'${request_dto.amount_krw }\',\'note\':\'${request_dto.note }\'}">${request_dto.id}</option>\n'+
+				'				                	<option value="${request_dto.id}" data-options="{\'amount_krw\':\'${request_dto.amount_krw }\',\'note\':\'${request_dto.note }\'}">${request_dto.id}</option>\n'+
 							        			</c:when>
 							        		</c:choose>
 							        	</c:forEach>
@@ -114,12 +116,35 @@
 	        }
 	    });
 		
-		
-		$("#update").click(function () {
-			var url = "${pageContext.request.contextPath}/financialMng/transfer/transfer_update";
+	    
+		$(".transferupdate").click(function () {
+			var btnID = $(this).attr("id");
+			var transfer_id = $("#"+btnID).data("options").id;
+			
+			var url = "${pageContext.request.contextPath}/financialMng/transfer/transfer_update?id="+transfer_id;
 			var name = "update";
 			var option = "width=1000, height=240, top=100, left=200, location=no";
 			window.open(url, name, option);
+		});
+		
+		
+		$(".transferdelete").click(function () {
+			alert("정말 삭제하시겠습니까?");
+			var btnID = $(this).attr("id");
+			var transfer_id = $("#"+btnID).data("options").id;
+			
+			$.ajax({
+				url : "${pageContext.request.contextPath}/financialMng/transfer/transfer_delete",
+				data : {
+						id : transfer_id				
+				},
+				success : function() {
+					alert("삭제가 완료되었습니다.");
+					location.reload();
+				} 
+				
+			});
+			
 		});
 	});	
 </script>
@@ -151,7 +176,7 @@
 	                <th>비고</th>
             </tr></thead>
             <tbody id="tbody1">
-     			 <c:forEach items="${list}" var="dto">
+     			 <c:forEach items="${list}" var="dto" varStatus="status">
      			 	<tr>
             		<td>${dto.id}</td>
 	                <td>${dto.finance_id}</td>
@@ -181,8 +206,8 @@
 	                <td>${dto.closed_date}</td>
 	                <td>${dto.note}</td>
 	                <td>
-			        	<button class="ui button transferupdate" id="update">수정</button>
-			        	<button class="ui button transferdelete" id="delete">삭제</button>
+			        	<button class="ui button transferupdate" id="update${status.index }" data-options='{"id":"${dto.id }"}'>수정</button>
+			        	<button class="ui button transferdelete" id="delete${status.index }" data-options='{"id":"${dto.id }"}'>삭제</button>
 			        </td>
             </tr>
      			 </c:forEach>
@@ -210,12 +235,12 @@
             </thead>
             <tbody>
 	            <tr>
-	                <td><select id="finance_id0" class="ui search dropdown rq">
+	                <td><select id="finance_id0" class="rq">
 	                	<option value="">재무고유번호</option>
 	                	<c:forEach items="${request_list}" var="request_dto" varStatus="status">
 	                		<c:choose>
-	                			<c:when test="${request_dto.receive_date ne null}">
-				                	<option value="${request_dto.id}" data-value="{'num':'${status.index }','amount_krw':'${request_dto.amount_krw }','note':'${request_dto.note }'}">${request_dto.id}</option>
+	                			<c:when test="${request_dto.receive_date == null}">
+				                	<option value="${request_dto.id}" data-options='{"num":"${status.index }", "amount_krw":"${request_dto.amount_krw }", "note":"${request_dto.note }"}'>${request_dto.id}</option>
 	                				
 	                			</c:when>
 	                		</c:choose>

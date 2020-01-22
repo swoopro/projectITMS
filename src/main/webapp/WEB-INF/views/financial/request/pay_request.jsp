@@ -16,32 +16,47 @@
 			window.open(url, name, option);
 		});
 		
-		$("#update").click(function () {
-			var url = "${pageContext.request.contextPath}/financialMng/request/pay_update";
+		$(document).on("click",".payupdate",function () {
+			var request_id = $(this).data("value").id;
+			console.log($(this))
+			console.log(request_id);
+			var url = "${pageContext.request.contextPath}/financialMng/request/pay_update?id="+request_id;
 			var name = "update";
 			var option = "width=1000, height=240, top=100, left=200, location=no";
 			window.open(url, name, option);
 		});
-		$("#update2").click(function () {
-			var url = "${pageContext.request.contextPath}/financialMng/request/pay_update2";
-			var name = "update2";
-			var option = "width=1000, height=240, top=100, left=200, location=no";
-			window.open(url, name, option);
+		
+		$(".paydelete").click(function () {
+			var request_id = $(this).data("value").id;
+			alert("정말 삭제하시겠습니까?");
+			$.ajax({
+				url : "${pageContext.request.contextPath}/financialMng/request/request_delete",
+				data : {
+						id : request_id				
+				},
+				success : function(result) {
+					alert("삭제가 완료되었습니다.");
+					location.reload();
+				} 
+				
+			});
 		});
 		
-		$("#detail").click(function () {
+		$(".detail").click(function () {
+		
+			var com_name = $(this).data("value").com_name;
+			var c_key = $(this).data("value").c_key;
+			var c_value = $(this).data("value").c_value;
+			
+			console.log(com_name);
+			console.log(c_key);
+			console.log(c_value);
 			var url = "${pageContext.request.contextPath}/financialMng/request/pay_account_detail";
-			var name = "account_detail";
+		 	var name = "account_detail";
 			var option = "width=1100, height=230, top=100, left=200, location=no";
 			window.open(url, name, option);
 		});
-		$("#detail2").click(function () {
-			var url = "${pageContext.request.contextPath}/financialMng/request/pay_account_detail";
-			var name = "account_detail";
-			var option = "width=1100, height=250, top=100, left=200, location=no";
-			window.open(url, name, option);
-		});
-		
+
 		$(".pay").click(function () {
 			var requestID = $(this).data("value").id;
 			var divID = $(this).data("value").divID;
@@ -63,22 +78,22 @@
 									
 									$("#d2").append(
 											"<tr> \n"
-											+"<td>"+dto.id+"</td> \n"
-							                +"<td></td> \n"
+											+"<td><div class='fid' data-options={'fid':"+dto.id+"}>"+dto.id+"</td></div> \n"
+							                +"<td>"+dto.doc_no+"</td> \n"
 							                +"<td>"+dto.note+"</td> \n"
 							                +"<td>"+dto.amount_krw+"</td> \n"
 							                +"<td> \n"
-							                +"<button class='ui button' id='detail'>상세</button> \n"
+							                +"<button class='ui button detail' data-value={'com_name':"+dto.name+",'c_key':"+dto.c_key+",'c_value':"+dto.c_value+"}>상세</button> \n"
 							                +"</td> \n"
 							                +"<td>"+dto.request_id+"</td> \n"
 							                +"<td>"+dto.response_id+"</td> \n"
 							                +"<td><div class='payend_d2'> \n"
 							                +"<input type='hidden' value="+dto.id+"> \n"
-							                +"<button disabled='disabled' class='ui button payend' data-value={'id':"+dto.id+"}>결제완료</button> \n"
+							                +"<button disabled='disabled' class='ui button payend' data-value={'id':"+dto.id+"}>결제 대기중</button> \n"
 							                +"</div></td> \n"
 							                +"<td> \n"
-							                +"<button class='ui button payupdate' id='update'>수정</button> \n"
-							                +"<button class='ui button paydelete' id='delete'>삭제</button> \n"
+							                +'<button class="ui button payupdate" id="update" data-value={"id":"'+dto.id+'"}>수정</button> \n'
+							                +'<button class="ui button paydelete" id="delete" data-value={"id":"'+dto.id+'"}>삭제</button> \n'
 							                +"</td> \n"
 							        		+"</tr>");
 								}
@@ -135,14 +150,13 @@
                 <th rowspan="2">전표번호</th>
                 <th rowspan="2">PO번호</th>
                 <th rowspan="2">항목</th>
-                <th rowspan="1">금액</th>
+                <th rowspan="2">금액(원)</th>
                 <th rowspan="1" colspan="3">송금정보</th>
                 <th rowspan="2">신청인아이디</th>
                 <th rowspan="2">요청한날짜</th>
                 <th rowspan="2">요청확인</th>
             </tr>
             <tr>
-                <th>단위(USD) or 단위(KRW)</th>
                 <th>회사명</th>
                 <th>은행명</th>
                 <th>계좌 no.</th>
@@ -154,14 +168,14 @@
             <c:forEach items="${list}" var="dto" varStatus="status">
             <tr>
                 <td>${dto.id}</td>
-                <td></td>
+                <td>${dto.doc_no}</td>
                 <td>${dto.note}</td>
                 <td>${dto.amount_krw}</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>${dto.name }</td>
+                <td>${dto.c_key }</td>
+                <td>${dto.c_value }</td>
                 <td>${dto.request_id}</td>
-                <td>${issued_date}</td>
+                <td>${dto.issued_date}</td>
                 <td>
                 	<div id="d1${status.count}">
                 	<c:choose>
@@ -200,11 +214,11 @@
                 <th>전표번호</th>
                 <th>PO번호</th>
                 <th>항목</th>
-                <th>금액(USD) or 금액(KRW) </th>
+                <th>금액(원)</th>
                 <th>송금계좌정보</th>
                 <th>신천인아이디</th>
                 <th>수령인아이디</th>
-                <th></th>
+                <th>결제유무</th>
                 <th colspan=2></th>
             </tr></thead>
             
@@ -213,25 +227,29 @@
 	            <c:choose>
 	            	<c:when test="${dto.receive_date ne null}"> <!-- 널이 아니면 -->
 			            <tr>
-			                <td>${dto.id}</td>
-			                <td></td>
+			                <td><div class="fid" data-options='{"fid":"${dto.id}"}'>${dto.id}</div></td>
+			                <td>${dto.doc_no }</td>
 			                <td>${dto.note}</td>
 			                <td>${dto.amount_krw}</td>
-			                <td><button class='ui button' id='detail'>상세</button></td>
+			                <td><button class='ui button detail' data-value='{"com_name":"${dto.name}", "c_key":"${dto.c_key}","c_value":"${dto.c_value}"}'>상세</button></td>
 			                <td>${dto.request_id}</td>
 			                <td>${dto.response_id}</td>
-			                
-			                
-			                
 			                <td>
+			        <c:choose>
+	            	<c:when test="${dto.id eq transfer_list[status.index].finance_id}">
+			                	<i class ='check icon'></i>${transfer_list[status.index].closed_date}
+	            	</c:when>
+	            	<c:otherwise>
 			                	<div class="payend_d2">
 			                	<input type="hidden" value="${dto.id}">
-			                    <button disabled="disabled" class="ui button payend" data-value='{"id":"${dto.id}"}'>결제완료</button>
+			                    <button disabled="disabled" class="ui button payend" data-value='{"id":"${dto.id}"}'>결제 대기중</button>
 			                	</div>
+	            	</c:otherwise>
+			        </c:choose>   
 			                </td>
 			                 <td>
-			                    <button class="ui button payupdate" id="update">수정</button>
-			                    <button class="ui button paydelete" id="delete">삭제</button>
+			                    <button class="ui button payupdate" id="update${status.index }" data-value='{"id":"${dto.id }"}'>수정</button>
+			                    <button class="ui button paydelete" id="delete${status.index }" data-value='{"id":"${dto.id }"}'>삭제</button>
 			                </td>
 			            </tr>
 	            	</c:when>
@@ -262,13 +280,14 @@
                 <th>전표번호</th>
                 <th>PO번호</th>
                 <th>항목</th>
-                <th>송금금액(USD or KRW)</th>
-                <th>수수료(USD or KRW)</th>
-                <th>실송금액(USD or KRW)</th>
+                <th>송금금액</th>
+                <th>수수료</th>
+	                <th>실송금액</th>
                 <th>송금계좌정보</th>
-                <th>송금증</th>
             </tr></thead>
             <tbody>
+            
+<%--             <c:forEach items="transfer_list" var="dto"> --%>
             <tr>
                 <td></td>
                 <td></td>
@@ -277,16 +296,14 @@
                 <td></td>
                 <td></td>
                 <td>
-                    <button class="ui button" id="detail2">상세</button>
+                    <button class="ui button">상세</button>
                 </td>
-                <td>
-                    <button class="ui button" id="save">저장</button>
-                </td>
-                <td>
-                    <button class="ui button" id="update2">수정</button>
-                    <button class="ui button" id="delete2">삭제</button>
-                </td>
+<!--                 <td> -->
+<!--                     <button class="ui button" id="update2">수정</button> -->
+<!--                     <button class="ui button" id="delete2">삭제</button> -->
+<!--                 </td> -->
             </tr>
+<%--             </c:forEach> --%>
             </tbody>
         </table>
 

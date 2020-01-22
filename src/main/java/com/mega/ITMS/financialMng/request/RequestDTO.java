@@ -11,7 +11,7 @@ public class RequestDTO {
 	String response_id;
 	int cb_id;
 	int detail_cb_id;
-	Timestamp issued_date;
+	String issued_date;
 	int amount_usd;
 	int amount_krw;
 	String note;
@@ -88,12 +88,12 @@ public class RequestDTO {
 	}
 
 
-	public Timestamp getIssued_date() {
+	public String getIssued_date() {
 		return issued_date;
 	}
 
 
-	public void setIssued_date(Timestamp issued_date) {
+	public void setIssued_date(String issued_date) {
 		this.issued_date = issued_date;
 	}
 

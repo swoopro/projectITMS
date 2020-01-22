@@ -16,7 +16,8 @@
 		<typeAlias type="com.mega.ITMS.userMng.account.UserMngAccountDTO" alias="accMng"></typeAlias>
 		<typeAlias type="com.mega.ITMS.financialMng.request.RequestDTO" alias="requestDTO"/>
 		<typeAlias type="com.mega.ITMS.financialMng.transfer.TransferDTO" alias="transferDTO"/>
-		<!-- 지수 merge 후 -->
+		<typeAlias type="com.mega.ITMS.financialMng.request.payDTO" alias="payDTO"/>
+		<typeAlias type="com.mega.ITMS.financialMng.request.IncomeDTO" alias="incomeDTO"/>
 		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_basicTradeDTO" alias="Import_basicTradeDTO"/>
 		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_businessDTO" alias="Import_businessDTO"/>
 		<typeAlias type="com.mega.ITMS.importMng.importprocess.Import_companyDTO" alias="Import_companyDTO"/>

@@ -12,12 +12,27 @@
     <title>ITMS</title>
     
 <script>
-	$(function () {
-	/* 	$("#ok").click(function () {
-			
-		}); */
-		
-	});	
+$(function() {
+	$("#ok").click(function() {
+				$.ajax({
+					url:"${pageContext.request.contextPath}/financialMng/request/request_update_btn",
+					type: "POST",
+					data:{
+						id : $("#id").val(),
+						amount_krw : $("#amount_krw").val(),
+						note : $("#note").val()
+					},
+					success:function(){
+						alert("수정 완료!!");
+						opener.location.reload();
+						self.close();
+					}
+						
+						
+				}); //ajax end
+	});//#update click end
+	
+});
 </script>
 </head>
 <body>
@@ -34,14 +49,14 @@
                 <th>전표번호</th>
                 <th>PO번호</th>
                 <th>항목</th>
-                <th>금액(USD) or 금액(KRW) </th>
+                <th>금액(원)</th>
             </tr></thead>
             <tbody>
             <tr>
-                <td><div class="ui icon input"><input placeholder="전표번호" type="text" readonly="readonly"></div></td>
-                <td><div class="ui icon input"><input placeholder="PO번호" type="text" readonly="readonly"></div></td>
-                <td><div class="ui icon input"><input placeholder="항목" type="text"></div></td>
-                <td><div class="ui icon input"><input placeholder="금액" type="text"></div></td>
+                <td><div class="ui icon input"><input placeholder="전표번호" type="text" readonly="readonly" id="id" value="${dto.id }"></div></td>
+                <td><div class="ui icon input"><input placeholder="PO번호" type="text" readonly="readonly" id="doc_no" value="${dto.doc_no }"></div></td>
+                <td><div class="ui icon input"><input placeholder="항목" type="text" id="note" value="${dto.note }"></div></td>
+                <td><div class="ui icon input"><input placeholder="금액" type="text" id="amount_krw" value="${dto.amount_krw }"></div></td>
             </tr>
             </tbody>
         </table>

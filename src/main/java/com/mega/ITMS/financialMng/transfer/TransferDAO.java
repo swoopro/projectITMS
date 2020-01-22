@@ -54,4 +54,20 @@ public class TransferDAO {
 		}
 		return null;
 	}
+	
+	public TransferDTO selectfid(int id) {
+		TransferDTO dto = myBatis.selectOne("transfer.selectfid", id);
+		return dto;
+	}
+	
+	public void update(TransferDTO transferDTO) {
+		myBatis.update("transfer.update", transferDTO);
+
+	}
+
+	public void delete(int id) {
+		myBatis.delete("transfer.delete", id);
+	}
+	
+	
 }
