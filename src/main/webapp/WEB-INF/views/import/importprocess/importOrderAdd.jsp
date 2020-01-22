@@ -65,7 +65,6 @@
 		$('#dropBusiness').dropdown({onChange(value, text, selItem) { //판매업체 드롭박스 값 변경시
 
 
-			$("#customerSelect").html(""); // 판매업체 드롭박스 값 변경시 이전 값 초기화
 			businessID = $('#dropBusiness').dropdown('get value');
 			console.log("판매처아이디"+businessID)
 			for (var i = 0; i < businessList.length; i++) {
@@ -74,6 +73,7 @@
 					$("#businessAddr").text(businessList[i].addr);
 				}
 			}
+	 						$("#dropCustomer").html("");
 
 	 			$.ajax({ // 판매업체 드롭박스 선택한 담당자 검색 ajax
 	 				url: "${pageContext.request.contextPath}/import/importprocess/importAJaxCustomer.do",
@@ -84,10 +84,11 @@
 	 					b_id : businessID
 	 				},
 	 				success: function(data) {
+	 					$("#dropCustomer").append("<option value=''>담당자를 선택하세요</option>");
 	 					for (var i = 0; i < data.length; i++) { // 판매업체의 담당자 드롭박스 항목 루프문
-	 						console.log("ajax customer 테스트" + data[i].name);
 							$("#dropCustomer").append("<option value="+data[i].id+">"+data[i].name+"</option>");
 							customerList[i] = data[i];
+							console.log(customerList[i]);
 						} //sucs for end
 	 				}// success end
 	 			});//ajax end
@@ -97,7 +98,9 @@
 		}); //+++
 		
 		$("#dropCustomer").change(function() { //판매자 담당자 드롭박스 변경시
-			console.log("customer 드롭다운 값: "+$(this).val());
+			console.log("@customer 드롭다운 값: "+$(this).val());
+			var value = $("#dropCustomer option:selected").val();
+			console.log(value);
 			
 			for (var i = 0; i < customerList.length; i++) { 
 				console.log("customerList 값: " + customerList[i].tel); 
@@ -107,7 +110,6 @@
 				}
 			}
 			
-			/* $("#c_id").val(customerList[$(this).val()].id); */
 		}); //dropCustomer end 
 		
 		$('#dropPBusiness').change(function() { //협력업체 드롭박스
@@ -492,7 +494,7 @@
 							</tr>
 							<tr>
 								<td>담당자</td>
-								<td>--> <select class="ui search dropdown" id="dropPartner">
+								<td><select class="ui search dropdown" id="dropPartner">
 										<option value="">담당자 검색</option>
 								</select>
 								</td>

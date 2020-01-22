@@ -247,6 +247,12 @@
 			(SELECT id FROM basic_trade WHERE type_tr = 2 AND com_id = #{com_id}) and not receive_date is null;
 	</select>
 	
+		<select id="selectAllFinanceRequestSearch" resultMap="financeRequestDTO">
+			select * from finance_request where basic_id in 
+			(SELECT id FROM basic_trade WHERE type_tr = 2 AND com_id = #{com_id} and doc_no = #{doc_no}) and not receive_date is null;
+	</select>
+	
+	
 	
 	
 	<insert id="insertBasicTrade" parameterType="com.mega.ITMS.importMng.importprocess.Import_basicTradeDTO">
@@ -264,7 +270,7 @@
 		VALUES(default,#{basic_id},#{cb_id},#{dcb_id},now())
 	</insert>
 	
-	<insert id="importInsertFinanceRequest" parameterType="com.mega.ITMS.importMng.importprocess.Import_financeRequestDTO">
+	<insert id="importInsertFinanceRequest" parameterType="Import_financeRequestDTO">
 		INSERT INTO finance_request (id, com_id, basic_id, request_id, cb_id, detail_cb_id, issued_date, amount_krw, note)
 		VALUES(default,#{com_id},#{basic_id},#{request_id},#{cb_id},#{detail_cb_id},now(),#{amount_krw}, #{note})
 	</insert>
@@ -302,6 +308,13 @@
 		, basic_trade AS bt WHERE tfc.basic_id=bt.id and bt.com_id=#{com_id} AND type_file 
 		IN (SELECT max(type_file) FROM trade_file_container WHERE basic_id=tfc.basic_id);
 	</select>
+	
+	<select id="testSearch" resultMap="stepDTO">
+		SELECT * FROM trade_file_container AS tfc
+		, basic_trade AS bt WHERE tfc.basic_id=bt.id and doc_no like CONCAT('%',#{doc_no},'%') and bt.com_id=#{com_id} AND type_file 
+		IN (SELECT max(type_file) FROM trade_file_container WHERE basic_id=tfc.basic_id);
+	</select>
+	
 	
 <!-- 	<update id="PItoCIPL" parameterType="com.mega.ITMS.importMng.importprocess.Import_tradeFileDTO">
 		UPDATE trade_file_container

@@ -37,13 +37,6 @@
 			var doc_no = $("#searchInput").val();
 			location.href = "${pageContext.request.contextPath}/import/importprocess/importSearch.do?doc_no="+doc_no;
 		});//search icon click end
-		
-		$(".close").click(function() {
-			alert("삭제처리 됩니다.");
-			var id = $(this).data("value");
-			location.href = "${pageContext.request.contextPath}/import/importprocess/importFlag.do?basic_id="+id;
-
-		}); //delete click end
 	}); //func end
 </script>
 
@@ -59,7 +52,7 @@
 				<td>
 					<div class="ui icon input">
 						<i class="search icon"></i> <input type="text"
-							placeholder="Search..." id="searchInput" autocomplete="off" >
+							placeholder="Search..." id="searchInput">
 					</div>
 				</td>
 				<td>
@@ -175,7 +168,7 @@
 
 
 								</div>
-								<i class="big disabled window close outline icon" data-value="${tlist.basic_id}"></i>
+								<i class="big disabled window close outline icon"></i>
 							</div>
 
 						</c:when>
@@ -299,7 +292,7 @@
 
 
 								</div>
-								<i class="big disabled window close outline icon" data-value="${tlist.basic_id}"></i>
+								<i class="big disabled window close outline icon"></i>
 							</div>
 
 						</c:when>
@@ -448,7 +441,7 @@
 
 
 								</div>
-								<i class="big disabled window close outline icon" data-value="${tlist.basic_id}"></i>
+								<i class="big disabled window close outline icon"></i>
 							</div>
 
 						</c:when>
@@ -502,7 +495,7 @@
 
 
 								</div>
-								<i class="big disabled window close outline icon" data-value="${tlist.basic_id}"></i>
+								<i class="big disabled window close outline icon"></i>
 							</div>
 
 
