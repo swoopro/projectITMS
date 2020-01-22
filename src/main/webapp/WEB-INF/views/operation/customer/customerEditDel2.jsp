@@ -23,7 +23,9 @@
 			}
 		});
 		
-		/* '담당자 정보 수정' 버튼 누를 때 DB에서 정보를 수정하고 '거래처 관리' 페이지로 이동 */
+// ********************************************************************************************************************************* //		
+	
+	///// '담당자 정보 수정' 버튼 누를 때 DB에서 정보를 수정하고 '거래처 관리' 페이지로 이동 /////
 		$("#cED_Edit2").click(function() {
 			// ajax를 사용하여 deleteBn.jsp에 metadata와 data를 전송하고 result값을 받아오기 위해 각 입력값들을 변수에 할당
 			// update메소드 사용시 모든 항목값들을 수정하기 위해 각 항목값들 필요
@@ -34,20 +36,11 @@
 			var tel = $("#tel").val();
 			var c_key = $("#c_key").val();
 			var c_value = $("#c_value").val();
-
-			console.log(id)
-			console.log(b_id)
-			console.log(com_id)
-			console.log(name)
-			console.log(tel)
-			console.log(c_key)
-			console.log(c_value)
 			
-			/* '거래처 정보 수정' 버튼 누를 때 DB에서 정보를 수정하고 '거래처 관리' 페이지로 이동 */
 			$.ajax({
-				url : "updateCs", // url: 가져올 페이지(controller에서 받아줄 @RequestMapping 주소)
+				url : "updateCs", // url: (controller에서 받아줄 @RequestMapping 주소)
 				data : {
-					id : id, // metadata : data
+					id : id,
 					b_id : b_id,
 					com_id : com_id,
 					name : name,
@@ -55,117 +48,62 @@
 					c_key : c_key,
 					c_value : c_value
 				},
-				/* async : true, */
-				
 				// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
 				success : function(result) {
-					console.log(result); // result값 확인용						
+					console.log(result);					
 					alert("담당자 정보 수정이 완료되었습니다");
 					location.href = "customerRead"; // '거래처 관리'페이지로 이동
 				} // success
 			}); // ajax end
-		}); // click end
+		}); // cED_Edit2 click end
 
-	///// '삭제' 버튼 누를 때 /////
 		
+	///// '담당자 정보 삭제' 버튼 누를 때 DB에서 정보를 삭제하고 '거래처 관리' 페이지로 이동 /////		
 		$("#cED_Del2").click(function() {
 			// ajax를 사용하여 deleteBn.jsp에 metadata와 data를 전송하고 result값을 받아오기 위해 각 입력값들을 변수에 할당
 			// delete메소드의 where 조건으로 id값 필요
 			// delete메소드의 where 조건으로 com_id값 필요
-			var id = $("#id").val();
+			var id = $("#id").val(); // delete메소드의 where 조건으로 id값 필요
 			var b_id = $("#b_id").val();
-			var com_id = $("#com_id").val();
-			
-			var choice = confirm("거래처 정보는 유지되고 담당자 정보만 삭제됩니다.\n거래처/담당자 정보 일괄 삭제를 원하시면 거래처 정보 삭제 기능을 사용해주세요. 삭제하시겠습니까?");
-			
-			if (choice == true) {
-				/* '거래처 정보 삭제' 버튼 누를 때 DB에서 정보를 삭제하고 '거래처 관리' 페이지로 이동 */
+			var com_id = $("#com_id").val(); // delete메소드의 where 조건으로 com_id값 필요		
+			var choice = confirm("거래처 정보는 유지되고 담당자 정보만 삭제됩니다.\n거래처/담당자 정보 일괄 삭제를 원하시면 거래처 정보 삭제 기능을 사용해주세요. 삭제하시겠습니까?");			
+			if (choice == true) { // 삭제 확인창에서 '확인(true)' 버튼 선택시
+
 				$.ajax({
-					url : "deleteCs", // url: 가져올 페이지
+					url : "deleteCs", // url: (controller에서 받아줄 @RequestMapping 주소)
 					data : {
-						id : id, // metadata : data
+						id : id,
 						b_id : b_id,
 						com_id : com_id
 					},
 					// 전송 완료 시 function(가져올 페이지의 결과값 result)을 실행
 					success : function(result) {
-						console.log(result); // result값 확인용
+						console.log(result);
 						alert("담당자 정보 삭제가 완료되었습니다");
-						location.href = "customerRead"; // '메인'페이지로 이동
+						location.href = "customerRead"; // '거래처 관리'페이지로 이동
 					} // success
 				}); // ajax end		
 			} else {
-				return false;
-			}
-		}); // click end
+				return false; // 페이지 이동 안함
+			} // if else end
+		}); // cED_Del2 click end
+		
+// ********************************************************************************************************************************* //		
+		
 	}); // funtion end	
 </script>
+
 </head>
 
 <body>
-	<div class="content_body">
-		<br><h1 align="center">담당자 정보 수정/삭제 페이지</h1><br><br>
-
+<div class="content_body">
+<!-- ****************************************************************************************************************************** -->
+	<br><h1 align="center">담당자 정보 수정/삭제 페이지</h1><br><br>
+<!-- ****************************************************************************************************************************** -->
 	<div class="ui grid">
-
-		<!-- 입력 폼 DIV-->
-<%-- 		<form action="">
-			<div class="four wide column">
-				<table border="1" style="width:300px;">
-					<input type="hidden" id="id" value="${omCsDTO.id}">
-					<input type="hidden" id="com_id" value="${omCsDTO.com_id}">
-					<tr>
-						<td>업체 아이디</td>
-					</tr>
-					<tr>
-						<td><input type="text" name="" id="b_id" value="${omCsDTO.b_id}" placeholder="거래처 또는 협력업체의 아이디 입력" style="width:300px;" disabled="disabled"></td>
-					</tr>
-
-					<tr>
-						<td>담당자명</td>
-					</tr>
-					<tr>
-						<td><input type="text" name="" id="name" value="${omCsDTO.name}" style="width:300px;"></td>
-					</tr>
-
-					<tr>
-						<td>담당자 연락처</td>
-					</tr>
-					<tr>
-						<td><input type="text" name="" id="tel" value="${omCsDTO.tel}" style="width:300px;" placeholder=" '-'를 포함하여 입력하세요"></td>
-					</tr>
-
-					<tr>
-						<td>key</td>
-					</tr>
-					<tr>
-						<td><input type="text" name="" id="c_key" value="${omCsDTO.c_key}" style="width:300px;"></td>
-					</tr>
-
-					<tr>
-						<td>value</td>
-					</tr>
-					<tr>
-						<td><input type="text" name="" id="c_value" value="${omCsDTO.c_value}" placeholder="" style="width:300px;"></td>
-					</tr>
-
-					<tr>
-						<td align="center">
-						<button class="ui primary button" type="button" id="cED_Edit2">
-							<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">담당자 수정</font></font>
-						</button>
-						<button class="ui primary button" type="button" id="cED_Del2">
-							<font style="vertical-align: inherit;"><font style="vertical-align: inherit;">담당자 삭제</font></font>
-						</button>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</form> --%>
-		
-		<form class="ui form" style="margin-left: 470px;">
-			<input type="hidden" id="id" value="${omCsDTO.id}">
-			<input type="hidden" id="com_id" value="${omCsDTO.com_id}">
+		<form class="ui form" style="margin-left: 355px;">
+			<input type="hidden" id="id" value="${omCsDTO.id}"> <!-- ajax로 Controller로 보내 DAO를 통해 Mapper에서 where조건으로 사용하기 위해 -->
+			<input type="hidden" id="com_id" value="${omCsDTO.com_id}"> <!-- ajax로 Controller로 보내 DAO를 통해 Mapper에서 where조건으로 사용하기 위해 -->
 			
 		  <div class="field">
 		    <label>업체 아이디</label>
@@ -180,47 +118,19 @@
 		    <input type="text" name="tel" id="tel" value="${omCsDTO.tel}" placeholder=" '-'를 포함하여 입력하세요">
 		  </div>
 		  <div class="field">
-		    <label>소속부서</label>
+		    <label>Key</label>
 		    <input type="text" name="c_key" id="c_key" value="${omCsDTO.c_key}" placeholder="">
 		  </div>
 		  <div class="field">
-		    <label>거래품목</label>
+		    <label>Value</label>
 		    <input type="text" name="c_value" id="c_value" value="${omCsDTO.c_value}" placeholder="">
 		  </div>
 		  <button class="ui primary button" type="button" id="cED_Edit2" style="width: 250px;">담당자 수정</button>
 		  <button class="ui primary button" type="button" id="cED_Del2" style="width: 250px;">담당자 삭제</button>
 		</form>
-		
-		
-<!-- 		화살표 DIV 
-		<div class="one wide column">
-			<button class="ui icon button" style="margin-top: 140px; margin-left: 60px;"><i class="double angle right icon"></i></button>
-		</div>
-
-		입력 내용 확인 DIV
-		<div class="eleven wide column">
-			<table border=1 id="table" style="width: 900px; float: right;">
-				<tr align="center">
-					<td>구분</td>
-					<td>회사명</td>
-					<td>대표자명</td>
-					<td>회사 주소</td>
-					<td>회사 전화번호</td>
-					<td>회사 국가번호</td>
-				</tr>
-				for문 들어갈 자리
-				<tr align="center">
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
-		</div> -->
-	
 	</div> <!-- grid DIV -->
-	</div> <!-- content_body DIV -->
+<!-- ****************************************************************************************************************************** -->
+</div> <!-- content_body DIV -->
+
 </body>
 </html>
